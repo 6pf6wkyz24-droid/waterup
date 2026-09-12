@@ -1,25 +1,41 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+>
 
 <title>waterUP</title>
 
 <style>
+
+/* =========================================================
+   BASE
+========================================================= */
 
 *{
     box-sizing:border-box;
     -webkit-tap-highlight-color:transparent;
 }
 
-html,body{
+html,
+body{
     margin:0;
     padding:0;
     min-height:100%;
-    background:#030814;
-    color:white;
-    font-family:Arial,Helvetica,sans-serif;
+
+    background:#020814;
+    color:#fff;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 }
 
 body{
@@ -27,9 +43,9 @@ body{
 }
 
 button{
+    border:0;
     font-family:inherit;
     color:white;
-    border:0;
     cursor:pointer;
 }
 
@@ -37,100 +53,137 @@ button{
     width:100%;
     max-width:520px;
     min-height:100vh;
+
     margin:auto;
+
     padding-bottom:100px;
 
     background:
         radial-gradient(
-            circle at 50% 20%,
-            rgba(0,120,255,.18),
-            transparent 35%
+            circle at 50% 15%,
+            rgba(0,125,255,.17),
+            transparent 34%
         ),
         #050b16;
 }
 
 
-/* HEADER */
+/* =========================================================
+   HEADER
+========================================================= */
 
 .header{
     height:82px;
-    padding:0 18px;
+
+    padding:0 17px;
 
     display:flex;
     align-items:center;
     justify-content:space-between;
 
-    background:rgba(3,10,25,.97);
+    background:
+        rgba(3,10,25,.97);
 
-    border-bottom:1px solid #173251;
+    border-bottom:
+        1px solid #173451;
 
     position:sticky;
     top:0;
-    z-index:50;
+    z-index:100;
 }
 
 .logo{
     font-size:30px;
     font-weight:900;
+    letter-spacing:-1px;
 }
 
 .logo span{
-    color:#258fff;
+    color:#278fff;
 }
 
 .balance{
-    min-width:105px;
+    min-width:120px;
     height:52px;
 
-    padding:0 15px;
+    padding:0 13px;
 
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:7px;
+    gap:6px;
 
     border-radius:17px;
 
     background:#0b182d;
+
     border:1px solid #24476f;
 
-    font-size:20px;
+    font-size:19px;
     font-weight:900;
 }
 
 
-/* PAGES */
+/* =========================================================
+   PAGES
+========================================================= */
 
 .page{
     display:none;
-    padding:20px 16px;
+    padding:20px 15px;
 }
 
 .page.active{
     display:block;
 }
 
+.section-title{
+    margin:
+        20px
+        0
+        16px;
 
-/* HOME */
+    font-size:28px;
+    font-weight:900;
+}
+
+
+/* =========================================================
+   HOME
+========================================================= */
 
 .hero{
+    padding:
+        48px
+        5px
+        20px;
+
     text-align:center;
-    padding:50px 5px 20px;
 }
 
 .hero-drop{
     font-size:100px;
 
     filter:
-        drop-shadow(0 0 20px rgba(0,190,255,.8))
-        drop-shadow(0 0 50px rgba(0,90,255,.3));
+        drop-shadow(
+            0 0 20px
+            rgba(0,190,255,.75)
+        )
+        drop-shadow(
+            0 0 50px
+            rgba(0,80,255,.3)
+        );
 
-    animation:float 3s ease-in-out infinite;
+    animation:
+        floating 3s
+        ease-in-out
+        infinite;
 }
 
-@keyframes float{
+@keyframes floating{
 
-    0%,100%{
+    0%,
+    100%{
         transform:translateY(0);
     }
 
@@ -141,20 +194,31 @@ button{
 }
 
 .hero h1{
-    margin:12px 0 8px;
+    margin:
+        10px
+        0
+        8px;
+
     font-size:48px;
     font-weight:900;
 }
 
 .hero p{
-    margin:0 0 30px;
-    color:#8295b3;
+    margin:
+        0
+        0
+        28px;
+
+    color:#8194b2;
+
     font-size:18px;
 }
 
 .main-btn{
     width:100%;
     min-height:62px;
+
+    padding:0 18px;
 
     border-radius:20px;
 
@@ -166,137 +230,96 @@ button{
         );
 
     box-shadow:
-        0 10px 35px rgba(20,100,255,.3);
+        0 10px 35px
+        rgba(20,100,255,.3);
 
     font-size:19px;
     font-weight:900;
 
-    transition:.15s;
+    transition:
+        transform .12s,
+        opacity .2s;
 }
 
 .main-btn:active{
     transform:scale(.97);
 }
 
+.main-btn:disabled{
+    opacity:.45;
+}
 
-/* STATS */
+
+/* =========================================================
+   STATS
+========================================================= */
 
 .stats{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    margin:25px 0 30px;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:9px;
+
+    margin:
+        22px
+        0
+        30px;
 }
 
 .stat{
-    padding:17px 5px;
+    padding:
+        16px
+        4px;
+
     text-align:center;
 
     background:#091426;
 
-    border:1px solid #1d3b60;
-    border-radius:19px;
+    border:
+        1px
+        solid
+        #1d3b60;
+
+    border-radius:18px;
 }
 
 .stat strong{
     display:block;
-    font-size:21px;
+
+    font-size:20px;
 }
 
 .stat span{
     display:block;
+
     margin-top:5px;
-    color:#7488a6;
+
+    color:#7186a4;
+
     font-size:12px;
 }
 
 
-/* TITLES */
+/* =========================================================
+   CLICKER
+========================================================= */
 
-.section-title{
-    margin:25px 0 15px;
-    font-size:28px;
-    font-weight:900;
-}
-
-
-/* BOTTLES */
-
-.bottle-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:12px;
-}
-
-.bottle-card{
-    min-height:210px;
-    padding:18px 10px;
-
+.clicker{
     text-align:center;
-
-    background:#081528;
-
-    border:1px solid #1b3c67;
-    border-radius:21px;
-
-    position:relative;
-    overflow:hidden;
-}
-
-.bottle-card.current{
-    border-color:#24aaff;
-
-    box-shadow:
-        0 0 20px rgba(0,160,255,.18);
-}
-
-.bottle-icon{
-    font-size:65px;
-    margin:7px 0;
-
-    filter:
-        drop-shadow(
-            0 0 15px rgba(0,180,255,.45)
-        );
-}
-
-.bottle-liter{
-    font-size:22px;
-    font-weight:900;
-}
-
-.bottle-level{
-    margin-top:5px;
-    color:#7186a5;
-    font-size:13px;
-}
-
-.bottle-status{
-    margin-top:9px;
-    color:#20bdff;
-    font-size:12px;
-    font-weight:800;
-}
-
-
-/* CLICKER */
-
-.click-page{
-    text-align:center;
-}
-
-.clicker-info{
-    margin:20px 0;
 }
 
 .clicker-label{
-    color:#7187a7;
+    color:#7489a7;
     font-size:16px;
 }
 
-.clicker-liter{
+.clicker-value{
     display:block;
-    margin-top:5px;
+
+    margin-top:6px;
+
     font-size:38px;
     font-weight:900;
 }
@@ -305,7 +328,9 @@ button{
     width:245px;
     height:245px;
 
-    margin:35px auto;
+    margin:
+        38px
+        auto;
 
     border-radius:50%;
 
@@ -316,53 +341,261 @@ button{
     background:
         radial-gradient(
             circle,
-            #46dcff 0,
-            #078eff 42%,
-            #163dff 70%,
+            #48dcff 0%,
+            #088fff 42%,
+            #153fff 70%,
             #071329 71%
         );
 
-    border:8px solid rgba(70,190,255,.22);
+    border:
+        8px
+        solid
+        rgba(70,190,255,.22);
 
     box-shadow:
-        0 0 30px rgba(0,150,255,.5),
-        0 0 90px rgba(0,90,255,.2);
+        0 0 30px
+        rgba(0,150,255,.5),
+
+        0 0 90px
+        rgba(0,90,255,.2);
 
     font-size:82px;
 
     user-select:none;
 
-    transition:.07s;
+    transition:
+        transform .07s;
 }
 
 .tap-circle:active{
-    transform:scale(.91);
+    transform:scale(.9);
 }
 
-.tap-value{
-    color:#7e91af;
+.tap-reward{
+    color:#8397b4;
     font-size:17px;
 }
 
-.tap-value b{
-    color:#25c5ff;
+.tap-reward strong{
+    color:#22c5ff;
 }
 
-.anticheat{
+.protection{
     margin-top:18px;
+
     padding:11px;
 
     border-radius:14px;
 
     background:#071326;
-    border:1px solid #193454;
 
-    color:#647995;
+    border:
+        1px
+        solid
+        #193454;
+
+    color:#667b99;
+
     font-size:12px;
 }
 
 
-/* UPGRADE */
+/* =========================================================
+   SHOP
+========================================================= */
+
+.shop-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:12px;
+}
+
+.shop-card{
+    padding:17px 10px;
+
+    text-align:center;
+
+    background:#081528;
+
+    border:
+        1px
+        solid
+        #1c3d64;
+
+    border-radius:21px;
+
+    position:relative;
+}
+
+.shop-card.owned{
+    border-color:#209eff;
+
+    box-shadow:
+        0 0 20px
+        rgba(0,150,255,.13);
+}
+
+.shop-bottle{
+    font-size:62px;
+
+    margin:
+        5px
+        0
+        8px;
+
+    filter:
+        drop-shadow(
+            0 0 13px
+            rgba(0,180,255,.4)
+        );
+}
+
+.shop-liter{
+    font-size:21px;
+    font-weight:900;
+}
+
+.shop-level{
+    margin-top:4px;
+
+    color:#7287a4;
+
+    font-size:12px;
+}
+
+.shop-price{
+    margin:
+        12px
+        0
+        10px;
+
+    color:#24c5ff;
+
+    font-size:15px;
+    font-weight:900;
+}
+
+.shop-button{
+    width:100%;
+
+    min-height:42px;
+
+    border-radius:13px;
+
+    background:
+        linear-gradient(
+            110deg,
+            #087dff,
+            #345bff
+        );
+
+    font-weight:900;
+}
+
+.shop-button:disabled{
+    opacity:.4;
+}
+
+
+/* =========================================================
+   INVENTORY
+========================================================= */
+
+.inventory-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.inventory-item{
+    min-height:78px;
+
+    padding:
+        10px
+        13px;
+
+    display:flex;
+    align-items:center;
+
+    gap:13px;
+
+    background:#09172a;
+
+    border:
+        1px
+        solid
+        #1b3c62;
+
+    border-radius:18px;
+}
+
+.inventory-item.current{
+    border-color:#20aaff;
+
+    box-shadow:
+        0 0 15px
+        rgba(0,160,255,.1);
+}
+
+.inventory-icon{
+    width:55px;
+
+    text-align:center;
+
+    font-size:42px;
+}
+
+.inventory-name{
+    font-size:18px;
+    font-weight:900;
+}
+
+.inventory-info{
+    margin-top:4px;
+
+    color:#7085a3;
+
+    font-size:12px;
+}
+
+.inventory-select{
+    margin-left:auto;
+
+    padding:
+        9px
+        10px;
+
+    border-radius:11px;
+
+    background:#103662;
+
+    color:#29bfff;
+
+    font-size:12px;
+    font-weight:900;
+}
+
+.empty{
+    padding:50px 20px;
+
+    text-align:center;
+
+    color:#7185a2;
+}
+
+.empty-icon{
+    font-size:65px;
+
+    margin-bottom:15px;
+}
+
+
+/* =========================================================
+   UPGRADE
+========================================================= */
 
 .upgrade-page{
     text-align:center;
@@ -373,75 +606,119 @@ button{
 
     background:#09172a;
 
-    border:1px solid #1c416b;
+    border:
+        1px
+        solid
+        #1c416b;
+
     border-radius:20px;
 }
 
 .current-box small{
-    color:#7489a7;
+    color:#7589a7;
 }
 
 .current-liter{
-    margin-top:7px;
-    font-size:42px;
+    margin:
+        6px
+        0;
+
+    font-size:40px;
     font-weight:900;
 }
 
+.next-liter{
+    color:#22c5ff;
+    font-size:15px;
+    font-weight:800;
+}
 
-/* CHANCES */
+
+/* =========================================================
+   CHANCES
+========================================================= */
 
 .chance-title{
-    margin-top:22px;
-    margin-bottom:10px;
+    margin:
+        20px
+        0
+        10px;
 
-    color:#8da1bf;
+    color:#8398b5;
+
     font-size:15px;
 }
 
 .chances{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+
+    grid-template-columns:
+        repeat(3,1fr);
+
     gap:8px;
 }
 
 .chance{
-    padding:12px 5px;
+    min-height:48px;
 
     border-radius:14px;
 
     background:#09182c;
 
-    border:1px solid #203e61;
+    border:
+        1px
+        solid
+        #203e61;
 
     font-size:15px;
     font-weight:900;
 }
 
 .chance.selected{
-    background:#123d70;
-    border-color:#29aaff;
-    box-shadow:0 0 15px rgba(0,160,255,.2);
+    background:#124476;
+
+    border-color:#24b7ff;
+
+    box-shadow:
+        0 0 15px
+        rgba(0,160,255,.2);
 }
 
 
-/* WHEEL */
+/* =========================================================
+   UPGRADE WHEEL
+========================================================= */
 
-.wheel-container{
-    width:285px;
-    height:285px;
+.wheel-wrap{
+    width:300px;
+    height:300px;
 
-    margin:25px auto;
+    margin:
+        25px
+        auto
+        15px;
+
+    position:relative;
 
     display:flex;
     align-items:center;
     justify-content:center;
-
-    position:relative;
 }
 
+
+/*
+    Сам круг.
+
+    Важно:
+
+    JS будет каждый раз
+    генерировать новый угол
+    остановки.
+*/
+
 .wheel{
-    width:255px;
-    height:255px;
+    width:270px;
+    height:270px;
 
     border-radius:50%;
 
@@ -449,220 +726,190 @@ button{
 
     background:
         conic-gradient(
-            #19c5ff 0deg 63deg,
-            #0d1e37 63deg 90deg,
-            #ff3c6c 90deg 153deg,
-            #0d1e37 153deg 180deg,
-            #19c5ff 180deg 243deg,
-            #0d1e37 243deg 270deg,
-            #ff3c6c 270deg 333deg,
-            #0d1e37 333deg 360deg
+            #19c6ff 0deg 45deg,
+            #08182d 45deg 90deg,
+            #ff3d6c 90deg 135deg,
+            #08182d 135deg 180deg,
+            #19c6ff 180deg 225deg,
+            #08182d 225deg 270deg,
+            #ff3d6c 270deg 315deg,
+            #08182d 315deg 360deg
         );
 
-    border:5px solid #1d3b5e;
+    border:
+        6px
+        solid
+        #1e4167;
 
     box-shadow:
-        0 0 35px rgba(0,150,255,.35),
-        inset 0 0 35px rgba(0,0,0,.7);
+        0 0 35px
+        rgba(0,160,255,.35),
+
+        inset
+        0 0 35px
+        rgba(0,0,0,.7);
+
+    transform:
+        rotate(0deg);
 }
+
+
+/*
+    Внутренний круг
+*/
 
 .wheel:after{
     content:"";
 
     position:absolute;
 
-    inset:29px;
+    inset:31px;
 
     border-radius:50%;
 
     background:#061126;
 
-    border:2px solid #24486f;
+    border:
+        2px
+        solid
+        #24486e;
 }
 
 
-/* ARROW */
+/*
+    Центральная точка
+*/
+
+.wheel-center{
+    position:absolute;
+
+    z-index:20;
+
+    width:35px;
+    height:35px;
+
+    border-radius:50%;
+
+    background:#061126;
+
+    border:
+        6px
+        solid
+        white;
+
+    box-shadow:
+        0 0 15px
+        rgba(255,255,255,.7);
+}
+
+
+/*
+    Стрелка
+
+    Теперь вращается не CSS animation,
+    а JS transition.
+
+    Благодаря этому конечная
+    позиция каждый раз разная.
+*/
 
 .arrow{
     position:absolute;
 
-    z-index:5;
+    z-index:15;
 
     width:8px;
-    height:105px;
+    height:108px;
 
-    left:calc(50% - 4px);
-    top:22px;
+    left:
+        calc(50% - 4px);
 
-    background:white;
+    top:24px;
 
     border-radius:10px;
 
-    transform-origin:50% 100%;
+    background:white;
+
+    transform-origin:
+        50%
+        100%;
+
+    transform:
+        rotate(0deg);
 
     box-shadow:
         0 0 8px white,
-        0 0 20px #1cc6ff;
+        0 0 20px #20c6ff;
+
+    transition:none;
 }
 
-.arrow:before{
-    content:"";
-
+.arrow-dot{
     position:absolute;
+
+    width:25px;
+    height:25px;
 
     top:-11px;
     left:-8px;
 
-    width:24px;
-    height:24px;
-
     border-radius:50%;
 
     background:white;
 
-    box-shadow:0 0 15px #1cc6ff;
-}
-
-.arrow:after{
-    content:"";
-
-    position:absolute;
-
-    bottom:-12px;
-    left:-9px;
-
-    width:26px;
-    height:26px;
-
-    border-radius:50%;
-
-    background:#071426;
-
-    border:5px solid white;
-}
-
-.wheel.spinning .arrow{
-
-    animation:
-        spinArrow 3.7s
-        cubic-bezier(.08,.7,.15,1)
-        forwards;
-}
-
-@keyframes spinArrow{
-
-    0%{
-        transform:rotate(0deg);
-    }
-
-    15%{
-        transform:rotate(720deg);
-    }
-
-    35%{
-        transform:rotate(1350deg);
-    }
-
-    58%{
-        transform:rotate(1880deg);
-    }
-
-    78%{
-        transform:rotate(2150deg);
-    }
-
-    92%{
-        transform:rotate(2260deg);
-    }
-
-    100%{
-        transform:rotate(2310deg);
-    }
-
+    box-shadow:
+        0 0 15px #20c6ff;
 }
 
 
-/* RESULT */
+/* =========================================================
+   UPGRADE RESULT
+========================================================= */
 
 .result{
-    min-height:30px;
+    min-height:32px;
 
-    margin:10px 0 18px;
+    margin:
+        8px
+        0
+        17px;
 
-    font-size:20px;
+    font-size:21px;
     font-weight:900;
 }
 
 .result.success{
-    color:#1bc5ff;
+    color:#1ec7ff;
 }
 
 .result.fail{
-    color:#ff416e;
+    color:#ff426e;
 }
 
+.upgrade-cost{
+    margin-bottom:14px;
 
-/* INVENTORY */
+    color:#7e92af;
 
-.inventory-item{
-    display:flex;
-    align-items:center;
-
-    gap:15px;
-
-    padding:15px;
-
-    margin-bottom:10px;
-
-    background:#09172a;
-
-    border:1px solid #1b3c62;
-
-    border-radius:18px;
-}
-
-.inventory-item.current{
-    border-color:#25aaff;
-}
-
-.inventory-icon{
-    width:60px;
-    text-align:center;
-
-    font-size:43px;
-}
-
-.inventory-name{
-    font-size:19px;
-    font-weight:900;
-}
-
-.inventory-info{
-    margin-top:5px;
-    color:#7186a3;
     font-size:13px;
 }
 
-.inventory-current{
-    margin-left:auto;
 
-    color:#25c5ff;
-
-    font-size:12px;
-    font-weight:900;
-}
-
-
-/* PROFILE */
+/* =========================================================
+   PROFILE
+========================================================= */
 
 .profile-card{
-    padding:25px 20px;
+    padding:25px 18px;
 
     text-align:center;
 
     background:#09172a;
 
-    border:1px solid #1c3e67;
+    border:
+        1px
+        solid
+        #1c3e67;
 
     border-radius:23px;
 }
@@ -690,26 +937,32 @@ button{
 }
 
 .profile-name{
-    margin:15px 0 5px;
+    margin:
+        15px
+        0
+        5px;
 
     font-size:26px;
     font-weight:900;
 }
 
-.profile-id{
-    color:#70839f;
+.profile-level{
+    color:#7185a2;
 }
 
 .profile-stats{
     display:grid;
-    grid-template-columns:1fr 1fr;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
     gap:10px;
 
     margin-top:22px;
 }
 
 .profile-stat{
-    padding:16px;
+    padding:15px;
 
     background:#071124;
 
@@ -718,31 +971,36 @@ button{
 
 .profile-stat strong{
     display:block;
-    font-size:21px;
+
+    font-size:20px;
 }
 
 .profile-stat span{
     color:#71839f;
+
     font-size:12px;
 }
 
 
-/* FLOAT */
+/* =========================================================
+   FLOAT
+========================================================= */
 
 .float-text{
     position:fixed;
 
-    z-index:100;
+    z-index:500;
 
     pointer-events:none;
 
-    color:#27c9ff;
+    color:#27caff;
 
-    font-size:25px;
+    font-size:23px;
     font-weight:900;
 
     animation:
-        floatText .8s ease-out
+        floatText .8s
+        ease-out
         forwards;
 }
 
@@ -750,6 +1008,7 @@ button{
 
     0%{
         opacity:1;
+
         transform:
             translateY(0)
             scale(1);
@@ -757,71 +1016,82 @@ button{
 
     100%{
         opacity:0;
+
         transform:
-            translateY(-80px)
+            translateY(-75px)
             scale(1.2);
     }
 
 }
 
 
-/* WARNING */
+/* =========================================================
+   WARNING
+========================================================= */
 
 .warning{
     position:fixed;
 
+    z-index:600;
+
     left:50%;
-    bottom:105px;
+    bottom:100px;
 
-    transform:
-        translateX(-50%)
-        translateY(20px);
+    width:
+        calc(100% - 35px);
 
-    z-index:200;
-
-    width:calc(100% - 40px);
     max-width:450px;
 
-    padding:14px 18px;
+    padding:14px 17px;
+
+    transform:
+        translate(-50%,20px);
+
+    opacity:0;
+
+    pointer-events:none;
+
+    text-align:center;
 
     border-radius:16px;
 
     background:#101d34;
 
-    border:1px solid #ff416e;
+    border:
+        1px
+        solid
+        #ff416e;
 
-    color:#ff6688;
+    color:#ff6788;
 
-    text-align:center;
-
-    font-weight:800;
-
-    opacity:0;
-
-    pointer-events:none;
+    font-size:14px;
+    font-weight:900;
 
     transition:.2s;
 }
 
 .warning.show{
     opacity:1;
+
     transform:
-        translateX(-50%)
-        translateY(0);
+        translate(-50%,0);
 }
 
 
-/* NAV */
+/* =========================================================
+   NAVIGATION
+========================================================= */
 
 .bottom-nav{
     position:fixed;
 
-    z-index:150;
+    z-index:300;
 
     left:50%;
     bottom:0;
 
-    transform:translateX(-50%);
+    transform:
+        translateX(-50%);
 
     width:100%;
     max-width:520px;
@@ -829,42 +1099,52 @@ button{
     height:82px;
 
     display:grid;
-    grid-template-columns:repeat(4,1fr);
 
-    background:rgba(3,11,25,.98);
+    grid-template-columns:
+        repeat(5,1fr);
 
-    border-top:1px solid #17304f;
+    background:
+        rgba(3,11,25,.98);
 
-    backdrop-filter:blur(12px);
+    border-top:
+        1px
+        solid
+        #17304f;
+
+    backdrop-filter:
+        blur(12px);
 }
 
 .nav-btn{
     background:transparent;
 
-    color:#70839f;
+    color:#71839f;
 
     display:flex;
+
     flex-direction:column;
 
     align-items:center;
     justify-content:center;
 
-    gap:5px;
+    gap:4px;
 
-    font-size:12px;
-    font-weight:700;
+    font-size:11px;
+    font-weight:800;
 }
 
 .nav-icon{
-    font-size:24px;
+    font-size:23px;
 }
 
 .nav-btn.active{
-    color:#2998ff;
+    color:#299aff;
 }
 
 
-/* MOBILE */
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media(max-width:360px){
 
@@ -878,20 +1158,31 @@ button{
     }
 
     .wheel{
-        width:225px;
-        height:225px;
+        width:235px;
+        height:235px;
+    }
+
+    .wheel-wrap{
+        width:260px;
+        height:260px;
     }
 
 }
 
 </style>
+
 </head>
 
 
 <body>
 
+
 <div class="app">
 
+
+<!-- =======================================================
+     HEADER
+======================================================= -->
 
 <header class="header">
 
@@ -900,15 +1191,23 @@ button{
     </div>
 
     <div class="balance">
-        <span id="balance">0</span> 💧
+        <span id="balance">
+            0.0
+        </span>
+        💧
     </div>
 
 </header>
 
 
-<!-- HOME -->
+<!-- =======================================================
+     HOME
+======================================================= -->
 
-<section id="home" class="page active">
+<section
+    id="home"
+    class="page active"
+>
 
     <div class="hero">
 
@@ -916,10 +1215,12 @@ button{
             💧
         </div>
 
-        <h1>waterUP</h1>
+        <h1>
+            waterUP
+        </h1>
 
         <p>
-            Прокачивай свою воду на максимум!
+            Копи воду. Покупай бутылки. Улучшай их.
         </p>
 
         <button
@@ -935,57 +1236,84 @@ button{
     <div class="stats">
 
         <div class="stat">
-            <strong id="homeTap">1</strong>
-            <span>за клик</span>
+
+            <strong id="homeEarn">
+                0.0
+            </strong>
+
+            <span>
+                воды за клик
+            </span>
+
         </div>
 
-        <div class="stat">
-            <strong id="homeLiter">1 л</strong>
-            <span>бутылка</span>
-        </div>
 
         <div class="stat">
-            <strong id="homeClicks">0</strong>
-            <span>кликов</span>
+
+            <strong id="homeBottle">
+                0 л
+            </strong>
+
+            <span>
+                бутылка
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <strong id="homeClicks">
+                0
+            </strong>
+
+            <span>
+                кликов
+            </span>
+
         </div>
 
     </div>
 
 
     <div class="section-title">
-        🧴 Открытые бутылки
+        🧴 Твои бутылки
     </div>
 
+
     <div
-        class="bottle-grid"
-        id="bottleGrid"
+        class="inventory-list"
+        id="homeBottles"
     ></div>
 
 </section>
 
 
-<!-- CLICKER -->
+<!-- =======================================================
+     CLICKER
+======================================================= -->
 
-<section id="clicker" class="page click-page">
+<section
+    id="clicker"
+    class="page clicker"
+>
 
     <div class="section-title">
-        💧 Заработок воды
+        💧 Заработок
     </div>
 
-    <div class="clicker-info">
 
-        <div class="clicker-label">
-            Текущая бутылка
-        </div>
-
-        <strong
-            class="clicker-liter"
-            id="clickerLiter"
-        >
-            1 л
-        </strong>
-
+    <div class="clicker-label">
+        Текущая бутылка
     </div>
+
+
+    <strong
+        class="clicker-value"
+        id="clickerBottle"
+    >
+        1 л
+    </strong>
 
 
     <div
@@ -997,29 +1325,76 @@ button{
     </div>
 
 
-    <div class="tap-value">
+    <div class="tap-reward">
 
         Каждый клик:
 
-        <b>
-            +1 💧
-        </b>
+        <strong>
+            +0.1 💧
+        </strong>
 
     </div>
 
 
-    <div class="anticheat">
-
-        🛡️ Защита от автокликера активна
-
+    <div class="protection">
+        🛡️ Анти-автокликер активен
     </div>
 
 </section>
 
 
-<!-- UPGRADE -->
+<!-- =======================================================
+     SHOP
+======================================================= -->
 
-<section id="upgrade" class="page upgrade-page">
+<section
+    id="shop"
+    class="page"
+>
+
+    <div class="section-title">
+        🛒 Магазин бутылок
+    </div>
+
+
+    <div
+        class="shop-grid"
+        id="shopGrid"
+    ></div>
+
+</section>
+
+
+<!-- =======================================================
+     INVENTORY
+======================================================= -->
+
+<section
+    id="inventory"
+    class="page"
+>
+
+    <div class="section-title">
+        🎒 Инвентарь
+    </div>
+
+
+    <div
+        class="inventory-list"
+        id="inventoryList"
+    ></div>
+
+</section>
+
+
+<!-- =======================================================
+     UPGRADE
+======================================================= -->
+
+<section
+    id="upgrade"
+    class="page upgrade-page"
+>
 
     <div class="section-title">
         ⚡ Апгрейд
@@ -1034,23 +1409,27 @@ button{
 
         <div
             class="current-liter"
-            id="upgradeLiter"
+            id="upgradeCurrent"
         >
             1 л
         </div>
 
         <small>
-            Уровень
-            <span id="upgradeLevel">
-                1
-            </span>
+            Следующая:
         </small>
+
+        <div
+            class="next-liter"
+            id="upgradeNext"
+        >
+            5 л
+        </div>
 
     </div>
 
 
     <div class="chance-title">
-        🎯 Выбери шанс улучшения
+        🎯 Шанс улучшения
     </div>
 
 
@@ -1058,42 +1437,48 @@ button{
 
         <button
             class="chance"
-            onclick="setChance(10,this)"
+            data-chance="10"
+            onclick="setChance(10)"
         >
             10%
         </button>
 
         <button
             class="chance"
-            onclick="setChance(25,this)"
+            data-chance="25"
+            onclick="setChance(25)"
         >
             25%
         </button>
 
         <button
             class="chance selected"
-            onclick="setChance(35,this)"
+            data-chance="35"
+            onclick="setChance(35)"
         >
             35%
         </button>
 
         <button
             class="chance"
-            onclick="setChance(50,this)"
+            data-chance="50"
+            onclick="setChance(50)"
         >
             50%
         </button>
 
         <button
             class="chance"
-            onclick="setChance(75,this)"
+            data-chance="75"
+            onclick="setChance(75)"
         >
             75%
         </button>
 
         <button
             class="chance"
-            onclick="setChance(90,this)"
+            data-chance="90"
+            onclick="setChance(90)"
         >
             90%
         </button>
@@ -1101,7 +1486,7 @@ button{
     </div>
 
 
-    <div class="wheel-container">
+    <div class="wheel-wrap">
 
         <div
             class="wheel"
@@ -1111,7 +1496,13 @@ button{
             <div
                 class="arrow"
                 id="arrow"
-            ></div>
+            >
+
+                <div class="arrow-dot"></div>
+
+            </div>
+
+            <div class="wheel-center"></div>
 
         </div>
 
@@ -1119,8 +1510,16 @@ button{
 
 
     <div
+        class="upgrade-cost"
+        id="upgradeCost"
+    >
+        Стоимость улучшения: 0 💧
+    </div>
+
+
+    <div
         class="result"
-        id="result"
+        id="upgradeResult"
     >
         Готов к улучшению
     </div>
@@ -1137,22 +1536,14 @@ button{
 </section>
 
 
-<!-- INVENTORY -->
+<!-- =======================================================
+     PROFILE
+======================================================= -->
 
-<section id="inventory" class="page">
-
-    <div class="section-title">
-        🎒 Инвентарь
-    </div>
-
-    <div id="inventoryList"></div>
-
-</section>
-
-
-<!-- PROFILE -->
-
-<section id="profile" class="page">
+<section
+    id="profile"
+    class="page"
+>
 
     <div class="section-title">
         👤 Профиль
@@ -1169,10 +1560,10 @@ button{
             waterUP игрок
         </div>
 
-        <div class="profile-id">
-            Уровень:
+        <div class="profile-level">
+            Уровень бутылки:
             <span id="profileLevel">
-                1
+                0
             </span>
         </div>
 
@@ -1180,39 +1571,54 @@ button{
         <div class="profile-stats">
 
             <div class="profile-stat">
+
                 <strong id="profileBalance">
-                    0
+                    0.0
                 </strong>
+
                 <span>
                     воды
                 </span>
+
             </div>
 
+
             <div class="profile-stat">
+
                 <strong id="profileClicks">
                     0
                 </strong>
+
                 <span>
                     кликов
                 </span>
+
             </div>
 
+
             <div class="profile-stat">
+
                 <strong id="profileEarned">
-                    0
+                    0.0
                 </strong>
+
                 <span>
                     заработано
                 </span>
+
             </div>
 
+
             <div class="profile-stat">
-                <strong id="profileBottle">
-                    1 л
+
+                <strong id="profileOwned">
+                    0
                 </strong>
+
                 <span>
-                    бутылка
+                    бутылок
                 </span>
+
             </div>
 
         </div>
@@ -1222,7 +1628,9 @@ button{
 </section>
 
 
-<!-- WARNING -->
+<!-- =======================================================
+     WARNING
+======================================================= -->
 
 <div
     class="warning"
@@ -1230,17 +1638,40 @@ button{
 ></div>
 
 
-<!-- NAV -->
+<!-- =======================================================
+     NAV
+======================================================= -->
 
 <nav class="bottom-nav">
+
 
     <button
         class="nav-btn active"
         data-page="home"
         onclick="openPage('home')"
     >
-        <span class="nav-icon">⌂</span>
+
+        <span class="nav-icon">
+            ⌂
+        </span>
+
         Главная
+
+    </button>
+
+
+    <button
+        class="nav-btn"
+        data-page="shop"
+        onclick="openPage('shop')"
+    >
+
+        <span class="nav-icon">
+            🛒
+        </span>
+
+        Магазин
+
     </button>
 
 
@@ -1249,8 +1680,13 @@ button{
         data-page="inventory"
         onclick="openPage('inventory')"
     >
-        <span class="nav-icon">▣</span>
+
+        <span class="nav-icon">
+            ▣
+        </span>
+
         Инвентарь
+
     </button>
 
 
@@ -1259,8 +1695,13 @@ button{
         data-page="upgrade"
         onclick="openPage('upgrade')"
     >
-        <span class="nav-icon">↗</span>
+
+        <span class="nav-icon">
+            ↗
+        </span>
+
         Апгрейд
+
     </button>
 
 
@@ -1269,9 +1710,15 @@ button{
         data-page="profile"
         onclick="openPage('profile')"
     >
-        <span class="nav-icon">♙</span>
+
+        <span class="nav-icon">
+            ♙
+        </span>
+
         Профиль
+
     </button>
+
 
 </nav>
 
@@ -1281,179 +1728,431 @@ button{
 
 <script>
 
-
-/* ============================
-   STATE
-============================ */
-
-let balance =
-    Number(
-        localStorage.getItem("water_balance")
-        || 0
-    );
-
-let taps =
-    Number(
-        localStorage.getItem("water_taps")
-        || 0
-    );
-
-let earned =
-    Number(
-        localStorage.getItem("water_earned")
-        || 0
-    );
-
-let level =
-    Number(
-        localStorage.getItem("water_level")
-        || 1
-    );
-
-let chance =
-    Number(
-        localStorage.getItem("water_chance")
-        || 35
-    );
-
-let upgrading = false;
+/* =========================================================
+   WATERUP V2
+========================================================= */
 
 
-/* ============================
-   BOTTLE VOLUME
-============================ */
+/* =========================================================
+   ECONOMY
+========================================================= */
+
+const CLICK_REWARD = 0.1;
+
 
 /*
+    Базовые бутылки.
 
-    Бесконечная система уровней.
-
-    До 100 000 идут заранее
-    заданные значения.
-
-    После этого объём
-    автоматически увеличивается.
-
+    Цена — количество виртуальной воды,
+    которое нужно накопить кликами.
 */
 
-const startingVolumes = [
+const bottles = [
 
-    1,
-    5,
-    15,
-    19,
-    30,
-    50,
-    100,
-    250,
-    500,
-    1000,
-    2500,
-    5000,
-    10000,
-    25000,
-    50000,
-    100000
+    {
+        id:1,
+        liter:1,
+        price:100
+    },
+
+    {
+        id:2,
+        liter:5,
+        price:750
+    },
+
+    {
+        id:3,
+        liter:15,
+        price:3000
+    },
+
+    {
+        id:4,
+        liter:19,
+        price:7500
+    },
+
+    {
+        id:5,
+        liter:30,
+        price:20000
+    },
+
+    {
+        id:6,
+        liter:50,
+        price:50000
+    },
+
+    {
+        id:7,
+        liter:100,
+        price:150000
+    },
+
+    {
+        id:8,
+        liter:250,
+        price:400000
+    },
+
+    {
+        id:9,
+        liter:500,
+        price:1000000
+    },
+
+    {
+        id:10,
+        liter:1000,
+        price:2500000
+    },
+
+    {
+        id:11,
+        liter:2500,
+        price:7500000
+    },
+
+    {
+        id:12,
+        liter:5000,
+        price:20000000
+    },
+
+    {
+        id:13,
+        liter:10000,
+        price:60000000
+    },
+
+    {
+        id:14,
+        liter:25000,
+        price:180000000
+    },
+
+    {
+        id:15,
+        liter:50000,
+        price:500000000
+    },
+
+    {
+        id:16,
+        liter:100000,
+        price:1500000000
+    }
 
 ];
 
 
-function getVolume(lvl){
+/* =========================================================
+   STATE
+========================================================= */
 
-    if(
-        lvl <= startingVolumes.length
-    ){
+/*
+    V2 keys.
 
-        return startingVolumes[
-            lvl - 1
-        ];
+    Благодаря этому старый прогресс
+    из предыдущей версии не ломает
+    новую экономику.
+*/
 
-    }
-
-
-    let volume =
-        startingVolumes[
-            startingVolumes.length - 1
-        ];
-
-
-    for(
-        let i = startingVolumes.length;
-        i < lvl;
-        i++
-    ){
-
-        volume *= 2.5;
-
-    }
+let balance =
+    Number(
+        localStorage.getItem(
+            "waterup_v2_balance"
+        ) || 0
+    );
 
 
-    return Math.floor(volume);
-
-}
-
-
-/* ============================
-   FORMAT
-============================ */
-
-function formatNumber(number){
-
-    return new Intl.NumberFormat(
-        "ru-RU"
-    ).format(number);
-
-}
+let taps =
+    Number(
+        localStorage.getItem(
+            "waterup_v2_taps"
+        ) || 0
+    );
 
 
-/* ============================
+let earned =
+    Number(
+        localStorage.getItem(
+            "waterup_v2_earned"
+        ) || 0
+    );
+
+
+let owned =
+    JSON.parse(
+        localStorage.getItem(
+            "waterup_v2_owned"
+        ) || "[]"
+    );
+
+
+let currentBottle =
+    Number(
+        localStorage.getItem(
+            "waterup_v2_current"
+        ) || 0
+    );
+
+
+let chance =
+    Number(
+        localStorage.getItem(
+            "waterup_v2_chance"
+        ) || 35
+    );
+
+
+let upgrading = false;
+
+
+/* =========================================================
    SAVE
-============================ */
+========================================================= */
 
 function save(){
 
     localStorage.setItem(
-        "water_balance",
+        "waterup_v2_balance",
         balance
     );
 
     localStorage.setItem(
-        "water_taps",
+        "waterup_v2_taps",
         taps
     );
 
     localStorage.setItem(
-        "water_earned",
+        "waterup_v2_earned",
         earned
     );
 
     localStorage.setItem(
-        "water_level",
-        level
+        "waterup_v2_owned",
+        JSON.stringify(owned)
     );
 
     localStorage.setItem(
-        "water_chance",
+        "waterup_v2_current",
+        currentBottle
+    );
+
+    localStorage.setItem(
+        "waterup_v2_chance",
         chance
     );
 
 }
 
 
-/* ============================
+/* =========================================================
+   FORMAT
+========================================================= */
+
+function formatNumber(value){
+
+    if(value < 1000){
+
+        return Number(
+            value.toFixed(1)
+        ).toLocaleString(
+            "ru-RU"
+        );
+
+    }
+
+    return Math.floor(value)
+        .toLocaleString(
+            "ru-RU"
+        );
+
+}
+
+
+/* =========================================================
+   GET BOTTLE
+========================================================= */
+
+function getBottle(){
+
+    if(
+        currentBottle < 1
+    ){
+
+        return null;
+
+    }
+
+
+    if(
+        currentBottle <= bottles.length
+    ){
+
+        return bottles[
+            currentBottle - 1
+        ];
+
+    }
+
+
+    /*
+        Бесконечные бутылки.
+
+        После заранее заданных
+        уровней объём и цена
+        растут автоматически.
+    */
+
+    let last =
+        bottles[
+            bottles.length - 1
+        ];
+
+
+    let level =
+        bottles.length;
+
+
+    let liter =
+        last.liter;
+
+    let price =
+        last.price;
+
+
+    while(
+        level < currentBottle
+    ){
+
+        liter =
+            Math.floor(
+                liter * 2.5
+            );
+
+        price =
+            Math.floor(
+                price * 3.2
+            );
+
+        level++;
+
+    }
+
+
+    return {
+
+        id:currentBottle,
+
+        liter:liter,
+
+        price:price
+
+    };
+
+}
+
+
+/* =========================================================
+   GET BOTTLE BY LEVEL
+========================================================= */
+
+function getBottleByLevel(level){
+
+    if(
+        level <= bottles.length
+    ){
+
+        return bottles[
+            level - 1
+        ];
+
+    }
+
+
+    let liter =
+        bottles[
+            bottles.length - 1
+        ].liter;
+
+
+    let price =
+        bottles[
+            bottles.length - 1
+        ].price;
+
+
+    for(
+        let i = bottles.length + 1;
+        i <= level;
+        i++
+    ){
+
+        liter =
+            Math.floor(
+                liter * 2.5
+            );
+
+        price =
+            Math.floor(
+                price * 3.2
+            );
+
+    }
+
+
+    return {
+
+        id:level,
+
+        liter:liter,
+
+        price:price
+
+    };
+
+}
+
+
+/* =========================================================
+   CURRENT BOTTLE
+========================================================= */
+
+function current(){
+
+    if(
+        currentBottle <= 0
+    ){
+
+        return null;
+
+    }
+
+    return getBottleByLevel(
+        currentBottle
+    );
+
+}
+
+
+/* =========================================================
    NAVIGATION
-============================ */
+========================================================= */
 
 function openPage(id){
 
     document
         .querySelectorAll(".page")
-        .forEach(page=>{
-
-            page.classList.remove(
-                "active"
-            );
-
-        });
+        .forEach(
+            page =>
+                page.classList.remove(
+                    "active"
+                )
+        );
 
 
     const page =
@@ -1471,24 +2170,26 @@ function openPage(id){
 
     document
         .querySelectorAll(".nav-btn")
-        .forEach(button=>{
+        .forEach(
+            button => {
 
-            button.classList.remove(
-                "active"
-            );
-
-
-            if(
-                button.dataset.page === id
-            ){
-
-                button.classList.add(
+                button.classList.remove(
                     "active"
                 );
 
-            }
 
-        });
+                if(
+                    button.dataset.page === id
+                ){
+
+                    button.classList.add(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
 
 
     updateUI();
@@ -1502,18 +2203,24 @@ function openPage(id){
 }
 
 
-/* ============================
+/* =========================================================
    CLICK ANTI-CHEAT
-============================ */
+========================================================= */
 
 let clickTimes = [];
 
-let blockedUntil = 0;
-
-let lastClickTime = 0;
-
 let intervals = [];
 
+let lastClick =
+    0;
+
+let blockedUntil =
+    0;
+
+
+/*
+    Показываем предупреждение.
+*/
 
 function showWarning(text){
 
@@ -1523,23 +2230,32 @@ function showWarning(text){
         );
 
 
-    warning.textContent = text;
+    warning.textContent =
+        text;
+
 
     warning.classList.add(
         "show"
     );
 
 
-    setTimeout(()=>{
+    setTimeout(
+        () => {
 
-        warning.classList.remove(
-            "show"
-        );
+            warning.classList.remove(
+                "show"
+            );
 
-    },1800);
+        },
+        1800
+    );
 
 }
 
+
+/* =========================================================
+   TAP
+========================================================= */
 
 function tap(event){
 
@@ -1548,8 +2264,9 @@ function tap(event){
 
 
     /*
-        Если игрок временно
-        заблокирован.
+        Временная блокировка
+        после обнаружения
+        подозрительной скорости.
     */
 
     if(
@@ -1562,8 +2279,7 @@ function tap(event){
 
 
     /*
-        Удаляем старые клики
-        старше 2 секунд.
+        Удаляем старые события.
     */
 
     clickTimes =
@@ -1574,17 +2290,19 @@ function tap(event){
 
 
     /*
-        Сохраняем интервалы
-        между кликами.
+        Интервал между кликами.
     */
 
-    if(lastClickTime > 0){
+    if(lastClick > 0){
 
         intervals.push(
-            now - lastClickTime
+            now - lastClick
         );
 
-        if(intervals.length > 12){
+
+        if(
+            intervals.length > 12
+        ){
 
             intervals.shift();
 
@@ -1592,34 +2310,33 @@ function tap(event){
 
     }
 
-    lastClickTime = now;
 
-    clickTimes.push(now);
+    lastClick =
+        now;
+
+
+    clickTimes.push(
+        now
+    );
 
 
     /*
-        Защита от экстремальной
-        скорости.
+        Слишком высокая скорость.
 
-        Обычный человек не сможет
-        стабильно поддерживать
-        такую скорость пальцем.
+        16 кликов менее чем
+        за 700 мс — блок.
     */
 
     if(
         clickTimes.length >= 16
     ){
 
-        const first =
-            clickTimes[0];
-
-        const last =
+        const elapsed =
             clickTimes[
                 clickTimes.length - 1
-            ];
-
-        const elapsed =
-            last - first;
+            ]
+            -
+            clickTimes[0];
 
 
         if(
@@ -1629,11 +2346,14 @@ function tap(event){
             blockedUntil =
                 now + 3000;
 
+
             clickTimes = [];
 
+
             showWarning(
-                "🛡️ Слишком высокая скорость кликов"
+                "🛡️ Слишком высокая скорость"
             );
+
 
             return;
 
@@ -1643,8 +2363,8 @@ function tap(event){
 
 
     /*
-        Проверка на слишком
-        идеально одинаковые интервалы.
+        Слишком идеально одинаковые
+        интервалы при высокой скорости.
     */
 
     if(
@@ -1654,37 +2374,33 @@ function tap(event){
         const recent =
             intervals.slice(-10);
 
+
         const average =
             recent.reduce(
-                (a,b)=>a+b,
+                (a,b) => a + b,
                 0
-            ) / recent.length;
+            ) /
+            recent.length;
 
 
         const variance =
             recent.reduce(
-                (sum,value)=>
+                (sum,value) =>
                     sum +
                     Math.pow(
                         value - average,
                         2
                     ),
                 0
-            ) / recent.length;
+            ) /
+            recent.length;
 
 
         const deviation =
-            Math.sqrt(variance);
+            Math.sqrt(
+                variance
+            );
 
-
-        /*
-            Если интервалы почти
-            идеально одинаковые —
-            считаем это подозрительным.
-
-            Проверяем только при
-            высокой скорости.
-        */
 
         if(
             average < 130 &&
@@ -1694,11 +2410,14 @@ function tap(event){
             blockedUntil =
                 now + 2500;
 
+
             intervals = [];
+
 
             showWarning(
                 "🛡️ Подозрительная активность"
             );
+
 
             return;
 
@@ -1708,15 +2427,16 @@ function tap(event){
 
 
     /*
-        ГЛАВНОЕ:
+        ГЛАВНАЯ ЭКОНОМИКА:
 
-        каждый клик = ровно
-        +1 вода.
+        один клик = +0.1 воды.
     */
 
-    balance += 1;
+    balance +=
+        CLICK_REWARD;
 
-    earned += 1;
+    earned +=
+        CLICK_REWARD;
 
     taps++;
 
@@ -1727,7 +2447,7 @@ function tap(event){
 
 
     /*
-        Анимация +1.
+        +0.1 animation.
     */
 
     const text =
@@ -1735,16 +2455,19 @@ function tap(event){
             "div"
         );
 
+
     text.className =
         "float-text";
 
+
     text.textContent =
-        "+1 💧";
+        "+0.1 💧";
 
 
     const x =
         event.clientX ||
         window.innerWidth / 2;
+
 
     const y =
         event.clientY ||
@@ -1752,7 +2475,8 @@ function tap(event){
 
 
     text.style.left =
-        (x - 20) + "px";
+        (x - 25) + "px";
+
 
     text.style.top =
         (y - 25) + "px";
@@ -1763,215 +2487,147 @@ function tap(event){
     );
 
 
-    setTimeout(()=>{
-
-        text.remove();
-
-    },800);
-
-}
-
-
-/* ============================
-   CHANCE
-============================ */
-
-function setChance(
-    value,
-    element
-){
-
-    chance = value;
-
-    localStorage.setItem(
-        "water_chance",
-        chance
+    setTimeout(
+        () =>
+            text.remove(),
+        800
     );
 
-
-    document
-        .querySelectorAll(".chance")
-        .forEach(button=>{
-
-            button.classList.remove(
-                "selected"
-            );
-
-        });
-
-
-    element.classList.add(
-        "selected"
-    );
-
-
-    document.getElementById(
-        "result"
-    ).textContent =
-        "Шанс установлен: " +
-        chance + "%";
-
 }
 
 
-/* ============================
-   RESTORE CHANCE
-============================ */
+/* =========================================================
+   SHOP
+========================================================= */
 
-function restoreChance(){
+function buyBottle(level){
 
-    document
-        .querySelectorAll(".chance")
-        .forEach(button=>{
-
-            const value =
-                parseInt(
-                    button.textContent
-                );
+    const bottle =
+        getBottleByLevel(
+            level
+        );
 
 
-            if(value === chance){
+    /*
+        Уже куплена?
+    */
 
-                button.classList.add(
-                    "selected"
-                );
+    if(
+        owned.includes(level)
+    ){
 
-            }else{
-
-                button.classList.remove(
-                    "selected"
-                );
-
-            }
-
-        });
-
-}
-
-
-/* ============================
-   UPGRADE
-============================ */
-
-function upgrade(){
-
-    if(upgrading){
+        showWarning(
+            "🧴 Эта бутылка уже куплена"
+        );
 
         return;
 
     }
 
 
-    upgrading = true;
+    /*
+        Проверяем баланс.
+    */
 
+    if(
+        balance < bottle.price
+    ){
 
-    const wheel =
-        document.getElementById(
-            "wheel"
+        showWarning(
+            "💧 Недостаточно воды"
         );
 
-    const result =
-        document.getElementById(
-            "result"
-        );
+        return;
 
-    const button =
-        document.getElementById(
-            "upgradeButton"
-        );
+    }
 
 
-    button.disabled = true;
+    /*
+        Покупаем.
+    */
+
+    balance -=
+        bottle.price;
 
 
-    result.className =
-        "result";
-
-    result.textContent =
-        "⚡ УЛУЧШЕНИЕ...";
-
-
-    wheel.classList.remove(
-        "spinning"
+    owned.push(
+        level
     );
 
 
     /*
-        Перезапускаем animation.
+        Первая купленная бутылка
+        автоматически становится
+        текущей.
     */
 
-    void wheel.offsetWidth;
+    if(
+        currentBottle === 0
+    ){
+
+        currentBottle =
+            level;
+
+    }
 
 
-    wheel.classList.add(
-        "spinning"
+    owned.sort(
+        (a,b) => a - b
     );
 
 
-    /*
-        Результат после
-        завершения вращения.
-    */
+    save();
 
-    setTimeout(()=>{
-
-        const random =
-            Math.random() * 100;
+    updateUI();
 
 
-        if(
-            random < chance
-        ){
-
-            level++;
-
-            save();
-
-
-            result.className =
-                "result success";
-
-            result.textContent =
-                "🎉 УСПЕХ! → " +
-                formatNumber(
-                    getVolume(level)
-                ) +
-                " л";
-
-
-        }else{
-
-            result.className =
-                "result fail";
-
-            result.textContent =
-                "💥 НЕУДАЧА";
-
-        }
-
-
-        upgrading = false;
-
-        button.disabled = false;
-
-
-        updateUI();
-
-
-    },3800);
+    showWarning(
+        "🎉 Бутылка куплена!"
+    );
 
 }
 
 
-/* ============================
-   BOTTLE GRID
-============================ */
+/* =========================================================
+   SELECT BOTTLE
+========================================================= */
 
-function renderBottles(){
+function selectBottle(level){
+
+    if(
+        !owned.includes(level)
+    ){
+
+        return;
+
+    }
+
+
+    currentBottle =
+        level;
+
+
+    save();
+
+    updateUI();
+
+
+    showWarning(
+        "🧴 Бутылка выбрана"
+    );
+
+}
+
+
+/* =========================================================
+   SHOP RENDER
+========================================================= */
+
+function renderShop(){
 
     const grid =
         document.getElementById(
-            "bottleGrid"
+            "shopGrid"
         );
 
 
@@ -1979,26 +2635,32 @@ function renderBottles(){
 
 
     /*
-        Показываем открытые
-        бутылки + несколько
-        следующих заблокированных.
+        Показываем первые 16 уровней
+        + следующие несколько
+        относительно текущего прогресса.
     */
 
-    const end =
-        Math.min(
-            level + 4,
-            level + 4
+    const maxLevel =
+        Math.max(
+            16,
+            currentBottle + 4
         );
 
 
     for(
-        let i = 1;
-        i <= end;
-        i++
+        let level = 1;
+        level <= maxLevel;
+        level++
     ){
 
-        const unlocked =
-            i <= level;
+        const bottle =
+            getBottleByLevel(
+                level
+            );
+
+
+        const isOwned =
+            owned.includes(level);
 
 
         const card =
@@ -2008,43 +2670,70 @@ function renderBottles(){
 
 
         card.className =
-            "bottle-card" +
+            "shop-card" +
             (
-                i === level
-                ? " current"
+                isOwned
+                ? " owned"
                 : ""
             );
 
 
-        const volume =
-            getVolume(i);
-
-
         card.innerHTML = `
 
-            <div class="bottle-icon">
+            <div class="shop-bottle">
                 🧴
             </div>
 
-            <div class="bottle-liter">
-                ${formatNumber(volume)} л
+            <div class="shop-liter">
+                ${formatNumber(
+                    bottle.liter
+                )} л
             </div>
 
-            <div class="bottle-level">
-                Уровень ${i}
+            <div class="shop-level">
+                Уровень ${level}
             </div>
 
-            <div class="bottle-status">
-                ${
-                    unlocked
-                    ? (
-                        i === level
-                        ? "💧 ТЕКУЩАЯ"
-                        : "✓ ОТКРЫТА"
-                    )
-                    : "🔒 ЗАБЛОКИРОВАНО"
-                }
+            <div class="shop-price">
+                💧 ${formatNumber(
+                    bottle.price
+                )}
             </div>
+
+            ${
+                isOwned
+
+                ?
+
+                `
+                <button
+                    class="shop-button"
+                    onclick="
+                        selectBottle(${level})
+                    "
+                >
+                    ✓ КУПЛЕНО
+                </button>
+                `
+
+                :
+
+                `
+                <button
+                    class="shop-button"
+                    ${
+                        balance < bottle.price
+                        ? "disabled"
+                        : ""
+                    }
+                    onclick="
+                        buyBottle(${level})
+                    "
+                >
+                    КУПИТЬ
+                </button>
+                `
+            }
 
         `;
 
@@ -2058,9 +2747,9 @@ function renderBottles(){
 }
 
 
-/* ============================
+/* =========================================================
    INVENTORY
-============================ */
+========================================================= */
 
 function renderInventory(){
 
@@ -2070,180 +2759,870 @@ function renderInventory(){
         );
 
 
+    const home =
+        document.getElementById(
+            "homeBottles"
+        );
+
+
     list.innerHTML = "";
 
 
-    /*
-        Все открытые бутылки.
-    */
+    home.innerHTML = "";
 
-    for(
-        let i = 1;
-        i <= level;
-        i++
+
+    if(
+        owned.length === 0
     ){
 
-        const item =
-            document.createElement(
-                "div"
-            );
+        const emptyHTML = `
 
+            <div class="empty">
 
-        item.className =
-            "inventory-item" +
-            (
-                i === level
-                ? " current"
-                : ""
-            );
-
-
-        item.innerHTML = `
-
-            <div class="inventory-icon">
-                🧴
-            </div>
-
-            <div>
-
-                <div class="inventory-name">
-                    ${formatNumber(
-                        getVolume(i)
-                    )} л
+                <div class="empty-icon">
+                    🧴
                 </div>
 
-                <div class="inventory-info">
-                    Бутылка уровня ${i}
-                </div>
+                У тебя пока нет бутылок.
+
+                <br><br>
+
+                Заработай воду и
+                купи первую бутылку
+                в магазине.
 
             </div>
-
-            ${
-                i === level
-                ?
-                `
-                <div class="inventory-current">
-                    ТЕКУЩАЯ
-                </div>
-                `
-                :
-                ""
-            }
 
         `;
 
 
-        list.appendChild(
-            item
-        );
+        list.innerHTML =
+            emptyHTML;
+
+
+        home.innerHTML =
+            emptyHTML;
+
+
+        return;
 
     }
+
+
+    owned.forEach(
+        level => {
+
+            const bottle =
+                getBottleByLevel(
+                    level
+                );
+
+
+            const isCurrent =
+                level === currentBottle;
+
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "inventory-item" +
+                (
+                    isCurrent
+                    ? " current"
+                    : ""
+                );
+
+
+            item.innerHTML = `
+
+                <div class="inventory-icon">
+                    🧴
+                </div>
+
+                <div>
+
+                    <div class="inventory-name">
+
+                        ${formatNumber(
+                            bottle.liter
+                        )} л
+
+                    </div>
+
+                    <div class="inventory-info">
+
+                        Уровень ${level}
+
+                    </div>
+
+                </div>
+
+                ${
+                    isCurrent
+
+                    ?
+
+                    `
+                    <div
+                        class="inventory-select"
+                    >
+                        ТЕКУЩАЯ
+                    </div>
+                    `
+
+                    :
+
+                    `
+                    <button
+                        class="inventory-select"
+                        onclick="
+                            selectBottle(${level})
+                        "
+                    >
+                        ВЫБРАТЬ
+                    </button>
+                    `
+                }
+
+            `;
+
+
+            list.appendChild(
+                item
+            );
+
+
+            /*
+                Копия для главной.
+            */
+
+            const homeItem =
+                item.cloneNode(
+                    true
+                );
+
+
+            home.appendChild(
+                homeItem
+            );
+
+        }
+    );
 
 }
 
 
-/* ============================
+/* =========================================================
+   CHANCE
+========================================================= */
+
+function setChance(value){
+
+    if(
+        upgrading
+    ){
+
+        return;
+
+    }
+
+
+    chance =
+        value;
+
+
+    save();
+
+
+    document
+        .querySelectorAll(".chance")
+        .forEach(
+            button => {
+
+                button.classList.toggle(
+                    "selected",
+                    Number(
+                        button.dataset.chance
+                    ) === chance
+                );
+
+            }
+        );
+
+
+    document.getElementById(
+        "upgradeResult"
+    ).textContent =
+        "Шанс установлен: " +
+        chance +
+        "%";
+
+}
+
+
+/* =========================================================
+   UPGRADE COST
+========================================================= */
+
+function getUpgradeCost(){
+
+    /*
+        Улучшение тоже требует
+        виртуальную воду.
+
+        Цена зависит от следующей
+        бутылки.
+    */
+
+    const next =
+        getBottleByLevel(
+            currentBottle + 1
+        );
+
+
+    if(!next){
+
+        return 0;
+
+    }
+
+
+    return Math.floor(
+        next.price * 0.18
+    );
+
+}
+
+
+/* =========================================================
+   RANDOM UPGRADE ANGLE
+========================================================= */
+
+function getSuccessAngle(){
+
+    /*
+        Сектор успеха занимает
+        "chance" процентов круга.
+
+        Выбираем случайную точку
+        внутри него.
+
+        Это нужно именно для того,
+        чтобы стрелка реально
+        останавливалась в разных
+        местах.
+    */
+
+
+    const successSize =
+        chance * 3.6;
+
+
+    /*
+        Успешная зона начинается
+        с 0 градусов.
+
+        Добавляем небольшой запас,
+        чтобы стрелка не стояла
+        прямо на границе.
+    */
+
+    const margin =
+        Math.min(
+            4,
+            successSize / 5
+        );
+
+
+    const min =
+        margin;
+
+
+    const max =
+        Math.max(
+            margin,
+            successSize - margin
+        );
+
+
+    return (
+        min +
+        Math.random() *
+        (max - min)
+    );
+
+}
+
+
+/* =========================================================
+   RANDOM FAIL ANGLE
+========================================================= */
+
+function getFailAngle(){
+
+    /*
+        Выбираем случайный угол
+        за пределами зоны успеха.
+    */
+
+    const successSize =
+        chance * 3.6;
+
+
+    let angle;
+
+
+    do{
+
+        angle =
+            Math.random() * 360;
+
+    }while(
+        angle <= successSize
+    );
+
+
+    return angle;
+
+}
+
+
+/* =========================================================
+   ROTATE ARROW
+========================================================= */
+
+function rotateArrow(){
+
+    return new Promise(
+        resolve => {
+
+            const arrow =
+                document.getElementById(
+                    "arrow"
+                );
+
+
+            const wheel =
+                document.getElementById(
+                    "wheel"
+                );
+
+
+            /*
+                35% шанс:
+
+                либо выбираем точку
+                в синей зоне,
+
+                либо случайную точку
+                в красной/нейтральной зоне.
+            */
+
+            const success =
+                Math.random() * 100
+                <
+                chance;
+
+
+            let finalAngle;
+
+
+            if(success){
+
+                finalAngle =
+                    getSuccessAngle();
+
+            }else{
+
+                finalAngle =
+                    getFailAngle();
+
+            }
+
+
+            /*
+                От 5 до 8 полных
+                оборотов.
+
+                Плюс случайное
+                количество градусов.
+
+                Поэтому каждый запуск
+                визуально отличается.
+            */
+
+            const fullTurns =
+                5 +
+                Math.floor(
+                    Math.random() * 4
+                );
+
+
+            const extra =
+                fullTurns * 360;
+
+
+            /*
+                У стрелки 0 градусов
+                находится сверху.
+
+                Добавляем случайный
+                конечный угол.
+            */
+
+            const target =
+                extra +
+                finalAngle;
+
+
+            /*
+                Очень важный момент:
+
+                НЕ используем CSS animation.
+
+                Используем transition
+                с реальным случайным
+                target.
+
+                Поэтому она не будет
+                останавливаться всегда
+                в одной точке.
+            */
+
+            arrow.style.transition =
+                "transform 3.6s cubic-bezier(.08,.72,.16,1)";
+
+
+            requestAnimationFrame(
+                () => {
+
+                    arrow.style.transform =
+                        "rotate(" +
+                        target +
+                        "deg)";
+
+                }
+            );
+
+
+            setTimeout(
+                () => {
+
+                    resolve(
+                        success
+                    );
+
+                },
+                3700
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   UPGRADE
+========================================================= */
+
+async function upgrade(){
+
+    if(
+        upgrading
+    ){
+
+        return;
+
+    }
+
+
+    /*
+        Нужна хотя бы одна бутылка.
+    */
+
+    if(
+        currentBottle <= 0
+    ){
+
+        showWarning(
+            "🧴 Сначала купи бутылку"
+        );
+
+        openPage("shop");
+
+        return;
+
+    }
+
+
+    const cost =
+        getUpgradeCost();
+
+
+    /*
+        Проверяем воду.
+    */
+
+    if(
+        balance < cost
+    ){
+
+        showWarning(
+            "💧 Недостаточно воды для апгрейда"
+        );
+
+        return;
+
+    }
+
+
+    upgrading =
+        true;
+
+
+    const button =
+        document.getElementById(
+            "upgradeButton"
+        );
+
+
+    const result =
+        document.getElementById(
+            "upgradeResult"
+        );
+
+
+    /*
+        Сначала списываем
+        стоимость.
+    */
+
+    balance -=
+        cost;
+
+
+    save();
+
+    updateUI();
+
+
+    button.disabled =
+        true;
+
+
+    result.className =
+        "result";
+
+
+    result.textContent =
+        "⚡ СТРЕЛКА КРУТИТСЯ...";
+
+
+    /*
+        Запускаем реальное
+        случайное вращение.
+    */
+
+    const success =
+        await rotateArrow();
+
+
+    /*
+        После остановки
+        выдаём результат.
+    */
+
+    if(success){
+
+        const nextLevel =
+            currentBottle + 1;
+
+
+        /*
+            Если следующая бутылка
+            ещё не куплена —
+            добавляем её
+            автоматически.
+        */
+
+        if(
+            !owned.includes(
+                nextLevel
+            )
+        ){
+
+            owned.push(
+                nextLevel
+            );
+
+        }
+
+
+        currentBottle =
+            nextLevel;
+
+
+        owned.sort(
+            (a,b) => a - b
+        );
+
+
+        save();
+
+
+        const bottle =
+            getBottleByLevel(
+                currentBottle
+            );
+
+
+        result.className =
+            "result success";
+
+
+        result.textContent =
+            "🎉 УСПЕХ! → " +
+            formatNumber(
+                bottle.liter
+            ) +
+            " л";
+
+
+    }else{
+
+        result.className =
+            "result fail";
+
+
+        result.textContent =
+            "💥 НЕУДАЧА";
+
+    }
+
+
+    upgrading =
+        false;
+
+
+    button.disabled =
+        false;
+
+
+    updateUI();
+
+}
+
+
+/* =========================================================
    UI
-============================ */
+========================================================= */
 
 function updateUI(){
 
-    const currentVolume =
-        getVolume(level);
-
+    /*
+        HEADER
+    */
 
     document.getElementById(
         "balance"
     ).textContent =
-        formatNumber(balance);
-
-
-    document.getElementById(
-        "homeTap"
-    ).textContent =
-        "1";
-
-
-    document.getElementById(
-        "homeLiter"
-    ).textContent =
         formatNumber(
-            currentVolume
-        ) + " л";
+            balance
+        );
+
+
+    /*
+        CURRENT
+    */
+
+    const bottle =
+        current();
+
+
+    if(bottle){
+
+        document.getElementById(
+            "homeBottle"
+        ).textContent =
+            formatNumber(
+                bottle.liter
+            ) +
+            " л";
+
+
+        document.getElementById(
+            "clickerBottle"
+        ).textContent =
+            formatNumber(
+                bottle.liter
+            ) +
+            " л";
+
+
+        document.getElementById(
+            "upgradeCurrent"
+        ).textContent =
+            formatNumber(
+                bottle.liter
+            ) +
+            " л";
+
+
+        const next =
+            getBottleByLevel(
+                currentBottle + 1
+            );
+
+
+        document.getElementById(
+            "upgradeNext"
+        ).textContent =
+            formatNumber(
+                next.liter
+            ) +
+            " л";
+
+
+        document.getElementById(
+            "upgradeCost"
+        ).textContent =
+            "Стоимость улучшения: " +
+            formatNumber(
+                getUpgradeCost()
+            ) +
+            " 💧";
+
+    }else{
+
+        document.getElementById(
+            "homeBottle"
+        ).textContent =
+            "Нет";
+
+
+        document.getElementById(
+            "clickerBottle"
+        ).textContent =
+            "Нет бутылки";
+
+
+        document.getElementById(
+            "upgradeCurrent"
+        ).textContent =
+            "Нет бутылки";
+
+
+        document.getElementById(
+            "upgradeNext"
+        ).textContent =
+            "1 л";
+
+
+        document.getElementById(
+            "upgradeCost"
+        ).textContent =
+            "Сначала купи бутылку";
+
+    }
+
+
+    /*
+        STATS
+    */
+
+    document.getElementById(
+        "homeEarn"
+    ).textContent =
+        "0.1";
 
 
     document.getElementById(
         "homeClicks"
     ).textContent =
-        formatNumber(taps);
-
-
-    document.getElementById(
-        "clickerLiter"
-    ).textContent =
         formatNumber(
-            currentVolume
-        ) + " л";
+            taps
+        );
 
 
-    document.getElementById(
-        "upgradeLiter"
-    ).textContent =
-        formatNumber(
-            currentVolume
-        ) + " л";
-
-
-    document.getElementById(
-        "upgradeLevel"
-    ).textContent =
-        level;
-
+    /*
+        PROFILE
+    */
 
     document.getElementById(
         "profileLevel"
     ).textContent =
-        level;
+        currentBottle;
 
 
     document.getElementById(
         "profileBalance"
     ).textContent =
-        formatNumber(balance);
+        formatNumber(
+            balance
+        );
 
 
     document.getElementById(
         "profileClicks"
     ).textContent =
-        formatNumber(taps);
+        formatNumber(
+            taps
+        );
 
 
     document.getElementById(
         "profileEarned"
     ).textContent =
-        formatNumber(earned);
+        formatNumber(
+            earned
+        );
 
 
     document.getElementById(
-        "profileBottle"
+        "profileOwned"
     ).textContent =
-        formatNumber(
-            currentVolume
-        ) + " л";
+        owned.length;
 
 
-    renderBottles();
+    /*
+        RESTORE CHANCE
+    */
+
+    document
+        .querySelectorAll(".chance")
+        .forEach(
+            button => {
+
+                button.classList.toggle(
+                    "selected",
+                    Number(
+                        button.dataset.chance
+                    ) === chance
+                );
+
+            }
+        );
+
+
+    /*
+        RENDER
+    */
+
+    renderShop();
 
     renderInventory();
-
-    restoreChance();
 
 }
 
 
-/* ============================
-   START
-============================ */
+/* =========================================================
+   INITIALIZATION
+========================================================= */
 
 updateUI();
 
