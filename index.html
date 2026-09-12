@@ -2,237 +2,593 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>waterUP</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    background:#030814;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+    min-height:100%;
+}
+
 body{
- margin:0;
- background:#050b16;
- color:white;
- font-family:Arial,sans-serif;
+    overflow-x:hidden;
 }
-.app{
- max-width:480px;
- margin:auto;
- min-height:100vh;
- padding-bottom:85px;
- background:
- radial-gradient(circle at 50% 0%,#123b70,transparent 40%),
- #050b16;
-}
-header{
- height:65px;
- display:flex;
- align-items:center;
- justify-content:space-between;
- padding:12px 16px;
- background:#07101e;
-}
-.logo{
- font-size:23px;
- font-weight:900;
-}
-.logo span{color:#2588ff}
-.balance{
- background:#101d31;
- border:1px solid #214064;
- padding:9px 12px;
- border-radius:12px;
- font-weight:bold;
-}
-.page{padding:18px 16px}
-.hero{
- text-align:center;
- padding:30px 5px 10px;
-}
-.drop{
- font-size:80px;
- filter:drop-shadow(0 0 25px #1688ff);
-}
-h1{
- font-size:38px;
- margin:5px 0;
-}
-.sub{
- color:#8ca1bd;
- font-size:14px;
-}
+
 button{
- border:0;
- color:white;
- font-weight:bold;
+    font-family:inherit;
+    border:0;
+    color:white;
+    cursor:pointer;
 }
-.main{
- width:100%;
- padding:16px;
- margin-top:20px;
- border-radius:15px;
- background:linear-gradient(135deg,#147cff,#465cff);
- font-size:16px;
- box-shadow:0 8px 25px #147cff55;
+
+.app{
+    max-width:520px;
+    margin:auto;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 50% 25%,rgba(0,130,255,.18),transparent 35%),
+        #050b16;
+    padding-bottom:95px;
 }
+
+/* HEADER */
+
+.header{
+    height:82px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 18px;
+    background:rgba(3,10,25,.96);
+    border-bottom:1px solid rgba(70,150,255,.15);
+    position:sticky;
+    top:0;
+    z-index:20;
+}
+
+.logo{
+    font-size:31px;
+    font-weight:900;
+    letter-spacing:-1px;
+}
+
+.logo span{
+    color:#278cff;
+}
+
+.balance{
+    min-width:105px;
+    height:52px;
+    padding:0 14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    border-radius:17px;
+    background:#0b182d;
+    border:1px solid #21436d;
+    font-size:20px;
+    font-weight:800;
+}
+
+/* PAGES */
+
+.page{
+    display:none;
+    padding:20px 16px;
+}
+
+.page.active{
+    display:block;
+}
+
+/* HOME */
+
+.hero{
+    text-align:center;
+    padding:55px 5px 25px;
+}
+
+.hero-drop{
+    font-size:105px;
+    filter:
+        drop-shadow(0 0 20px rgba(0,180,255,.8))
+        drop-shadow(0 0 45px rgba(0,100,255,.35));
+    animation:float 2.8s ease-in-out infinite;
+}
+
+@keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-12px)}
+}
+
+.hero h1{
+    margin:15px 0 8px;
+    font-size:48px;
+    font-weight:900;
+}
+
+.hero p{
+    margin:0 0 32px;
+    color:#8497b5;
+    font-size:19px;
+}
+
+.main-btn{
+    width:100%;
+    min-height:62px;
+    border-radius:20px;
+    background:linear-gradient(110deg,#087dff,#4357ff);
+    box-shadow:0 10px 35px rgba(25,100,255,.3);
+    font-size:20px;
+    font-weight:900;
+    transition:.15s;
+}
+
+.main-btn:active{
+    transform:scale(.97);
+}
+
 .stats{
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:8px;
- margin-top:18px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin:25px 0 30px;
 }
+
 .stat{
- background:#0b1627;
- border:1px solid #1a3150;
- border-radius:13px;
- padding:12px 5px;
- text-align:center;
+    padding:18px 5px;
+    text-align:center;
+    background:#091426;
+    border:1px solid #1d3a60;
+    border-radius:19px;
 }
-.stat b{
- display:block;
- font-size:17px;
+
+.stat strong{
+    display:block;
+    font-size:22px;
 }
-.stat small{color:#7187a5}
-.title{
- font-size:20px;
- font-weight:bold;
- margin:22px 0 12px;
+
+.stat span{
+    display:block;
+    margin-top:6px;
+    color:#7c8da9;
+    font-size:13px;
 }
-.grid{
- display:grid;
- grid-template-columns:1fr 1fr;
- gap:10px;
+
+/* SECTIONS */
+
+.section-title{
+    margin:25px 0 15px;
+    font-size:27px;
+    font-weight:900;
 }
-.card{
- background:#0b1728;
- border:1px solid #1b385c;
- border-radius:15px;
- padding:14px;
- text-align:center;
+
+/* BOTTLES */
+
+.bottle-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
 }
-.bottle{
- height:100px;
- display:flex;
- align-items:center;
- justify-content:center;
- font-size:65px;
+
+.bottle-card{
+    min-height:205px;
+    padding:18px 10px;
+    text-align:center;
+    background:#081528;
+    border:1px solid #1b3c67;
+    border-radius:21px;
+    position:relative;
+    overflow:hidden;
 }
-.card h3{margin:5px 0}
-.price{
- color:#45a0ff;
- font-weight:bold;
+
+.bottle-card.locked{
+    opacity:.38;
 }
-.clicker{
- background:#0b1a2d;
- border:1px solid #20466e;
- border-radius:20px;
- padding:20px;
- text-align:center;
+
+.bottle-icon{
+    font-size:67px;
+    margin:8px 0;
+    filter:drop-shadow(0 0 15px rgba(0,180,255,.45));
 }
-.clickBottle{
- width:190px;
- height:190px;
- border-radius:50%;
- margin:25px auto;
- display:flex;
- align-items:center;
- justify-content:center;
- font-size:90px;
- background:radial-gradient(circle,#45a9ff,#0961c8);
- box-shadow:0 0 50px #1585ff66;
- user-select:none;
- transition:.08s;
+
+.bottle-liter{
+    font-size:23px;
+    font-weight:900;
 }
-.clickBottle:active{
- transform:scale(.9);
+
+.bottle-tap{
+    margin-top:5px;
+    color:#7690b6;
+    font-size:14px;
 }
-.big{
- font-size:26px;
- font-weight:bold;
+
+/* CLICKER */
+
+.click-page{
+    text-align:center;
 }
-.row{
- display:flex;
- justify-content:space-between;
- margin:15px 0;
- color:#91a7c3;
+
+.clicker-info{
+    margin:20px 0;
 }
-.upgrade{
- background:#0b1728;
- border:1px solid #1b385c;
- border-radius:18px;
- padding:18px;
- text-align:center;
+
+.current-liter{
+    color:#7890b4;
+    font-size:17px;
 }
-.odds{
- width:150px;
- height:150px;
- border-radius:50%;
- margin:20px auto;
- display:flex;
- align-items:center;
- justify-content:center;
- background:conic-gradient(#328dff 0 35%,#18273d 35%);
- position:relative;
+
+.current-liter strong{
+    display:block;
+    color:white;
+    font-size:38px;
+    margin-top:5px;
 }
-.odds:after{
- content:"";
- position:absolute;
- inset:12px;
- border-radius:50%;
- background:#081321;
+
+.tap-circle{
+    width:245px;
+    height:245px;
+    margin:35px auto;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+        radial-gradient(circle,#38d5ff 0,#078eff 42%,#123dff 70%,#071329 71%);
+    border:8px solid rgba(75,190,255,.22);
+    box-shadow:
+        0 0 30px rgba(0,150,255,.5),
+        0 0 90px rgba(0,90,255,.2);
+    font-size:80px;
+    user-select:none;
+    transition:.08s;
 }
-.oddsText{
- position:relative;
- z-index:1;
- font-size:27px;
- font-weight:bold;
+
+.tap-circle:active{
+    transform:scale(.91);
 }
-.vs{
- display:grid;
- grid-template-columns:1fr 35px 1fr;
- gap:8px;
- align-items:center;
+
+.tap-value{
+    font-size:19px;
+    color:#8195b6;
 }
-.item{
- background:#0d1d31;
- border:1px solid #28598e;
- border-radius:13px;
- padding:10px;
+
+.tap-value b{
+    color:#24bfff;
 }
-.arrow{
- font-size:25px;
- color:#4a9cff;
+
+/* UPGRADE */
+
+.upgrade-page{
+    text-align:center;
 }
-.bottom{
- position:fixed;
- bottom:0;
- left:50%;
- transform:translateX(-50%);
- width:min(480px,100%);
- height:72px;
- background:#07101e;
- border-top:1px solid #19304d;
- display:grid;
- grid-template-columns:repeat(4,1fr);
+
+.upgrade-current{
+    padding:20px;
+    background:#09172a;
+    border:1px solid #1b416c;
+    border-radius:20px;
+    margin-bottom:20px;
 }
-.nav{
- background:none;
- color:#7288a4;
- font-size:11px;
+
+.upgrade-current .big{
+    font-size:48px;
+    margin:5px 0;
 }
-.nav.active{color:#419aff}
-.nav div{font-size:23px;margin-bottom:3px}
-.hidden{display:none}
-.toast{
- position:fixed;
- left:50%;
- bottom:90px;
- transform:translateX(-50%);
- background:#10243d;
- border:1px solid #28527d;
- border-radius:12px;
- padding:12px 18px;
- display:none;
- z-index:20;
- white-space:nowrap;
+
+.upgrade-current .name{
+    color:#8ca0bf;
+}
+
+.upgrade-arrow-box{
+    width:285px;
+    height:285px;
+    margin:20px auto;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* WHEEL */
+
+.upgrade-wheel{
+    width:255px;
+    height:255px;
+    border-radius:50%;
+    position:relative;
+    background:
+        conic-gradient(
+            #16c7ff 0deg 63deg,
+            #0d1d36 63deg 90deg,
+            #ff3869 90deg 153deg,
+            #0d1d36 153deg 180deg,
+            #16c7ff 180deg 243deg,
+            #0d1d36 243deg 270deg,
+            #ff3869 270deg 333deg,
+            #0d1d36 333deg 360deg
+        );
+    box-shadow:
+        0 0 30px rgba(0,160,255,.35),
+        inset 0 0 30px rgba(0,0,0,.7);
+    border:5px solid #1b385c;
+}
+
+.upgrade-wheel:after{
+    content:"";
+    position:absolute;
+    inset:28px;
+    border-radius:50%;
+    background:#061126;
+    border:2px solid #214469;
+}
+
+.upgrade-arrow{
+    position:absolute;
+    z-index:5;
+    width:8px;
+    height:106px;
+    left:calc(50% - 4px);
+    top:22px;
+    background:white;
+    border-radius:10px;
+    transform-origin:50% 100%;
+    box-shadow:
+        0 0 8px white,
+        0 0 20px #20bfff;
+}
+
+.upgrade-arrow:before{
+    content:"";
+    position:absolute;
+    top:-10px;
+    left:-8px;
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    background:white;
+    box-shadow:0 0 15px #20bfff;
+}
+
+.upgrade-arrow:after{
+    content:"";
+    position:absolute;
+    bottom:-12px;
+    left:-9px;
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    background:#071426;
+    border:5px solid white;
+}
+
+.upgrade-wheel.spinning .upgrade-arrow{
+    animation:spinUpgrade 3.8s cubic-bezier(.08,.7,.15,1) forwards;
+}
+
+@keyframes spinUpgrade{
+    0%{
+        transform:rotate(0deg);
+    }
+    12%{
+        transform:rotate(500deg);
+    }
+    30%{
+        transform:rotate(1100deg);
+    }
+    55%{
+        transform:rotate(1750deg);
+    }
+    75%{
+        transform:rotate(2050deg);
+    }
+    90%{
+        transform:rotate(2200deg);
+    }
+    100%{
+        transform:rotate(2250deg);
+    }
+}
+
+.upgrade-chance{
+    color:#8da0bc;
+    margin:5px 0 18px;
+}
+
+.upgrade-chance b{
+    color:#20c7ff;
+}
+
+.upgrade-result{
+    min-height:30px;
+    margin:10px 0 20px;
+    font-size:20px;
+    font-weight:900;
+}
+
+.upgrade-button:disabled{
+    opacity:.5;
+}
+
+/* INVENTORY */
+
+.inventory-empty{
+    padding:50px 20px;
+    text-align:center;
+    color:#71839e;
+}
+
+.inventory-empty div{
+    font-size:65px;
+    margin-bottom:15px;
+}
+
+.inventory-item{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:15px;
+    margin-bottom:10px;
+    background:#09172a;
+    border:1px solid #1b3c62;
+    border-radius:18px;
+}
+
+.inventory-item .icon{
+    font-size:45px;
+}
+
+.inventory-item strong{
+    font-size:20px;
+}
+
+.inventory-item span{
+    color:#7d90ad;
+}
+
+/* PROFILE */
+
+.profile-card{
+    padding:25px 20px;
+    text-align:center;
+    background:#09172a;
+    border:1px solid #1c3e67;
+    border-radius:23px;
+}
+
+.profile-avatar{
+    width:90px;
+    height:90px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:linear-gradient(135deg,#087dff,#573dff);
+    font-size:42px;
+}
+
+.profile-name{
+    font-size:27px;
+    font-weight:900;
+    margin:15px 0 5px;
+}
+
+.profile-id{
+    color:#71839f;
+}
+
+.profile-stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:22px;
+}
+
+.profile-stat{
+    padding:16px;
+    background:#071124;
+    border-radius:16px;
+}
+
+.profile-stat strong{
+    display:block;
+    font-size:22px;
+}
+
+.profile-stat span{
+    color:#71839f;
+    font-size:13px;
+}
+
+/* NAV */
+
+.bottom-nav{
+    position:fixed;
+    z-index:50;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:520px;
+    height:82px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    background:rgba(3,11,25,.97);
+    border-top:1px solid #17304f;
+    backdrop-filter:blur(12px);
+}
+
+.nav-btn{
+    background:transparent;
+    color:#70839f;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    font-size:12px;
+    font-weight:700;
+}
+
+.nav-icon{
+    font-size:24px;
+}
+
+.nav-btn.active{
+    color:#2998ff;
+}
+
+/* POPUP */
+
+.float-text{
+    position:fixed;
+    z-index:100;
+    pointer-events:none;
+    font-weight:900;
+    color:#32c8ff;
+    font-size:25px;
+    animation:floatText .8s ease-out forwards;
+}
+
+@keyframes floatText{
+    0%{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+    100%{
+        opacity:0;
+        transform:translateY(-80px) scale(1.2);
+    }
+}
+
+/* RESPONSIVE */
+
+@media(max-width:360px){
+    .hero h1{
+        font-size:40px;
+    }
+
+    .tap-circle{
+        width:210px;
+        height:210px;
+    }
+
+    .upgrade-wheel{
+        width:225px;
+        height:225px;
+    }
 }
 </style>
 </head>
@@ -241,339 +597,797 @@ button{
 
 <div class="app">
 
-<header>
- <div class="logo">💧 water<span>UP</span></div>
- <div class="balance">
-   <span id="balance">0</span> 💧
- </div>
+<header class="header">
+    <div class="logo">💧 water<span>UP</span></div>
+
+    <div class="balance">
+        <span id="balance">0</span> 💧
+    </div>
 </header>
 
-<section id="home" class="page">
 
- <div class="hero">
-   <div class="drop">💧</div>
-   <h1>waterUP</h1>
-   <div class="sub">Прокачивай свою воду на максимум!</div>
+<!-- HOME -->
 
-   <button class="main" onclick="openPage('clicker')">
-     💧 ЗАРАБОТАТЬ ВОДУ
-   </button>
- </div>
+<section id="home" class="page active">
 
- <div class="stats">
-   <div class="stat">
-     <b id="tapStat">1</b>
-     <small>за клик</small>
-   </div>
+    <div class="hero">
+        <div class="hero-drop">💧</div>
 
-   <div class="stat">
-     <b id="levelStat">1 л</b>
-     <small>бутылка</small>
-   </div>
+        <h1>waterUP</h1>
 
-   <div class="stat">
-     <b id="tapCount">0</b>
-     <small>кликов</small>
-   </div>
- </div>
+        <p>Прокачивай свою воду на максимум!</p>
 
- <div class="title">🧴 Бутылки</div>
+        <button class="main-btn" onclick="openPage('clicker')">
+            💧 ЗАРАБОТАТЬ ВОДУ
+        </button>
+    </div>
 
- <div class="grid">
-   <div class="card">
-     <div class="bottle">💧</div>
-     <h3>1 л</h3>
-     <div class="sub">Обычная вода</div>
-     <div class="price">15 💧</div>
-   </div>
+    <div class="stats">
 
-   <div class="card">
-     <div class="bottle">💧</div>
-     <h3>5 л</h3>
-     <div class="sub">Питьевая вода</div>
-     <div class="price">65 💧</div>
-   </div>
+        <div class="stat">
+            <strong id="homeTap">1</strong>
+            <span>за клик</span>
+        </div>
 
-   <div class="card">
-     <div class="bottle">🫗</div>
-     <h3>15 л</h3>
-     <div class="sub">Вода для кулера</div>
-     <div class="price">220 💧</div>
-   </div>
+        <div class="stat">
+            <strong id="homeLiter">1 л</strong>
+            <span>бутылка</span>
+        </div>
 
-   <div class="card">
-     <div class="bottle">🫗</div>
-     <h3>19 л</h3>
-     <div class="sub">Премиум вода</div>
-     <div class="price">350 💧</div>
-   </div>
- </div>
+        <div class="stat">
+            <strong id="homeClicks">0</strong>
+            <span>кликов</span>
+        </div>
+
+    </div>
+
+    <div class="section-title">🧴 Бутылки</div>
+
+    <div class="bottle-grid" id="bottleGrid"></div>
 
 </section>
 
-<section id="clicker" class="page hidden">
 
- <div class="title">💧 Кликер</div>
+<!-- CLICKER -->
 
- <div class="clicker">
+<section id="clicker" class="page click-page">
 
-   <div class="sub">
-     Нажимай на воду и фарми виртуальные капли
-   </div>
+    <div class="section-title">💧 Заработок воды</div>
 
-   <div class="clickBottle" onclick="tap()">
-     💧
-   </div>
+    <div class="clicker-info">
+        <div class="current-liter">Текущая бутылка</div>
 
-   <div class="big">
-     +<span id="tapValue">1</span> 💧
-   </div>
+        <strong class="current-liter" id="clickerLiter">
+            1 л
+        </strong>
+    </div>
 
-   <div class="row">
-     <span>Всего заработано</span>
-     <b id="earned">0</b>
-   </div>
+    <div class="tap-circle" id="tapCircle" onclick="tap(event)">
+        💧
+    </div>
 
- </div>
-
- <button class="main" onclick="openPage('upgrade')">
-   ⚡ ПРОКАЧАТЬ БУТЫЛКУ
- </button>
+    <div class="tap-value">
+        За один клик:
+        <b>+<span id="tapValue">1</span> 💧</b>
+    </div>
 
 </section>
 
-<section id="upgrade" class="page hidden">
 
- <div class="title">⚡ Апгрейд</div>
+<!-- UPGRADE -->
 
- <div class="upgrade">
+<section id="upgrade" class="page upgrade-page">
 
-   <div class="sub">
-     Попробуй улучшить свою бутылку!
-   </div>
+    <div class="section-title">⚡ Апгрейд</div>
 
-   <div class="odds">
-     <div class="oddsText">35%</div>
-   </div>
+    <div class="upgrade-current">
 
-   <div class="vs">
+        <div>Текущий уровень</div>
 
-     <div class="item">
-       <div class="bottle">💧</div>
-       <b id="from">1 л</b>
-     </div>
+        <div class="big" id="upgradeLiter">
+            1 л
+        </div>
 
-     <div class="arrow">→</div>
+        <div class="name">
+            Бутылка уровня <span id="upgradeLevel">1</span>
+        </div>
 
-     <div class="item">
-       <div class="bottle">💧</div>
-       <b id="to">5 л</b>
-     </div>
+    </div>
 
-   </div>
 
-   <button class="main" onclick="upgrade()">
-     ⚡ АПГРЕЙД
-   </button>
+    <div class="upgrade-arrow-box">
 
- </div>
+        <div class="upgrade-wheel" id="upgradeWheel">
 
-</section>
+            <div class="upgrade-arrow" id="upgradeArrow"></div>
 
-<section id="inventory" class="page hidden">
+        </div>
 
- <div class="title">🎒 Инвентарь</div>
+    </div>
 
- <div class="grid">
 
-   <div class="card">
-     <div class="bottle">💧</div>
-     <h3>1 л</h3>
-     <div class="price">Обычная вода</div>
-   </div>
+    <div class="upgrade-chance">
+        Шанс успеха:
+        <b>35%</b>
+    </div>
 
-   <div class="card">
-     <div class="bottle">💧</div>
-     <h3>5 л</h3>
-     <div class="price">Питьевая вода</div>
-   </div>
+    <div class="upgrade-result" id="upgradeResult">
+        Готов к улучшению
+    </div>
 
- </div>
+    <button
+        class="main-btn upgrade-button"
+        id="upgradeButton"
+        onclick="upgradeBottle()"
+    >
+        ⚡ УЛУЧШИТЬ
+    </button>
 
 </section>
 
-<section id="profile" class="page hidden">
 
- <div class="title">👤 Профиль</div>
+<!-- INVENTORY -->
 
- <div class="upgrade">
+<section id="inventory" class="page">
 
-   <h2 id="username">Игрок</h2>
+    <div class="section-title">🎒 Инвентарь</div>
 
-   <div class="row">
-     <span>Баланс</span>
-     <b><span id="profileBalance">0</span> 💧</b>
-   </div>
-
-   <div class="row">
-     <span>Бутылка</span>
-     <b id="profileLevel">1 л</b>
-   </div>
-
-   <div class="row">
-     <span>Кликов</span>
-     <b id="profileTaps">0</b>
-   </div>
-
- </div>
+    <div id="inventoryList"></div>
 
 </section>
 
-<div id="toast" class="toast"></div>
 
-<nav class="bottom">
+<!-- PROFILE -->
 
- <button class="nav active" onclick="openPage('home')">
-   <div>⌂</div>
-   Главная
- </button>
+<section id="profile" class="page">
 
- <button class="nav" onclick="openPage('inventory')">
-   <div>▣</div>
-   Инвентарь
- </button>
+    <div class="section-title">👤 Профиль</div>
 
- <button class="nav" onclick="openPage('upgrade')">
-   <div>↗</div>
-   Апгрейд
- </button>
+    <div class="profile-card">
 
- <button class="nav" onclick="openPage('profile')">
-   <div>♙</div>
-   Профиль
- </button>
+        <div class="profile-avatar">
+            💧
+        </div>
+
+        <div class="profile-name">
+            waterUP игрок
+        </div>
+
+        <div class="profile-id">
+            Уровень бутылки: <span id="profileLevel">1</span>
+        </div>
+
+
+        <div class="profile-stats">
+
+            <div class="profile-stat">
+                <strong id="profileBalance">0</strong>
+                <span>воды</span>
+            </div>
+
+            <div class="profile-stat">
+                <strong id="profileClicks">0</strong>
+                <span>кликов</span>
+            </div>
+
+            <div class="profile-stat">
+                <strong id="profileEarned">0</strong>
+                <span>заработано</span>
+            </div>
+
+            <div class="profile-stat">
+                <strong id="profileBottle">1 л</strong>
+                <span>бутылка</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- NAV -->
+
+<nav class="bottom-nav">
+
+    <button
+        class="nav-btn active"
+        data-page="home"
+        onclick="openPage('home')"
+    >
+        <span class="nav-icon">⌂</span>
+        Главная
+    </button>
+
+    <button
+        class="nav-btn"
+        data-page="inventory"
+        onclick="openPage('inventory')"
+    >
+        <span class="nav-icon">▣</span>
+        Инвентарь
+    </button>
+
+    <button
+        class="nav-btn"
+        data-page="upgrade"
+        onclick="openPage('upgrade')"
+    >
+        <span class="nav-icon">↗</span>
+        Апгрейд
+    </button>
+
+    <button
+        class="nav-btn"
+        data-page="profile"
+        onclick="openPage('profile')"
+    >
+        <span class="nav-icon">♙</span>
+        Профиль
+    </button>
 
 </nav>
 
 </div>
 
+
 <script>
 
-let balance=Number(localStorage.getItem("water_balance")||0);
-let taps=Number(localStorage.getItem("water_taps")||0);
-let earned=Number(localStorage.getItem("water_earned")||0);
-let level=Number(localStorage.getItem("water_level")||1);
+/* =========================
+   DATA
+========================= */
 
-const bottles=[
- {liter:1,tap:1},
- {liter:5,tap:5},
- {liter:15,tap:15},
- {liter:19,tap:25}
+const bottles = [
+
+    {liter:1,tap:1},
+    {liter:5,tap:5},
+    {liter:15,tap:15},
+    {liter:19,tap:25},
+
+    {liter:30,tap:40},
+    {liter:50,tap:65},
+    {liter:100,tap:100},
+    {liter:250,tap:180},
+
+    {liter:500,tap:300},
+    {liter:1000,tap:500},
+    {liter:2500,tap:900},
+    {liter:5000,tap:1500},
+
+    {liter:10000,tap:3000},
+    {liter:25000,tap:6000},
+    {liter:50000,tap:12000},
+    {liter:100000,tap:25000}
+
 ];
+
+
+/* =========================
+   SAVE
+========================= */
+
+let balance =
+    Number(localStorage.getItem("water_balance") || 0);
+
+let taps =
+    Number(localStorage.getItem("water_taps") || 0);
+
+let earned =
+    Number(localStorage.getItem("water_earned") || 0);
+
+let level =
+    Number(localStorage.getItem("water_level") || 1);
+
 
 function save(){
 
- localStorage.setItem("water_balance",balance);
- localStorage.setItem("water_taps",taps);
- localStorage.setItem("water_earned",earned);
- localStorage.setItem("water_level",level);
+    localStorage.setItem(
+        "water_balance",
+        balance
+    );
 
- render();
+    localStorage.setItem(
+        "water_taps",
+        taps
+    );
+
+    localStorage.setItem(
+        "water_earned",
+        earned
+    );
+
+    localStorage.setItem(
+        "water_level",
+        level
+    );
 }
 
-function render(){
 
- let b=bottles[level-1];
+/* =========================
+   FORMAT
+========================= */
 
- document.getElementById("balance").textContent=Math.floor(balance);
- document.getElementById("tapStat").textContent=b.tap;
- document.getElementById("tapValue").textContent=b.tap;
- document.getElementById("levelStat").textContent=b.liter+" л";
- document.getElementById("tapCount").textContent=taps;
- document.getElementById("earned").textContent=Math.floor(earned);
+function formatNumber(num){
 
- document.getElementById("profileBalance").textContent=Math.floor(balance);
- document.getElementById("profileLevel").textContent=b.liter+" л";
- document.getElementById("profileTaps").textContent=taps;
-
- if(level<bottles.length){
-   document.getElementById("from").textContent=b.liter+" л";
-   document.getElementById("to").textContent=bottles[level].liter+" л";
- }
-}
-
-function tap(){
-
- let amount=bottles[level-1].tap;
-
- balance+=amount;
- earned+=amount;
- taps++;
-
- save();
+    return new Intl.NumberFormat(
+        "ru-RU"
+    ).format(num);
 
 }
 
-function upgrade(){
 
- if(level>=bottles.length){
-
-   toast("🏆 Максимальный уровень!");
-
-   return;
- }
-
- let chance=35;
-
- if(Math.random()*100<chance){
-
-   level++;
-
-   toast("🎉 УСПЕХ! Бутылка улучшена!");
-
- }else{
-
-   toast("💦 Не получилось. Попробуй ещё!");
-
- }
-
- save();
-
-}
+/* =========================
+   NAVIGATION
+========================= */
 
 function openPage(id){
 
- document.querySelectorAll(".page").forEach(
-   x=>x.classList.add("hidden")
- );
+    document.querySelectorAll(".page")
+        .forEach(page=>{
+            page.classList.remove("active");
+        });
 
- document.getElementById(id).classList.remove("hidden");
+    const page =
+        document.getElementById(id);
 
- document.querySelectorAll(".nav").forEach(
-   x=>x.classList.remove("active")
- );
+    if(page){
+        page.classList.add("active");
+    }
 
- render();
+
+    document.querySelectorAll(".nav-btn")
+        .forEach(btn=>{
+            btn.classList.remove("active");
+
+            if(
+                btn.dataset.page === id
+            ){
+                btn.classList.add("active");
+            }
+        });
+
+
+    updateUI();
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+
+/* =========================
+   CLICKER
+========================= */
+
+function tap(event){
+
+    const current =
+        bottles[level - 1];
+
+    const value =
+        current.tap;
+
+
+    balance += value;
+    earned += value;
+    taps++;
+
+    save();
+    updateUI();
+
+
+    // FLOAT NUMBER
+
+    const text =
+        document.createElement("div");
+
+    text.className = "float-text";
+
+    text.textContent =
+        "+" + formatNumber(value) + " 💧";
+
+
+    let x =
+        event.clientX || window.innerWidth / 2;
+
+    let y =
+        event.clientY || 400;
+
+
+    text.style.left =
+        (x - 30) + "px";
+
+    text.style.top =
+        (y - 30) + "px";
+
+
+    document.body.appendChild(text);
+
+
+    setTimeout(()=>{
+        text.remove();
+    },800);
 
 }
 
-function toast(text){
 
- let t=document.getElementById("toast");
+/* =========================
+   UPGRADE
+========================= */
 
- t.textContent=text;
- t.style.display="block";
+let upgrading = false;
 
- clearTimeout(window.toastTimer);
 
- window.toastTimer=setTimeout(
-   ()=>t.style.display="none",
-   1800
- );
+function upgradeBottle(){
+
+    if(upgrading){
+        return;
+    }
+
+
+    if(level >= bottles.length){
+
+        document.getElementById(
+            "upgradeResult"
+        ).textContent =
+            "🏆 МАКСИМАЛЬНЫЙ УРОВЕНЬ!";
+
+        return;
+    }
+
+
+    upgrading = true;
+
+
+    const wheel =
+        document.getElementById(
+            "upgradeWheel"
+        );
+
+    const result =
+        document.getElementById(
+            "upgradeResult"
+        );
+
+    const button =
+        document.getElementById(
+            "upgradeButton"
+        );
+
+
+    button.disabled = true;
+
+    result.textContent =
+        "⚡ УЛУЧШЕНИЕ...";
+
+    result.style.color =
+        "white";
+
+
+    wheel.classList.remove(
+        "spinning"
+    );
+
+
+    // Перезапуск CSS animation
+
+    void wheel.offsetWidth;
+
+
+    wheel.classList.add(
+        "spinning"
+    );
+
+
+    setTimeout(()=>{
+
+        const success =
+            Math.random() < 0.35;
+
+
+        if(success){
+
+            level++;
+
+            save();
+
+            result.textContent =
+                "🎉 УСПЕХ! " +
+                bottles[level - 1].liter +
+                " Л";
+
+            result.style.color =
+                "#20c7ff";
+
+        }else{
+
+            result.textContent =
+                "💥 НЕУДАЧА";
+
+            result.style.color =
+                "#ff3869";
+        }
+
+
+        upgrading = false;
+
+        button.disabled = false;
+
+
+        updateUI();
+
+
+    },3900);
 
 }
 
-render();
+
+/* =========================
+   BOTTLE GRID
+========================= */
+
+function renderBottles(){
+
+    const grid =
+        document.getElementById(
+            "bottleGrid"
+        );
+
+
+    grid.innerHTML = "";
+
+
+    bottles.forEach(
+        (bottle,index)=>{
+
+            const unlocked =
+                index < level;
+
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "bottle-card" +
+                (unlocked ? "" : " locked");
+
+
+            let displayLiter =
+                formatNumber(
+                    bottle.liter
+                );
+
+
+            card.innerHTML = `
+
+                <div class="bottle-icon">
+                    🧴
+                </div>
+
+                <div class="bottle-liter">
+                    ${displayLiter} л
+                </div>
+
+                <div class="bottle-tap">
+                    +${formatNumber(bottle.tap)}
+                    💧 за клик
+                </div>
+
+                ${
+                    unlocked
+                    ? ""
+                    : `
+                        <div style="
+                            margin-top:10px;
+                            color:#667994;
+                            font-size:13px;
+                        ">
+                            🔒 Заблокировано
+                        </div>
+                    `
+                }
+
+            `;
+
+
+            grid.appendChild(card);
+
+        }
+    );
+
+}
+
+
+/* =========================
+   INVENTORY
+========================= */
+
+function renderInventory(){
+
+    const list =
+        document.getElementById(
+            "inventoryList"
+        );
+
+
+    if(level <= 1){
+
+        list.innerHTML = `
+
+            <div class="inventory-empty">
+
+                <div>🧴</div>
+
+                Твой инвентарь пока пуст.
+
+                <br><br>
+
+                Улучши бутылку,
+                чтобы открыть новые уровни.
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    list.innerHTML = "";
+
+
+    for(
+        let i = 0;
+        i < level;
+        i++
+    ){
+
+        const bottle =
+            bottles[i];
+
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "inventory-item";
+
+
+        item.innerHTML = `
+
+            <div class="icon">
+                🧴
+            </div>
+
+            <div>
+                <strong>
+                    ${formatNumber(bottle.liter)} л
+                </strong>
+
+                <br>
+
+                <span>
+                    +${formatNumber(bottle.tap)}
+                    💧 за клик
+                </span>
+            </div>
+
+        `;
+
+
+        list.appendChild(item);
+
+    }
+
+}
+
+
+/* =========================
+   UPDATE UI
+========================= */
+
+function updateUI(){
+
+    const current =
+        bottles[
+            Math.min(
+                level - 1,
+                bottles.length - 1
+            )
+        ];
+
+
+    document.getElementById(
+        "balance"
+    ).textContent =
+        formatNumber(balance);
+
+
+    document.getElementById(
+        "homeTap"
+    ).textContent =
+        formatNumber(current.tap);
+
+
+    document.getElementById(
+        "homeLiter"
+    ).textContent =
+        formatNumber(current.liter) + " л";
+
+
+    document.getElementById(
+        "homeClicks"
+    ).textContent =
+        formatNumber(taps);
+
+
+    document.getElementById(
+        "clickerLiter"
+    ).textContent =
+        formatNumber(current.liter) + " л";
+
+
+    document.getElementById(
+        "tapValue"
+    ).textContent =
+        formatNumber(current.tap);
+
+
+    document.getElementById(
+        "upgradeLiter"
+    ).textContent =
+        formatNumber(current.liter) + " л";
+
+
+    document.getElementById(
+        "upgradeLevel"
+    ).textContent =
+        level;
+
+
+    document.getElementById(
+        "profileLevel"
+    ).textContent =
+        level;
+
+
+    document.getElementById(
+        "profileBalance"
+    ).textContent =
+        formatNumber(balance);
+
+
+    document.getElementById(
+        "profileClicks"
+    ).textContent =
+        formatNumber(taps);
+
+
+    document.getElementById(
+        "profileEarned"
+    ).textContent =
+        formatNumber(earned);
+
+
+    document.getElementById(
+        "profileBottle"
+    ).textContent =
+        formatNumber(current.liter) + " л";
+
+
+    renderBottles();
+    renderInventory();
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+updateUI();
 
 </script>
 
