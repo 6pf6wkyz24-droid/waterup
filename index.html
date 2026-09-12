@@ -1,1 +1,581 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>waterUP</title>
 
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:#050b16;
+ color:white;
+ font-family:Arial,sans-serif;
+}
+.app{
+ max-width:480px;
+ margin:auto;
+ min-height:100vh;
+ padding-bottom:85px;
+ background:
+ radial-gradient(circle at 50% 0%,#123b70,transparent 40%),
+ #050b16;
+}
+header{
+ height:65px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ padding:12px 16px;
+ background:#07101e;
+}
+.logo{
+ font-size:23px;
+ font-weight:900;
+}
+.logo span{color:#2588ff}
+.balance{
+ background:#101d31;
+ border:1px solid #214064;
+ padding:9px 12px;
+ border-radius:12px;
+ font-weight:bold;
+}
+.page{padding:18px 16px}
+.hero{
+ text-align:center;
+ padding:30px 5px 10px;
+}
+.drop{
+ font-size:80px;
+ filter:drop-shadow(0 0 25px #1688ff);
+}
+h1{
+ font-size:38px;
+ margin:5px 0;
+}
+.sub{
+ color:#8ca1bd;
+ font-size:14px;
+}
+button{
+ border:0;
+ color:white;
+ font-weight:bold;
+}
+.main{
+ width:100%;
+ padding:16px;
+ margin-top:20px;
+ border-radius:15px;
+ background:linear-gradient(135deg,#147cff,#465cff);
+ font-size:16px;
+ box-shadow:0 8px 25px #147cff55;
+}
+.stats{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:8px;
+ margin-top:18px;
+}
+.stat{
+ background:#0b1627;
+ border:1px solid #1a3150;
+ border-radius:13px;
+ padding:12px 5px;
+ text-align:center;
+}
+.stat b{
+ display:block;
+ font-size:17px;
+}
+.stat small{color:#7187a5}
+.title{
+ font-size:20px;
+ font-weight:bold;
+ margin:22px 0 12px;
+}
+.grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+}
+.card{
+ background:#0b1728;
+ border:1px solid #1b385c;
+ border-radius:15px;
+ padding:14px;
+ text-align:center;
+}
+.bottle{
+ height:100px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:65px;
+}
+.card h3{margin:5px 0}
+.price{
+ color:#45a0ff;
+ font-weight:bold;
+}
+.clicker{
+ background:#0b1a2d;
+ border:1px solid #20466e;
+ border-radius:20px;
+ padding:20px;
+ text-align:center;
+}
+.clickBottle{
+ width:190px;
+ height:190px;
+ border-radius:50%;
+ margin:25px auto;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:90px;
+ background:radial-gradient(circle,#45a9ff,#0961c8);
+ box-shadow:0 0 50px #1585ff66;
+ user-select:none;
+ transition:.08s;
+}
+.clickBottle:active{
+ transform:scale(.9);
+}
+.big{
+ font-size:26px;
+ font-weight:bold;
+}
+.row{
+ display:flex;
+ justify-content:space-between;
+ margin:15px 0;
+ color:#91a7c3;
+}
+.upgrade{
+ background:#0b1728;
+ border:1px solid #1b385c;
+ border-radius:18px;
+ padding:18px;
+ text-align:center;
+}
+.odds{
+ width:150px;
+ height:150px;
+ border-radius:50%;
+ margin:20px auto;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ background:conic-gradient(#328dff 0 35%,#18273d 35%);
+ position:relative;
+}
+.odds:after{
+ content:"";
+ position:absolute;
+ inset:12px;
+ border-radius:50%;
+ background:#081321;
+}
+.oddsText{
+ position:relative;
+ z-index:1;
+ font-size:27px;
+ font-weight:bold;
+}
+.vs{
+ display:grid;
+ grid-template-columns:1fr 35px 1fr;
+ gap:8px;
+ align-items:center;
+}
+.item{
+ background:#0d1d31;
+ border:1px solid #28598e;
+ border-radius:13px;
+ padding:10px;
+}
+.arrow{
+ font-size:25px;
+ color:#4a9cff;
+}
+.bottom{
+ position:fixed;
+ bottom:0;
+ left:50%;
+ transform:translateX(-50%);
+ width:min(480px,100%);
+ height:72px;
+ background:#07101e;
+ border-top:1px solid #19304d;
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+}
+.nav{
+ background:none;
+ color:#7288a4;
+ font-size:11px;
+}
+.nav.active{color:#419aff}
+.nav div{font-size:23px;margin-bottom:3px}
+.hidden{display:none}
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:90px;
+ transform:translateX(-50%);
+ background:#10243d;
+ border:1px solid #28527d;
+ border-radius:12px;
+ padding:12px 18px;
+ display:none;
+ z-index:20;
+ white-space:nowrap;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+ <div class="logo">💧 water<span>UP</span></div>
+ <div class="balance">
+   <span id="balance">0</span> 💧
+ </div>
+</header>
+
+<section id="home" class="page">
+
+ <div class="hero">
+   <div class="drop">💧</div>
+   <h1>waterUP</h1>
+   <div class="sub">Прокачивай свою воду на максимум!</div>
+
+   <button class="main" onclick="openPage('clicker')">
+     💧 ЗАРАБОТАТЬ ВОДУ
+   </button>
+ </div>
+
+ <div class="stats">
+   <div class="stat">
+     <b id="tapStat">1</b>
+     <small>за клик</small>
+   </div>
+
+   <div class="stat">
+     <b id="levelStat">1 л</b>
+     <small>бутылка</small>
+   </div>
+
+   <div class="stat">
+     <b id="tapCount">0</b>
+     <small>кликов</small>
+   </div>
+ </div>
+
+ <div class="title">🧴 Бутылки</div>
+
+ <div class="grid">
+   <div class="card">
+     <div class="bottle">💧</div>
+     <h3>1 л</h3>
+     <div class="sub">Обычная вода</div>
+     <div class="price">15 💧</div>
+   </div>
+
+   <div class="card">
+     <div class="bottle">💧</div>
+     <h3>5 л</h3>
+     <div class="sub">Питьевая вода</div>
+     <div class="price">65 💧</div>
+   </div>
+
+   <div class="card">
+     <div class="bottle">🫗</div>
+     <h3>15 л</h3>
+     <div class="sub">Вода для кулера</div>
+     <div class="price">220 💧</div>
+   </div>
+
+   <div class="card">
+     <div class="bottle">🫗</div>
+     <h3>19 л</h3>
+     <div class="sub">Премиум вода</div>
+     <div class="price">350 💧</div>
+   </div>
+ </div>
+
+</section>
+
+<section id="clicker" class="page hidden">
+
+ <div class="title">💧 Кликер</div>
+
+ <div class="clicker">
+
+   <div class="sub">
+     Нажимай на воду и фарми виртуальные капли
+   </div>
+
+   <div class="clickBottle" onclick="tap()">
+     💧
+   </div>
+
+   <div class="big">
+     +<span id="tapValue">1</span> 💧
+   </div>
+
+   <div class="row">
+     <span>Всего заработано</span>
+     <b id="earned">0</b>
+   </div>
+
+ </div>
+
+ <button class="main" onclick="openPage('upgrade')">
+   ⚡ ПРОКАЧАТЬ БУТЫЛКУ
+ </button>
+
+</section>
+
+<section id="upgrade" class="page hidden">
+
+ <div class="title">⚡ Апгрейд</div>
+
+ <div class="upgrade">
+
+   <div class="sub">
+     Попробуй улучшить свою бутылку!
+   </div>
+
+   <div class="odds">
+     <div class="oddsText">35%</div>
+   </div>
+
+   <div class="vs">
+
+     <div class="item">
+       <div class="bottle">💧</div>
+       <b id="from">1 л</b>
+     </div>
+
+     <div class="arrow">→</div>
+
+     <div class="item">
+       <div class="bottle">💧</div>
+       <b id="to">5 л</b>
+     </div>
+
+   </div>
+
+   <button class="main" onclick="upgrade()">
+     ⚡ АПГРЕЙД
+   </button>
+
+ </div>
+
+</section>
+
+<section id="inventory" class="page hidden">
+
+ <div class="title">🎒 Инвентарь</div>
+
+ <div class="grid">
+
+   <div class="card">
+     <div class="bottle">💧</div>
+     <h3>1 л</h3>
+     <div class="price">Обычная вода</div>
+   </div>
+
+   <div class="card">
+     <div class="bottle">💧</div>
+     <h3>5 л</h3>
+     <div class="price">Питьевая вода</div>
+   </div>
+
+ </div>
+
+</section>
+
+<section id="profile" class="page hidden">
+
+ <div class="title">👤 Профиль</div>
+
+ <div class="upgrade">
+
+   <h2 id="username">Игрок</h2>
+
+   <div class="row">
+     <span>Баланс</span>
+     <b><span id="profileBalance">0</span> 💧</b>
+   </div>
+
+   <div class="row">
+     <span>Бутылка</span>
+     <b id="profileLevel">1 л</b>
+   </div>
+
+   <div class="row">
+     <span>Кликов</span>
+     <b id="profileTaps">0</b>
+   </div>
+
+ </div>
+
+</section>
+
+<div id="toast" class="toast"></div>
+
+<nav class="bottom">
+
+ <button class="nav active" onclick="openPage('home')">
+   <div>⌂</div>
+   Главная
+ </button>
+
+ <button class="nav" onclick="openPage('inventory')">
+   <div>▣</div>
+   Инвентарь
+ </button>
+
+ <button class="nav" onclick="openPage('upgrade')">
+   <div>↗</div>
+   Апгрейд
+ </button>
+
+ <button class="nav" onclick="openPage('profile')">
+   <div>♙</div>
+   Профиль
+ </button>
+
+</nav>
+
+</div>
+
+<script>
+
+let balance=Number(localStorage.getItem("water_balance")||0);
+let taps=Number(localStorage.getItem("water_taps")||0);
+let earned=Number(localStorage.getItem("water_earned")||0);
+let level=Number(localStorage.getItem("water_level")||1);
+
+const bottles=[
+ {liter:1,tap:1},
+ {liter:5,tap:5},
+ {liter:15,tap:15},
+ {liter:19,tap:25}
+];
+
+function save(){
+
+ localStorage.setItem("water_balance",balance);
+ localStorage.setItem("water_taps",taps);
+ localStorage.setItem("water_earned",earned);
+ localStorage.setItem("water_level",level);
+
+ render();
+}
+
+function render(){
+
+ let b=bottles[level-1];
+
+ document.getElementById("balance").textContent=Math.floor(balance);
+ document.getElementById("tapStat").textContent=b.tap;
+ document.getElementById("tapValue").textContent=b.tap;
+ document.getElementById("levelStat").textContent=b.liter+" л";
+ document.getElementById("tapCount").textContent=taps;
+ document.getElementById("earned").textContent=Math.floor(earned);
+
+ document.getElementById("profileBalance").textContent=Math.floor(balance);
+ document.getElementById("profileLevel").textContent=b.liter+" л";
+ document.getElementById("profileTaps").textContent=taps;
+
+ if(level<bottles.length){
+   document.getElementById("from").textContent=b.liter+" л";
+   document.getElementById("to").textContent=bottles[level].liter+" л";
+ }
+}
+
+function tap(){
+
+ let amount=bottles[level-1].tap;
+
+ balance+=amount;
+ earned+=amount;
+ taps++;
+
+ save();
+
+}
+
+function upgrade(){
+
+ if(level>=bottles.length){
+
+   toast("🏆 Максимальный уровень!");
+
+   return;
+ }
+
+ let chance=35;
+
+ if(Math.random()*100<chance){
+
+   level++;
+
+   toast("🎉 УСПЕХ! Бутылка улучшена!");
+
+ }else{
+
+   toast("💦 Не получилось. Попробуй ещё!");
+
+ }
+
+ save();
+
+}
+
+function openPage(id){
+
+ document.querySelectorAll(".page").forEach(
+   x=>x.classList.add("hidden")
+ );
+
+ document.getElementById(id).classList.remove("hidden");
+
+ document.querySelectorAll(".nav").forEach(
+   x=>x.classList.remove("active")
+ );
+
+ render();
+
+}
+
+function toast(text){
+
+ let t=document.getElementById("toast");
+
+ t.textContent=text;
+ t.style.display="block";
+
+ clearTimeout(window.toastTimer);
+
+ window.toastTimer=setTimeout(
+   ()=>t.style.display="none",
+   1800
+ );
+
+}
+
+render();
+
+</script>
+
+</body>
+</html>
