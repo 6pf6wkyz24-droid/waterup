@@ -3636,6 +3636,281 @@ function updateUI(){
 updateUI();
 
 </script>
+<script>
+(function () {
+    const style = document.createElement("style");
 
+    style.textContent = `
+        #waterup-auth {
+            position: fixed;
+            inset: 0;
+            z-index: 999999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(5, 8, 18, 0.96);
+            backdrop-filter: blur(12px);
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        #waterup-auth-box {
+            width: min(390px, 100%);
+            background: #101522;
+            border: 1px solid #299aff;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 0 35px rgba(41,154,255,.25);
+            color: white;
+        }
+
+        #waterup-auth-title {
+            text-align: center;
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        #waterup-auth-subtitle {
+            text-align: center;
+            color: #8c98aa;
+            margin-bottom: 22px;
+        }
+
+        #waterup-auth input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 14px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            border: 1px solid #303b50;
+            background: #080c14;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        #waterup-auth input:focus {
+            border-color: #299aff;
+        }
+
+        #waterup-auth button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 5px;
+            border: 0;
+            border-radius: 12px;
+            background: #299aff;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        #waterup-auth-register {
+            background: #182235 !important;
+            margin-top: 10px !important;
+        }
+
+        #waterup-auth-status {
+            min-height: 20px;
+            margin-top: 15px;
+            text-align: center;
+            color: #9eb2c9;
+            font-size: 14px;
+        }
+
+        #waterup-user-panel {
+            position: fixed;
+            top: 12px;
+            right: 12px;
+            z-index: 999998;
+            display: none;
+            background: rgba(16,21,34,.95);
+            border: 1px solid #299aff;
+            border-radius: 12px;
+            padding: 8px 10px;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+        }
+
+        #waterup-logout {
+            margin-left: 8px;
+            border: 0;
+            border-radius: 8px;
+            padding: 6px 9px;
+            background: #25334a;
+            color: white;
+        }
+    `;
+
+    document.head.appendChild(style);
+
+    const auth = document.createElement("div");
+    auth.id = "waterup-auth";
+
+    auth.innerHTML = `
+        <div id="waterup-auth-box">
+            <div id="waterup-auth-title">waterUP</div>
+            <div id="waterup-auth-subtitle">Войди в аккаунт или зарегистрируйся</div>
+
+            <input id="waterup-username"
+                   type="text"
+                   placeholder="Username"
+                   autocomplete="username">
+
+            <input id="waterup-email"
+                   type="email"
+                   placeholder="Email"
+                   autocomplete="email">
+
+            <input id="waterup-password"
+                   type="password"
+                   placeholder="Пароль"
+                   autocomplete="current-password">
+
+            <button id="waterup-login">ВОЙТИ</button>
+            <button id="waterup-auth-register">РЕГИСТРАЦИЯ</button>
+
+            <div id="waterup-auth-status"></div>
+        </div>
+    `;
+
+    document.body.appendChild(auth);
+
+    const userPanel = document.createElement("div");
+    userPanel.id = "waterup-user-panel";
+
+    userPanel.innerHTML = `
+        <span id="waterup-user-name"></span>
+        <button id="waterup-logout">Выйти</button>
+    `;
+
+    document.body.appendChild(userPanel);
+
+    const usernameInput = document.getElementById("waterup-username");
+    const emailInput = document.getElementById("waterup-email");
+    const passwordInput = document.getElementById("waterup-password");
+    const loginButton = document.getElementById("waterup-login");
+    const registerButton = document.getElementById("waterup-auth-register");
+    const status = document.getElementById("waterup-auth-status");
+
+    const setStatus = (text) => {
+        status.textContent = text;
+    };
+
+    async function login() {
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        if (!email || !password) {
+            setStatus("Введи email и пароль.");
+            return;
+        }
+
+        setStatus("Выполняется вход...");
+
+        const { error } = await supabaseClient.auth.signInWithPassword({
+            email,
+            password
+        });
+
+        if (error) {
+            setStatus(error.message);
+            return;
+        }
+
+        setStatus("");
+    }
+
+    async function register() {
+        const username = usernameInput.value.trim();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        if (!username || !email || !password) {
+            setStatus("Заполни все поля.");
+            return;
+        }
+
+        if (username.length < 3) {
+            setStatus("Username должен быть минимум 3 символа.");
+            return;
+        }
+
+        if (password.length < 6) {
+            setStatus("Пароль должен быть минимум 6 символов.");
+            return;
+        }
+
+        setStatus("Создаём аккаунт...");
+
+        const { data, error } = await supabaseClient.auth.signUp({
+            email,
+            password,
+            options: {
+                data: {
+                    username: username
+                }
+            }
+        });
+
+        if (error) {
+            setStatus(error.message);
+            return;
+        }
+
+        if (!data.session) {
+            setStatus("Аккаунт создан. Проверь почту для подтверждения.");
+        } else {
+            setStatus("Аккаунт создан!");
+        }
+    }
+
+    async function updateUserUI(user) {
+        if (!user) {
+            auth.style.display = "flex";
+            userPanel.style.display = "none";
+            return;
+        }
+
+        const username =
+            user.user_metadata?.username ||
+            user.email?.split("@")[0] ||
+            "Игрок";
+
+        document.getElementById("waterup-user-name").textContent =
+            username;
+
+        auth.style.display = "none";
+        userPanel.style.display = "block";
+
+        await supabaseClient
+            .from("profiles")
+            .update({
+                last_seen_at: new Date().toISOString()
+            })
+            .eq("id", user.id);
+    }
+
+    loginButton.addEventListener("click", login);
+    registerButton.addEventListener("click", register);
+
+    document.getElementById("waterup-logout")
+        .addEventListener("click", async () => {
+            await supabaseClient.auth.signOut();
+        });
+
+    supabaseClient.auth.onAuthStateChange(async (event, session) => {
+        await updateUserUI(session?.user || null);
+    });
+
+    (async () => {
+        const { data } = await supabaseClient.auth.getSession();
+        await updateUserUI(data.session?.user || null);
+    })();
+})();
+</script>
 </body>
 </html>
