@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>waterUP — Админка</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#050b18;color:#fff;font-family:Arial,sans-serif}
+.wrap{max-width:900px;margin:auto;padding:18px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
+h1{margin:0;color:#25bfff}.sub{color:#7187a5;font-size:13px;margin-top:4px}
+.card{background:#0b1528;border:1px solid #24486e;border-radius:18px;padding:16px;margin:12px 0}
+input,select,button{width:100%;padding:13px;border-radius:11px;border:1px solid #294a70;background:#071020;color:#fff;font-size:15px}
+button{background:#168cff;border:0;font-weight:800;cursor:pointer;margin-top:8px}button.danger{background:#d9365b}button.gray{background:#1c2b43}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.row{display:flex;gap:8px;align-items:center}.row>*{flex:1}
+.user{padding:13px 0;border-top:1px solid #1b304b}.user:first-child{border-top:0}.muted{color:#8295ae;font-size:12px}.pill{display:inline-block;padding:4px 8px;border-radius:99px;background:#142944;color:#7fd9ff;font-size:11px;margin-top:4px}
+#login{max-width:420px;margin:80px auto}.hidden{display:none}.ok{color:#5be58a}.err{color:#ff6684}.title{font-size:18px;font-weight:900;margin-bottom:10px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.wrap{padding:12px}}
+</style>
+</head>
+<body>
+<div id="login" class="card">
+  <h1>waterUP ADMIN</h1>
+  <p class="sub">Вход администратора</p>
+  <input id="email" type="email" placeholder="Email" autocomplete="username">
+  <input id="password" type="password" placeholder="Пароль" autocomplete="current-password">
+  <button onclick="login()">ВОЙТИ</button>
+  <div id="loginMsg" class="muted"></div>
+</div>
+
+<div id="app" class="wrap hidden">
+  <div class="top">
+    <div><h1>waterUP ADMIN</h1><div id="who" class="sub"></div></div>
+    <button class="gray" style="width:auto" onclick="logout()">Выйти</button>
+  </div>
+
+  <div id="msg" class="card muted">Загрузка…</div>
+
+  <div class="card">
+    <div class="title">👥 Игроки</div>
+    <button onclick="loadUsers()">ОБНОВИТЬ СПИСОК</button>
+    <div id="users"></div>
+  </div>
+
+  <div class="card">
+    <div class="title">💧 Управление водой</div>
+    <input id="target" placeholder="ID игрока">
+    <div class="grid">
+      <input id="amount" type="number" step="0.1" placeholder="Количество">
+      <select id="amountAction"><option value="add">Выдать</option><option value="take">Забрать</option></select>
+    </div>
+    <button onclick="waterAction()">ПРИМЕНИТЬ</button>
+  </div>
+
+  <div class="card">
+    <div class="title">🧴 Управление бутылками</div>
+    <input id="bottleLevel" type="number" min="1" placeholder="Уровень бутылки">
+    <div class="grid">
+      <button onclick="bottleAction('add')">ВЫДАТЬ</button>
+      <button class="danger" onclick="bottleAction('take')">ЗАБРАТЬ</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="title">🔨 Бан</div>
+    <input id="banTarget" placeholder="ID игрока">
+    <div class="grid">
+      <button class="danger" onclick="banUser(true)">ЗАБАНИТЬ</button>
+      <button class="gray" onclick="banUser(false)">РАЗБАНИТЬ</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="title">🎟️ Промокод</div>
+    <input id="promoCode" placeholder="Код">
+    <div class="grid">
+      <input id="promoReward" type="number" step="0.1" placeholder="Награда 💧">
+      <input id="promoUses" type="number" min="1" placeholder="Активаций">
+    </div>
+    <button onclick="createPromo()">СОЗДАТЬ ПРОМОКОД</button>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL="https://gxmdwurmwpdoyzygvahc.supabase.co";
+const SUPABASE_KEY="sb_publishable_mDOrCdx6YIhlIBkRXeD2Wg_PZAE19tY";
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+function setMsg(t,ok=false){const e=document.getElementById("msg");e.textContent=t;e.className="card "+(ok?"ok":"err")}
+async function login(){
+ const email=document.getElementById("email").value.trim(), password=document.getElementById("password").value;
+ const m=document.getElementById("loginMsg"); m.textContent="Вход…";
+ const {error}=await sb.auth.signInWithPassword({email,password});
+ if(error){m.textContent=error.message;return}
+ await boot();
+}
+async function logout(){await sb.auth.signOut();location.reload()}
+async function api(action,body={}){
+ const {data:{session}}=await sb.auth.getSession();
+ if(!session) throw new Error("Сессия отсутствует");
+ const r=await fetch(SUPABASE_URL+"/functions/v1/admin-api",{
+   method:"POST",
+   headers:{Authorization:"Bearer "+session.access_token,"Content-Type":"application/json"},
+   body:JSON.stringify({action,...body})
+ });
+ let j={};try{j=await r.json()}catch{}
+ if(!r.ok) throw new Error(j.error||"Ошибка сервера");
+ return j;
+}
+async function boot(){
+ document.getElementById("login").classList.add("hidden");
+ document.getElementById("app").classList.remove("hidden");
+ const {data:{user}}=await sb.auth.getUser();
+ document.getElementById("who").textContent=user?.email||"Администратор";
+ try{await api("check");await loadUsers();setMsg("Админка готова",true)}
+ catch(e){setMsg(e.message)}
+}
+async function loadUsers(){
+ try{
+  const j=await api("users");
+  const box=document.getElementById("users"); box.innerHTML="";
+  (j.users||[]).forEach(u=>{
+   const d=document.createElement("div");d.className="user";
+   d.innerHTML=`<b>${escapeHtml(u.username)}</b> ${u.banned?'<span class="pill">BAN</span>':''}
+   <div class="muted">ID: ${escapeHtml(u.id)}</div>
+   <div class="muted">💧 ${u.water} · 🧴 уровень ${u.bottle_level} · last seen: ${u.last_seen_at||"—"}</div>`;
+   box.appendChild(d);
+  });
+  if(!j.users?.length)box.innerHTML='<div class="muted">Игроков нет</div>';
+ }catch(e){setMsg(e.message)}
+}
+async function waterAction(){
+ try{await api("water",{user_id:document.getElementById("target").value.trim(),amount:Number(document.getElementById("amount").value),mode:document.getElementById("amountAction").value});setMsg("Вода изменена",true);await loadUsers()}catch(e){setMsg(e.message)}
+}
+async function bottleAction(mode){
+ try{await api("bottle",{user_id:document.getElementById("target").value.trim(),level:Number(document.getElementById("bottleLevel").value),mode});setMsg("Бутылка изменена",true);await loadUsers()}catch(e){setMsg(e.message)}
+}
+async function banUser(banned){
+ try{await api("ban",{user_id:document.getElementById("banTarget").value.trim(),banned});setMsg(banned?"Игрок забанен":"Игрок разбанен",true);await loadUsers()}catch(e){setMsg(e.message)}
+}
+async function createPromo(){
+ try{
+  await api("promo",{code:document.getElementById("promoCode").value.trim(),reward:Number(document.getElementById("promoReward").value),max_uses:Number(document.getElementById("promoUses").value)});
+  setMsg("Промокод создан",true);
+ }catch(e){setMsg(e.message)}
+}
+function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]))}
+sb.auth.getSession().then(async({data})=>{if(data.session)await boot()});
+</script>
+</body>
+</html>
