@@ -1225,6 +1225,37 @@ button{
     max-width:calc(100vw - 24px);
 }
 
+
+
+/* =========================================================
+   INVENTORY SELL
+========================================================= */
+.inventory-actions{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    flex-shrink:0;
+}
+.inventory-sell{
+    padding:9px 10px;
+    border:1px solid #6a2944;
+    border-radius:11px;
+    background:#351326;
+    color:#ff6f91;
+    font-size:12px;
+    font-weight:900;
+}
+.inventory-sell:active{
+    transform:scale(.97);
+}
+@media(max-width:520px){
+    .inventory-item{gap:8px;}
+    .inventory-icon{width:44px;font-size:34px;}
+    .inventory-actions{gap:5px;}
+    .inventory-select,.inventory-sell{padding:8px 7px;font-size:10px;}
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -1979,6 +2010,19 @@ let chance =
     );
 
 
+/*
+    Фактический объём бутылок, полученных через апгрейд.
+    Например: уровень 2 может быть 1.1 л при 90%,
+    а не фиксированные 5 л из магазина.
+*/
+let bottleOverrides =
+    JSON.parse(
+        localStorage.getItem(
+            "waterup_v2_bottle_overrides"
+        ) || "{}"
+    );
+
+
 let upgrading = false;
 
 
@@ -2016,6 +2060,11 @@ function save(){
     localStorage.setItem(
         "waterup_v2_chance",
         chance
+    );
+
+    localStorage.setItem(
+        "waterup_v2_bottle_overrides",
+        JSON.stringify(bottleOverrides)
     );
 
 }
@@ -2133,6 +2182,33 @@ function getBottle(){
 ========================================================= */
 
 function getBottleByLevel(level){
+
+    if(
+        bottleOverrides &&
+        Object.prototype.hasOwnProperty.call(
+            bottleOverrides,
+            String(level)
+        )
+    ){
+
+        const customLiter =
+            Number(bottleOverrides[String(level)]);
+
+        const base =
+            level <= bottles.length
+                ? bottles[level - 1]
+                : null;
+
+        return {
+            id: level,
+            liter: customLiter,
+            price: base
+                ? base.price
+                : Math.max(1, Math.floor(customLiter * 100))
+        };
+
+    }
+
 
     if(
         level <= bottles.length
@@ -2660,6 +2736,67 @@ function buyBottle(level){
 
 
 /* =========================================================
+   UPGRADE RESULT / SALE HELPERS
+========================================================= */
+
+function getUpgradeLiter(currentLiter, selectedChance){
+
+    const safeChance = Math.min(90, Math.max(10, Number(selectedChance) || 35));
+
+    /*
+        Чем меньше шанс, тем больше награда.
+        90% -> x1.111... (1 л становится 1.1 л)
+        50% -> x2
+        10% -> x10
+    */
+    const result = Number(currentLiter) * (100 / safeChance);
+
+    return Math.round(result * 10) / 10;
+}
+
+function getSellPrice(bottle){
+
+    /* 100 капель за каждый литр. */
+    return Math.max(0.1, Math.round(Number(bottle.liter) * 100 * 10) / 10);
+}
+
+function sellBottle(level){
+
+    level = Number(level);
+
+    const index = owned.indexOf(level);
+
+    if(index === -1){
+        showWarning("🧴 Этой бутылки нет в инвентаре");
+        return;
+    }
+
+    const bottle = getBottleByLevel(level);
+    const reward = getSellPrice(bottle);
+
+    owned.splice(index, 1);
+
+    /* Если продали текущую — выбираем самую большую оставшуюся. */
+    if(currentBottle === level){
+        if(owned.length){
+            currentBottle = Math.max(...owned);
+        }else{
+            currentBottle = 0;
+        }
+    }
+
+    /* Удаляем индивидуальный объём проданной бутылки. */
+    delete bottleOverrides[String(level)];
+
+    balance += reward;
+    save();
+    updateUI();
+
+    showWarning("💧 +" + formatNumber(reward) + " капель за продажу");
+}
+
+
+/* =========================================================
    SELECT BOTTLE
 ========================================================= */
 
@@ -2829,160 +2966,79 @@ function renderInventory(){
             "inventoryList"
         );
 
-
     const home =
         document.getElementById(
             "homeBottles"
         );
 
-
     list.innerHTML = "";
-
-
     home.innerHTML = "";
 
-
-    if(
-        owned.length === 0
-    ){
+    if(owned.length === 0){
 
         const emptyHTML = `
-
             <div class="empty">
-
-                <div class="empty-icon">
-                    🧴
-                </div>
-
+                <div class="empty-icon">🧴</div>
                 У тебя пока нет бутылок.
-
                 <br><br>
-
                 Заработай воду и
                 купи первую бутылку
                 в магазине.
-
             </div>
-
         `;
 
-
-        list.innerHTML =
-            emptyHTML;
-
-
-        home.innerHTML =
-            emptyHTML;
-
-
+        list.innerHTML = emptyHTML;
+        home.innerHTML = emptyHTML;
         return;
-
     }
 
+    owned.forEach(level => {
 
-    owned.forEach(
-        level => {
+        const bottle = getBottleByLevel(level);
+        const isCurrent = level === currentBottle;
+        const sellPrice = getSellPrice(bottle);
 
-            const bottle =
-                getBottleByLevel(
-                    level
-                );
+        const item = document.createElement("div");
 
+        item.className =
+            "inventory-item" +
+            (isCurrent ? " current" : "");
 
-            const isCurrent =
-                level === currentBottle;
+        item.innerHTML = `
+            <div class="inventory-icon">🧴</div>
 
-
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-
-            item.className =
-                "inventory-item" +
-                (
-                    isCurrent
-                    ? " current"
-                    : ""
-                );
-
-
-            item.innerHTML = `
-
-                <div class="inventory-icon">
-                    🧴
+            <div>
+                <div class="inventory-name">
+                    ${formatNumber(bottle.liter)} л
                 </div>
 
-                <div>
-
-                    <div class="inventory-name">
-
-                        ${formatNumber(
-                            bottle.liter
-                        )} л
-
-                    </div>
-
-                    <div class="inventory-info">
-
-                        Уровень ${level}
-
-                    </div>
-
+                <div class="inventory-info">
+                    Уровень ${level} · Продажа: +${formatNumber(sellPrice)} 💧
                 </div>
+            </div>
 
+            <div class="inventory-actions">
                 ${
                     isCurrent
-
-                    ?
-
-                    `
-                    <div
-                        class="inventory-select"
-                    >
-                        ТЕКУЩАЯ
-                    </div>
-                    `
-
-                    :
-
-                    `
-                    <button
-                        class="inventory-select"
-                        onclick="
-                            selectBottle(${level})
-                        "
-                    >
-                        ВЫБРАТЬ
-                    </button>
-                    `
+                    ? `<div class="inventory-select">ТЕКУЩАЯ</div>`
+                    : `<button class="inventory-select" onclick="selectBottle(${level})">ВЫБРАТЬ</button>`
                 }
 
-            `;
+                <button
+                    class="inventory-sell"
+                    onclick="sellBottle(${level})"
+                >
+                    ПРОДАТЬ
+                </button>
+            </div>
+        `;
 
+        list.appendChild(item);
 
-            list.appendChild(
-                item
-            );
-
-
-            /*
-                Копия для главной.
-            */
-
-            const homeItem =
-                item.cloneNode(
-                    true
-                );
-
-
-            home.appendChild(
-                homeItem
-            );
-
-        }
-    );
+        /* Копия для главной страницы. */
+        const homeItem = item.cloneNode(true);
+        home.appendChild(homeItem);
+    });
 
 }
 
@@ -2992,8 +3048,10 @@ function renderInventory(){
 ========================================================= */
 
 function setChance(value){
+
     if(upgrading) return;
-    chance = Number(value);
+
+    chance = Math.min(90, Math.max(10, Number(value)));
     save();
 
     document.querySelectorAll(".chance").forEach(button => {
@@ -3004,14 +3062,13 @@ function setChance(value){
     });
 
     updateUpgradeVisuals();
-    document.getElementById("upgradeResult").textContent = "Готов к улучшению";
+
+    const result = document.getElementById("upgradeResult");
+    if(result){
+        result.className = "result";
+        result.textContent = "Готов к улучшению";
+    }
 }
-
-
-/* =========================================================
-   UPGRADE COST
-========================================================= */
-
 
 
 /* =========================================================
@@ -3030,40 +3087,85 @@ function getFailAngle(){
 }
 
 function updateUpgradeVisuals(){
+
     const strip = document.getElementById("upgradeSuccessStrip");
+    const failStrip = document.getElementById("upgradeFailStrip");
     const label = document.getElementById("upgradeChanceLabel");
     const wheel = document.getElementById("wheel");
 
     if(strip) strip.style.width = chance + "%";
+    if(failStrip) failStrip.style.width = (100 - chance) + "%";
     if(label) label.textContent = chance + "%";
     if(wheel) wheel.style.setProperty("--success-angle", chance * 3.6);
 
     const cur = current();
-    const next = cur ? getBottleByLevel(currentBottle + 1) : null;
+    const next = cur
+        ? getUpgradeLiter(cur.liter, chance)
+        : null;
+
     const put = document.getElementById("upgradePut");
     const receive = document.getElementById("upgradeReceive");
+    const upgradeNext = document.getElementById("upgradeNext");
 
-    if(put) put.textContent = cur ? formatNumber(cur.liter) + " л" : "Нет бутылки";
-    if(receive) receive.textContent = next ? formatNumber(next.liter) + " л" : "—";
+    if(put){
+        put.textContent = cur
+            ? formatNumber(cur.liter) + " л"
+            : "Нет бутылки";
+    }
+
+    if(receive){
+        receive.textContent = next !== null
+            ? formatNumber(next) + " л"
+            : "—";
+    }
+
+    if(upgradeNext){
+        upgradeNext.textContent = next !== null
+            ? formatNumber(next) + " л"
+            : "1 л";
+    }
 }
 
 function rotateArrow(){
-    return new Promise(resolve => {
-        const arrow = document.getElementById("arrow");
-        const success = Math.random() * 100 < chance;
 
-        const finalAngle = success ? getSuccessAngle() : getFailAngle();
-        const match = (arrow.style.transform || "").match(/rotate\(([-\d.]+)deg\)/);
-        const currentAngle = match ? Number(match[1]) : 0;
+    return new Promise(resolve => {
+
+        const arrow = document.getElementById("arrow");
+
+        /* ВАЖНО: 90% — это 90% шанс, а не гарантия. */
+        const success = Math.random() < (chance / 100);
+
+        const finalAngle = success
+            ? getSuccessAngle()
+            : getFailAngle();
+
+        const match =
+            (arrow.style.transform || "").match(/rotate\(([-\d.]+)deg\)/);
+
+        const currentAngle =
+            match
+            ? Number(match[1])
+            : 0;
+
+        /*
+           Конечный угол ВСЕГДА совпадает с цветом колеса.
+           Раньше к уже накопленному углу добавлялся finalAngle,
+           поэтому после повторной прокрутки стрелка могла
+           оказаться в красном секторе при результате "Заход".
+        */
+        const currentTurns = Math.floor(currentAngle / 360);
+        const baseAngle = currentTurns * 360;
         const turns = 6 + Math.floor(Math.random() * 3);
-        const target = currentAngle + turns * 360 + finalAngle;
+        const target =
+            baseAngle + turns * 360 + finalAngle;
 
         arrow.style.transition =
             "transform 4.2s cubic-bezier(.08,.72,.16,1)";
 
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
-                arrow.style.transform = "rotate(" + target + "deg)";
+                arrow.style.transform =
+                    "rotate(" + target + "deg)";
             });
         });
 
@@ -3072,6 +3174,7 @@ function rotateArrow(){
 }
 
 async function upgrade(){
+
     if(upgrading) return;
 
     if(currentBottle <= 0){
@@ -3080,11 +3183,9 @@ async function upgrade(){
         return;
     }
 
-    const nextLevel = currentBottle + 1;
-    const nextBottle = getBottleByLevel(nextLevel);
+    const currentBottleData = current();
 
-    if(!nextBottle){
-        showWarning("🏆 Максимальный уровень");
+    if(!currentBottleData){
         return;
     }
 
@@ -3093,27 +3194,83 @@ async function upgrade(){
     const button = document.getElementById("upgradeButton");
     const result = document.getElementById("upgradeResult");
 
-    button.disabled = true;
-    result.className = "result";
-    result.textContent = "⚡ КРУТИМ...";
+    if(button) button.disabled = true;
 
+    if(result){
+        result.className = "result";
+        result.textContent = "⚡ КРУТИМ...";
+    }
+
+    /*
+        Чем меньше выбранный шанс, тем больше
+        бутылка при успешном апгрейде.
+        Например:
+        90% = 1.1x
+        50% = 2x
+        10% = 10x
+    */
+    const resultLiter =
+        getUpgradeLiter(currentBottleData.liter, chance);
+
+    const oldLevel = currentBottle;
     const success = await rotateArrow();
 
+    /*
+        ВАЖНО:
+        Текущая бутылка НЕ остаётся в инвентаре навсегда.
+        Апгрейд использует именно эту бутылку.
+    */
+    const oldIndex = owned.indexOf(oldLevel);
+
     if(success){
-        if(!owned.includes(nextLevel)) owned.push(nextLevel);
+
+        const nextLevel = oldLevel + 1;
+
+        /* Сначала удаляем бутылку, которую поставили. */
+        if(oldIndex !== -1){
+            owned.splice(oldIndex, 1);
+        }
+
+        delete bottleOverrides[String(oldLevel)];
+
+        /* Полученная бутылка полностью заменяет старую. */
+        owned.push(nextLevel);
+        bottleOverrides[String(nextLevel)] = resultLiter;
         currentBottle = nextLevel;
-        owned.sort((a,b) => a-b);
+
+        owned.sort((a,b) => a - b);
+
         save();
 
-        result.className = "result success";
-        result.textContent = "Заход!";
+        if(result){
+            result.className = "result success";
+            result.textContent = "Заход!";
+        }
+
     }else{
-        result.className = "result fail";
-        result.textContent = "Незаход, попробуем снова?";
+
+        /* Незаход = поставленная бутылка уничтожена. */
+        if(oldIndex !== -1){
+            owned.splice(oldIndex, 1);
+        }
+
+        delete bottleOverrides[String(oldLevel)];
+
+        /* Текущей бутылки больше нет. */
+        currentBottle = 0;
+
+        save();
+
+        if(result){
+            result.className = "result fail";
+            result.textContent = "Незаход, попробуем снова?";
+        }
     }
 
     upgrading = false;
-    button.disabled = false;
+
+    if(button) button.disabled = false;
+
     updateUI();
     updateUpgradeVisuals();
 }
@@ -3174,9 +3331,10 @@ function updateUI(){
             " л";
 
 
-        const next =
-            getBottleByLevel(
-                currentBottle + 1
+        const nextLiter =
+            getUpgradeLiter(
+                bottle.liter,
+                chance
             );
 
 
@@ -3184,7 +3342,7 @@ function updateUI(){
             "upgradeNext"
         ).textContent =
             formatNumber(
-                next.liter
+                nextLiter
             ) +
             " л";
 
