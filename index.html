@@ -707,13 +707,13 @@ button{
 
 
 /*
-    Сам круг.
+    Ð¡Ð°Ð¼ ÐºÑÑÐ³.
 
-    Важно:
+    ÐÐ°Ð¶Ð½Ð¾:
 
-    JS будет каждый раз
-    генерировать новый угол
-    остановки.
+    JS Ð±ÑÐ´ÐµÑ ÐºÐ°Ð¶Ð´ÑÐ¹ ÑÐ°Ð·
+    Ð³ÐµÐ½ÐµÑÐ¸ÑÐ¾Ð²Ð°ÑÑ Ð½Ð¾Ð²ÑÐ¹ ÑÐ³Ð¾Ð»
+    Ð¾ÑÑÐ°Ð½Ð¾Ð²ÐºÐ¸.
 */
 
 .wheel{
@@ -726,14 +726,8 @@ button{
 
     background:
         conic-gradient(
-            #19c6ff 0deg 45deg,
-            #08182d 45deg 90deg,
-            #ff3d6c 90deg 135deg,
-            #08182d 135deg 180deg,
-            #19c6ff 180deg 225deg,
-            #08182d 225deg 270deg,
-            #ff3d6c 270deg 315deg,
-            #08182d 315deg 360deg
+            #19c6ff 0deg calc(var(--success-angle, 126) * 1deg),
+            #ff3d6c calc(var(--success-angle, 126) * 1deg) 360deg
         );
 
     border:
@@ -755,7 +749,7 @@ button{
 
 
 /*
-    Внутренний круг
+    ÐÐ½ÑÑÑÐµÐ½Ð½Ð¸Ð¹ ÐºÑÑÐ³
 */
 
 .wheel:after{
@@ -777,7 +771,7 @@ button{
 
 
 /*
-    Центральная точка
+    Ð¦ÐµÐ½ÑÑÐ°Ð»ÑÐ½Ð°Ñ ÑÐ¾ÑÐºÐ°
 */
 
 .wheel-center{
@@ -804,13 +798,13 @@ button{
 
 
 /*
-    Стрелка
+    Ð¡ÑÑÐµÐ»ÐºÐ°
 
-    Теперь вращается не CSS animation,
-    а JS transition.
+    Ð¢ÐµÐ¿ÐµÑÑ Ð²ÑÐ°ÑÐ°ÐµÑÑÑ Ð½Ðµ CSS animation,
+    Ð° JS transition.
 
-    Благодаря этому конечная
-    позиция каждый раз разная.
+    ÐÐ»Ð°Ð³Ð¾Ð´Ð°ÑÑ ÑÑÐ¾Ð¼Ñ ÐºÐ¾Ð½ÐµÑÐ½Ð°Ñ
+    Ð¿Ð¾Ð·Ð¸ÑÐ¸Ñ ÐºÐ°Ð¶Ð´ÑÐ¹ ÑÐ°Ð· ÑÐ°Ð·Ð½Ð°Ñ.
 */
 
 .arrow{
@@ -1169,6 +1163,68 @@ button{
 
 }
 
+
+.upgrade-preview{
+    display:grid;
+    grid-template-columns:1fr 34px 1fr;
+    align-items:center;
+    gap:7px;
+    margin:4px 0 12px;
+}
+.upgrade-preview-card{
+    min-height:58px;
+    padding:9px 6px;
+    border:1px solid #24486e;
+    border-radius:15px;
+    background:#071326;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+.upgrade-preview-card span{
+    color:#7187a5;
+    font-size:11px;
+    font-weight:800;
+}
+.upgrade-preview-card strong{
+    margin-top:3px;
+    color:#fff;
+    font-size:17px;
+    font-weight:900;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+.upgrade-preview-card.next strong{color:#25c7ff}
+.upgrade-preview-arrow{color:#25c7ff;font-size:24px;font-weight:900}
+.upgrade-wheel-legend{width:min(300px,100%);margin:-2px auto 12px}
+.upgrade-wheel-strip{
+    position:relative;height:14px;overflow:hidden;border-radius:99px;
+    background:#17243a;border:1px solid #294a70;
+}
+.upgrade-wheel-strip-success{
+    position:absolute;left:0;top:0;bottom:0;width:35%;
+    background:#19c6ff;box-shadow:0 0 15px rgba(25,198,255,.45);
+    transition:width .25s ease;z-index:2;
+}
+.upgrade-wheel-strip-fail{
+    position:absolute;right:0;top:0;bottom:0;width:65%;
+    background:#ff3d6c;opacity:.75;z-index:1;
+}
+.upgrade-wheel-caption{
+    display:flex;justify-content:space-between;margin-top:5px;
+    color:#7187a5;font-size:11px;font-weight:800;
+}
+.upgrade-cost{display:none!important}
+.result{
+    min-height:32px;margin:8px 0 12px;display:flex;
+    align-items:center;justify-content:center;text-align:center;line-height:1.2;
+}
+#waterup-user-panel{
+    top:92px!important;right:12px!important;z-index:250!important;
+    max-width:calc(100vw - 24px);
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -1196,14 +1252,14 @@ const supabaseClient = window.supabase.createClient(
 <header class="header">
 
     <div class="logo">
-        💧 water<span>UP</span>
+        ð§ water<span>UP</span>
     </div>
 
     <div class="balance">
         <span id="balance">
             0.0
         </span>
-        💧
+        ð§
     </div>
 
 </header>
@@ -1221,7 +1277,7 @@ const supabaseClient = window.supabase.createClient(
     <div class="hero">
 
         <div class="hero-drop">
-            💧
+            ð§
         </div>
 
         <h1>
@@ -1229,14 +1285,14 @@ const supabaseClient = window.supabase.createClient(
         </h1>
 
         <p>
-            Копи воду. Покупай бутылки. Улучшай их.
+            ÐÐ¾Ð¿Ð¸ Ð²Ð¾Ð´Ñ. ÐÐ¾ÐºÑÐ¿Ð°Ð¹ Ð±ÑÑÑÐ»ÐºÐ¸. Ð£Ð»ÑÑÑÐ°Ð¹ Ð¸Ñ.
         </p>
 
         <button
             class="main-btn"
             onclick="openPage('clicker')"
         >
-            💧 ЗАРАБОТАТЬ ВОДУ
+            ð§ ÐÐÐ ÐÐÐÐ¢ÐÐ¢Ð¬ ÐÐÐÐ£
         </button>
 
     </div>
@@ -1251,7 +1307,7 @@ const supabaseClient = window.supabase.createClient(
             </strong>
 
             <span>
-                воды за клик
+                Ð²Ð¾Ð´Ñ Ð·Ð° ÐºÐ»Ð¸Ðº
             </span>
 
         </div>
@@ -1260,11 +1316,11 @@ const supabaseClient = window.supabase.createClient(
         <div class="stat">
 
             <strong id="homeBottle">
-                0 л
+                0 Ð»
             </strong>
 
             <span>
-                бутылка
+                Ð±ÑÑÑÐ»ÐºÐ°
             </span>
 
         </div>
@@ -1277,7 +1333,7 @@ const supabaseClient = window.supabase.createClient(
             </strong>
 
             <span>
-                кликов
+                ÐºÐ»Ð¸ÐºÐ¾Ð²
             </span>
 
         </div>
@@ -1286,7 +1342,7 @@ const supabaseClient = window.supabase.createClient(
 
 
     <div class="section-title">
-        🧴 Твои бутылки
+        ð§´ Ð¢Ð²Ð¾Ð¸ Ð±ÑÑÑÐ»ÐºÐ¸
     </div>
 
 
@@ -1308,12 +1364,12 @@ const supabaseClient = window.supabase.createClient(
 >
 
     <div class="section-title">
-        💧 Заработок
+        ð§ ÐÐ°ÑÐ°Ð±Ð¾ÑÐ¾Ðº
     </div>
 
 
     <div class="clicker-label">
-        Текущая бутылка
+        Ð¢ÐµÐºÑÑÐ°Ñ Ð±ÑÑÑÐ»ÐºÐ°
     </div>
 
 
@@ -1321,7 +1377,7 @@ const supabaseClient = window.supabase.createClient(
         class="clicker-value"
         id="clickerBottle"
     >
-        1 л
+        1 Ð»
     </strong>
 
 
@@ -1330,23 +1386,23 @@ const supabaseClient = window.supabase.createClient(
         id="tapCircle"
         onclick="tap(event)"
     >
-        💧
+        ð§
     </div>
 
 
     <div class="tap-reward">
 
-        Каждый клик:
+        ÐÐ°Ð¶Ð´ÑÐ¹ ÐºÐ»Ð¸Ðº:
 
         <strong>
-            +0.1 💧
+            +0.1 ð§
         </strong>
 
     </div>
 
 
     <div class="protection">
-        🛡️ Анти-автокликер активен
+        ð¡ï¸ ÐÐ½ÑÐ¸-Ð°Ð²ÑÐ¾ÐºÐ»Ð¸ÐºÐµÑ Ð°ÐºÑÐ¸Ð²ÐµÐ½
     </div>
 
 </section>
@@ -1362,7 +1418,7 @@ const supabaseClient = window.supabase.createClient(
 >
 
     <div class="section-title">
-        🛒 Магазин бутылок
+        ð ÐÐ°Ð³Ð°Ð·Ð¸Ð½ Ð±ÑÑÑÐ»Ð¾Ðº
     </div>
 
 
@@ -1384,7 +1440,7 @@ const supabaseClient = window.supabase.createClient(
 >
 
     <div class="section-title">
-        🎒 Инвентарь
+        ð ÐÐ½Ð²ÐµÐ½ÑÐ°ÑÑ
     </div>
 
 
@@ -1406,39 +1462,39 @@ const supabaseClient = window.supabase.createClient(
 >
 
     <div class="section-title">
-        ⚡ Апгрейд
+        â¡ ÐÐ¿Ð³ÑÐµÐ¹Ð´
     </div>
 
 
     <div class="current-box">
 
         <small>
-            Текущая бутылка
+            Ð¢ÐµÐºÑÑÐ°Ñ Ð±ÑÑÑÐ»ÐºÐ°
         </small>
 
         <div
             class="current-liter"
             id="upgradeCurrent"
         >
-            1 л
+            1 Ð»
         </div>
 
         <small>
-            Следующая:
+            Ð¡Ð»ÐµÐ´ÑÑÑÐ°Ñ:
         </small>
 
         <div
             class="next-liter"
             id="upgradeNext"
         >
-            5 л
+            5 Ð»
         </div>
 
     </div>
 
 
     <div class="chance-title">
-        🎯 Шанс улучшения
+        ð¯ Ð¨Ð°Ð½Ñ ÑÐ»ÑÑÑÐµÐ½Ð¸Ñ
     </div>
 
 
@@ -1495,6 +1551,16 @@ const supabaseClient = window.supabase.createClient(
     </div>
 
 
+    <div class="upgrade-wheel-legend">
+        <div class="upgrade-wheel-strip">
+            <div class="upgrade-wheel-strip-fail"></div>
+            <div class="upgrade-wheel-strip-success" id="upgradeSuccessStrip"></div>
+        </div>
+        <div class="upgrade-wheel-caption">
+            <span>ÐÐ°ÑÐ¾Ð´</span><span id="upgradeChanceLabel">35%</span>
+        </div>
+    </div>
+
     <div class="wheel-wrap">
 
         <div
@@ -1516,21 +1582,17 @@ const supabaseClient = window.supabase.createClient(
         </div>
 
     </div>
-
-
-    <div
-        class="upgrade-cost"
-        id="upgradeCost"
-    >
-        Стоимость улучшения: 0 💧
+    <div class="upgrade-preview" id="upgradePreview">
+        <div class="upgrade-preview-card"><span>Ð¡ÑÐ°Ð²Ð¸Ð¼</span><strong id="upgradePut">â</strong></div>
+        <div class="upgrade-preview-arrow">â</div>
+        <div class="upgrade-preview-card next"><span>ÐÐ¾Ð»ÑÑÐ¸Ð¼</span><strong id="upgradeReceive">â</strong></div>
     </div>
 
-
-    <div
+<div
         class="result"
         id="upgradeResult"
     >
-        Готов к улучшению
+        ÐÐ¾ÑÐ¾Ð² Ðº ÑÐ»ÑÑÑÐµÐ½Ð¸Ñ
     </div>
 
 
@@ -1539,7 +1601,7 @@ const supabaseClient = window.supabase.createClient(
         id="upgradeButton"
         onclick="upgrade()"
     >
-        ⚡ УЛУЧШИТЬ
+        â¡ Ð£ÐÐ£Ð§Ð¨ÐÐ¢Ð¬
     </button>
 
 </section>
@@ -1555,22 +1617,22 @@ const supabaseClient = window.supabase.createClient(
 >
 
     <div class="section-title">
-        👤 Профиль
+        ð¤ ÐÑÐ¾ÑÐ¸Ð»Ñ
     </div>
 
 
     <div class="profile-card">
 
         <div class="avatar">
-            💧
+            ð§
         </div>
 
         <div class="profile-name">
-            waterUP игрок
+            waterUP Ð¸Ð³ÑÐ¾Ðº
         </div>
 
         <div class="profile-level">
-            Уровень бутылки:
+            Ð£ÑÐ¾Ð²ÐµÐ½Ñ Ð±ÑÑÑÐ»ÐºÐ¸:
             <span id="profileLevel">
                 0
             </span>
@@ -1586,7 +1648,7 @@ const supabaseClient = window.supabase.createClient(
                 </strong>
 
                 <span>
-                    воды
+                    Ð²Ð¾Ð´Ñ
                 </span>
 
             </div>
@@ -1599,7 +1661,7 @@ const supabaseClient = window.supabase.createClient(
                 </strong>
 
                 <span>
-                    кликов
+                    ÐºÐ»Ð¸ÐºÐ¾Ð²
                 </span>
 
             </div>
@@ -1612,7 +1674,7 @@ const supabaseClient = window.supabase.createClient(
                 </strong>
 
                 <span>
-                    заработано
+                    Ð·Ð°ÑÐ°Ð±Ð¾ÑÐ°Ð½Ð¾
                 </span>
 
             </div>
@@ -1625,7 +1687,7 @@ const supabaseClient = window.supabase.createClient(
                 </strong>
 
                 <span>
-                    бутылок
+                    Ð±ÑÑÑÐ»Ð¾Ðº
                 </span>
 
             </div>
@@ -1661,10 +1723,10 @@ const supabaseClient = window.supabase.createClient(
     >
 
         <span class="nav-icon">
-            ⌂
+            â
         </span>
 
-        Главная
+        ÐÐ»Ð°Ð²Ð½Ð°Ñ
 
     </button>
 
@@ -1676,10 +1738,10 @@ const supabaseClient = window.supabase.createClient(
     >
 
         <span class="nav-icon">
-            🛒
+            ð
         </span>
 
-        Магазин
+        ÐÐ°Ð³Ð°Ð·Ð¸Ð½
 
     </button>
 
@@ -1691,10 +1753,10 @@ const supabaseClient = window.supabase.createClient(
     >
 
         <span class="nav-icon">
-            ▣
+            â£
         </span>
 
-        Инвентарь
+        ÐÐ½Ð²ÐµÐ½ÑÐ°ÑÑ
 
     </button>
 
@@ -1706,10 +1768,10 @@ const supabaseClient = window.supabase.createClient(
     >
 
         <span class="nav-icon">
-            ↗
+            â
         </span>
 
-        Апгрейд
+        ÐÐ¿Ð³ÑÐµÐ¹Ð´
 
     </button>
 
@@ -1721,10 +1783,10 @@ const supabaseClient = window.supabase.createClient(
     >
 
         <span class="nav-icon">
-            ♙
+            â
         </span>
 
-        Профиль
+        ÐÑÐ¾ÑÐ¸Ð»Ñ
 
     </button>
 
@@ -1750,10 +1812,10 @@ const CLICK_REWARD = 0.1;
 
 
 /*
-    Базовые бутылки.
+    ÐÐ°Ð·Ð¾Ð²ÑÐµ Ð±ÑÑÑÐ»ÐºÐ¸.
 
-    Цена — количество виртуальной воды,
-    которое нужно накопить кликами.
+    Ð¦ÐµÐ½Ð° â ÐºÐ¾Ð»Ð¸ÑÐµÑÑÐ²Ð¾ Ð²Ð¸ÑÑÑÐ°Ð»ÑÐ½Ð¾Ð¹ Ð²Ð¾Ð´Ñ,
+    ÐºÐ¾ÑÐ¾ÑÐ¾Ðµ Ð½ÑÐ¶Ð½Ð¾ Ð½Ð°ÐºÐ¾Ð¿Ð¸ÑÑ ÐºÐ»Ð¸ÐºÐ°Ð¼Ð¸.
 */
 
 const bottles = [
@@ -1761,7 +1823,7 @@ const bottles = [
     {
         id:1,
         liter:1,
-        price:100
+        price:100.1
     },
 
     {
@@ -1864,9 +1926,9 @@ const bottles = [
 /*
     V2 keys.
 
-    Благодаря этому старый прогресс
-    из предыдущей версии не ломает
-    новую экономику.
+    ÐÐ»Ð°Ð³Ð¾Ð´Ð°ÑÑ ÑÑÐ¾Ð¼Ñ ÑÑÐ°ÑÑÐ¹ Ð¿ÑÐ¾Ð³ÑÐµÑÑ
+    Ð¸Ð· Ð¿ÑÐµÐ´ÑÐ´ÑÑÐµÐ¹ Ð²ÐµÑÑÐ¸Ð¸ Ð½Ðµ Ð»Ð¾Ð¼Ð°ÐµÑ
+    Ð½Ð¾Ð²ÑÑ ÑÐºÐ¾Ð½Ð¾Ð¼Ð¸ÐºÑ.
 */
 
 let balance =
@@ -2010,11 +2072,11 @@ function getBottle(){
 
 
     /*
-        Бесконечные бутылки.
+        ÐÐµÑÐºÐ¾Ð½ÐµÑÐ½ÑÐµ Ð±ÑÑÑÐ»ÐºÐ¸.
 
-        После заранее заданных
-        уровней объём и цена
-        растут автоматически.
+        ÐÐ¾ÑÐ»Ðµ Ð·Ð°ÑÐ°Ð½ÐµÐµ Ð·Ð°Ð´Ð°Ð½Ð½ÑÑ
+        ÑÑÐ¾Ð²Ð½ÐµÐ¹ Ð¾Ð±ÑÑÐ¼ Ð¸ ÑÐµÐ½Ð°
+        ÑÐ°ÑÑÑÑ Ð°Ð²ÑÐ¾Ð¼Ð°ÑÐ¸ÑÐµÑÐºÐ¸.
     */
 
     let last =
@@ -2228,7 +2290,7 @@ let blockedUntil =
 
 
 /*
-    Показываем предупреждение.
+    ÐÐ¾ÐºÐ°Ð·ÑÐ²Ð°ÐµÐ¼ Ð¿ÑÐµÐ´ÑÐ¿ÑÐµÐ¶Ð´ÐµÐ½Ð¸Ðµ.
 */
 
 function showWarning(text){
@@ -2273,9 +2335,9 @@ function tap(event){
 
 
     /*
-        Временная блокировка
-        после обнаружения
-        подозрительной скорости.
+        ÐÑÐµÐ¼ÐµÐ½Ð½Ð°Ñ Ð±Ð»Ð¾ÐºÐ¸ÑÐ¾Ð²ÐºÐ°
+        Ð¿Ð¾ÑÐ»Ðµ Ð¾Ð±Ð½Ð°ÑÑÐ¶ÐµÐ½Ð¸Ñ
+        Ð¿Ð¾Ð´Ð¾Ð·ÑÐ¸ÑÐµÐ»ÑÐ½Ð¾Ð¹ ÑÐºÐ¾ÑÐ¾ÑÑÐ¸.
     */
 
     if(
@@ -2288,7 +2350,7 @@ function tap(event){
 
 
     /*
-        Удаляем старые события.
+        Ð£Ð´Ð°Ð»ÑÐµÐ¼ ÑÑÐ°ÑÑÐµ ÑÐ¾Ð±ÑÑÐ¸Ñ.
     */
 
     clickTimes =
@@ -2299,7 +2361,7 @@ function tap(event){
 
 
     /*
-        Интервал между кликами.
+        ÐÐ½ÑÐµÑÐ²Ð°Ð» Ð¼ÐµÐ¶Ð´Ñ ÐºÐ»Ð¸ÐºÐ°Ð¼Ð¸.
     */
 
     if(lastClick > 0){
@@ -2330,10 +2392,10 @@ function tap(event){
 
 
     /*
-        Слишком высокая скорость.
+        Ð¡Ð»Ð¸ÑÐºÐ¾Ð¼ Ð²ÑÑÐ¾ÐºÐ°Ñ ÑÐºÐ¾ÑÐ¾ÑÑÑ.
 
-        16 кликов менее чем
-        за 700 мс — блок.
+        16 ÐºÐ»Ð¸ÐºÐ¾Ð² Ð¼ÐµÐ½ÐµÐµ ÑÐµÐ¼
+        Ð·Ð° 700 Ð¼Ñ â Ð±Ð»Ð¾Ðº.
     */
 
     if(
@@ -2360,7 +2422,7 @@ function tap(event){
 
 
             showWarning(
-                "🛡️ Слишком высокая скорость"
+                "ð¡ï¸ Ð¡Ð»Ð¸ÑÐºÐ¾Ð¼ Ð²ÑÑÐ¾ÐºÐ°Ñ ÑÐºÐ¾ÑÐ¾ÑÑÑ"
             );
 
 
@@ -2372,8 +2434,8 @@ function tap(event){
 
 
     /*
-        Слишком идеально одинаковые
-        интервалы при высокой скорости.
+        Ð¡Ð»Ð¸ÑÐºÐ¾Ð¼ Ð¸Ð´ÐµÐ°Ð»ÑÐ½Ð¾ Ð¾Ð´Ð¸Ð½Ð°ÐºÐ¾Ð²ÑÐµ
+        Ð¸Ð½ÑÐµÑÐ²Ð°Ð»Ñ Ð¿ÑÐ¸ Ð²ÑÑÐ¾ÐºÐ¾Ð¹ ÑÐºÐ¾ÑÐ¾ÑÑÐ¸.
     */
 
     if(
@@ -2424,7 +2486,7 @@ function tap(event){
 
 
             showWarning(
-                "🛡️ Подозрительная активность"
+                "ð¡ï¸ ÐÐ¾Ð´Ð¾Ð·ÑÐ¸ÑÐµÐ»ÑÐ½Ð°Ñ Ð°ÐºÑÐ¸Ð²Ð½Ð¾ÑÑÑ"
             );
 
 
@@ -2436,9 +2498,9 @@ function tap(event){
 
 
     /*
-        ГЛАВНАЯ ЭКОНОМИКА:
+        ÐÐÐÐÐÐÐ¯ Ð­ÐÐÐÐÐÐÐÐ:
 
-        один клик = +0.1 воды.
+        Ð¾Ð´Ð¸Ð½ ÐºÐ»Ð¸Ðº = +0.1 Ð²Ð¾Ð´Ñ.
     */
 
     balance +=
@@ -2470,7 +2532,7 @@ function tap(event){
 
 
     text.textContent =
-        "+0.1 💧";
+        "+0.1 ð§";
 
 
     const x =
@@ -2518,7 +2580,7 @@ function buyBottle(level){
 
 
     /*
-        Уже куплена?
+        Ð£Ð¶Ðµ ÐºÑÐ¿Ð»ÐµÐ½Ð°?
     */
 
     if(
@@ -2526,7 +2588,7 @@ function buyBottle(level){
     ){
 
         showWarning(
-            "🧴 Эта бутылка уже куплена"
+            "ð§´ Ð­ÑÐ° Ð±ÑÑÑÐ»ÐºÐ° ÑÐ¶Ðµ ÐºÑÐ¿Ð»ÐµÐ½Ð°"
         );
 
         return;
@@ -2535,7 +2597,7 @@ function buyBottle(level){
 
 
     /*
-        Проверяем баланс.
+        ÐÑÐ¾Ð²ÐµÑÑÐµÐ¼ Ð±Ð°Ð»Ð°Ð½Ñ.
     */
 
     if(
@@ -2543,7 +2605,7 @@ function buyBottle(level){
     ){
 
         showWarning(
-            "💧 Недостаточно воды"
+            "ð§ ÐÐµÐ´Ð¾ÑÑÐ°ÑÐ¾ÑÐ½Ð¾ Ð²Ð¾Ð´Ñ"
         );
 
         return;
@@ -2552,7 +2614,7 @@ function buyBottle(level){
 
 
     /*
-        Покупаем.
+        ÐÐ¾ÐºÑÐ¿Ð°ÐµÐ¼.
     */
 
     balance -=
@@ -2565,9 +2627,9 @@ function buyBottle(level){
 
 
     /*
-        Первая купленная бутылка
-        автоматически становится
-        текущей.
+        ÐÐµÑÐ²Ð°Ñ ÐºÑÐ¿Ð»ÐµÐ½Ð½Ð°Ñ Ð±ÑÑÑÐ»ÐºÐ°
+        Ð°Ð²ÑÐ¾Ð¼Ð°ÑÐ¸ÑÐµÑÐºÐ¸ ÑÑÐ°Ð½Ð¾Ð²Ð¸ÑÑÑ
+        ÑÐµÐºÑÑÐµÐ¹.
     */
 
     if(
@@ -2591,7 +2653,7 @@ function buyBottle(level){
 
 
     showWarning(
-        "🎉 Бутылка куплена!"
+        "ð ÐÑÑÑÐ»ÐºÐ° ÐºÑÐ¿Ð»ÐµÐ½Ð°!"
     );
 
 }
@@ -2622,7 +2684,7 @@ function selectBottle(level){
 
 
     showWarning(
-        "🧴 Бутылка выбрана"
+        "ð§´ ÐÑÑÑÐ»ÐºÐ° Ð²ÑÐ±ÑÐ°Ð½Ð°"
     );
 
 }
@@ -2644,9 +2706,9 @@ function renderShop(){
 
 
     /*
-        Показываем первые 16 уровней
-        + следующие несколько
-        относительно текущего прогресса.
+        ÐÐ¾ÐºÐ°Ð·ÑÐ²Ð°ÐµÐ¼ Ð¿ÐµÑÐ²ÑÐµ 16 ÑÑÐ¾Ð²Ð½ÐµÐ¹
+        + ÑÐ»ÐµÐ´ÑÑÑÐ¸Ðµ Ð½ÐµÑÐºÐ¾Ð»ÑÐºÐ¾
+        Ð¾ÑÐ½Ð¾ÑÐ¸ÑÐµÐ»ÑÐ½Ð¾ ÑÐµÐºÑÑÐµÐ³Ð¾ Ð¿ÑÐ¾Ð³ÑÐµÑÑÐ°.
     */
 
     const maxLevel =
@@ -2690,21 +2752,21 @@ function renderShop(){
         card.innerHTML = `
 
             <div class="shop-bottle">
-                🧴
+                ð§´
             </div>
 
             <div class="shop-liter">
                 ${formatNumber(
                     bottle.liter
-                )} л
+                )} Ð»
             </div>
 
             <div class="shop-level">
-                Уровень ${level}
+                Ð£ÑÐ¾Ð²ÐµÐ½Ñ ${level}
             </div>
 
             <div class="shop-price">
-                💧 ${formatNumber(
+                ð§ ${formatNumber(
                     bottle.price
                 )}
             </div>
@@ -2721,7 +2783,7 @@ function renderShop(){
                         selectBottle(${level})
                     "
                 >
-                    ✓ КУПЛЕНО
+                    â ÐÐ£ÐÐÐÐÐ
                 </button>
                 `
 
@@ -2739,7 +2801,7 @@ function renderShop(){
                         buyBottle(${level})
                     "
                 >
-                    КУПИТЬ
+                    ÐÐ£ÐÐÐ¢Ð¬
                 </button>
                 `
             }
@@ -2789,16 +2851,16 @@ function renderInventory(){
             <div class="empty">
 
                 <div class="empty-icon">
-                    🧴
+                    ð§´
                 </div>
 
-                У тебя пока нет бутылок.
+                Ð£ ÑÐµÐ±Ñ Ð¿Ð¾ÐºÐ° Ð½ÐµÑ Ð±ÑÑÑÐ»Ð¾Ðº.
 
                 <br><br>
 
-                Заработай воду и
-                купи первую бутылку
-                в магазине.
+                ÐÐ°ÑÐ°Ð±Ð¾ÑÐ°Ð¹ Ð²Ð¾Ð´Ñ Ð¸
+                ÐºÑÐ¿Ð¸ Ð¿ÐµÑÐ²ÑÑ Ð±ÑÑÑÐ»ÐºÑ
+                Ð² Ð¼Ð°Ð³Ð°Ð·Ð¸Ð½Ðµ.
 
             </div>
 
@@ -2849,7 +2911,7 @@ function renderInventory(){
             item.innerHTML = `
 
                 <div class="inventory-icon">
-                    🧴
+                    ð§´
                 </div>
 
                 <div>
@@ -2858,13 +2920,13 @@ function renderInventory(){
 
                         ${formatNumber(
                             bottle.liter
-                        )} л
+                        )} Ð»
 
                     </div>
 
                     <div class="inventory-info">
 
-                        Уровень ${level}
+                        Ð£ÑÐ¾Ð²ÐµÐ½Ñ ${level}
 
                     </div>
 
@@ -2879,7 +2941,7 @@ function renderInventory(){
                     <div
                         class="inventory-select"
                     >
-                        ТЕКУЩАЯ
+                        Ð¢ÐÐÐ£Ð©ÐÐ¯
                     </div>
                     `
 
@@ -2892,7 +2954,7 @@ function renderInventory(){
                             selectBottle(${level})
                         "
                     >
-                        ВЫБРАТЬ
+                        ÐÐ«ÐÐ ÐÐ¢Ð¬
                     </button>
                     `
                 }
@@ -2906,7 +2968,7 @@ function renderInventory(){
 
 
             /*
-                Копия для главной.
+                ÐÐ¾Ð¿Ð¸Ñ Ð´Ð»Ñ Ð³Ð»Ð°Ð²Ð½Ð¾Ð¹.
             */
 
             const homeItem =
@@ -2930,46 +2992,19 @@ function renderInventory(){
 ========================================================= */
 
 function setChance(value){
-
-    if(
-        upgrading
-    ){
-
-        return;
-
-    }
-
-
-    chance =
-        value;
-
-
+    if(upgrading) return;
+    chance = Number(value);
     save();
 
-
-    document
-        .querySelectorAll(".chance")
-        .forEach(
-            button => {
-
-                button.classList.toggle(
-                    "selected",
-                    Number(
-                        button.dataset.chance
-                    ) === chance
-                );
-
-            }
+    document.querySelectorAll(".chance").forEach(button => {
+        button.classList.toggle(
+            "selected",
+            Number(button.dataset.chance) === chance
         );
+    });
 
-
-    document.getElementById(
-        "upgradeResult"
-    ).textContent =
-        "Шанс установлен: " +
-        chance +
-        "%";
-
+    updateUpgradeVisuals();
+    document.getElementById("upgradeResult").textContent = "ÐÐ¾ÑÐ¾Ð² Ðº ÑÐ»ÑÑÑÐµÐ½Ð¸Ñ";
 }
 
 
@@ -2977,34 +3012,6 @@ function setChance(value){
    UPGRADE COST
 ========================================================= */
 
-function getUpgradeCost(){
-
-    /*
-        Улучшение тоже требует
-        виртуальную воду.
-
-        Цена зависит от следующей
-        бутылки.
-    */
-
-    const next =
-        getBottleByLevel(
-            currentBottle + 1
-        );
-
-
-    if(!next){
-
-        return 0;
-
-    }
-
-
-    return Math.floor(
-        next.price * 0.18
-    );
-
-}
 
 
 /* =========================================================
@@ -3012,418 +3019,103 @@ function getUpgradeCost(){
 ========================================================= */
 
 function getSuccessAngle(){
-
-    /*
-        Сектор успеха занимает
-        "chance" процентов круга.
-
-        Выбираем случайную точку
-        внутри него.
-
-        Это нужно именно для того,
-        чтобы стрелка реально
-        останавливалась в разных
-        местах.
-    */
-
-
-    const successSize =
-        chance * 3.6;
-
-
-    /*
-        Успешная зона начинается
-        с 0 градусов.
-
-        Добавляем небольшой запас,
-        чтобы стрелка не стояла
-        прямо на границе.
-    */
-
-    const margin =
-        Math.min(
-            4,
-            successSize / 5
-        );
-
-
-    const min =
-        margin;
-
-
-    const max =
-        Math.max(
-            margin,
-            successSize - margin
-        );
-
-
-    return (
-        min +
-        Math.random() *
-        (max - min)
-    );
-
+    const size = chance * 3.6;
+    const margin = Math.min(3, size / 5);
+    return margin + Math.random() * Math.max(0.1, size - margin * 2);
 }
-
-
-/* =========================================================
-   RANDOM FAIL ANGLE
-========================================================= */
 
 function getFailAngle(){
-
-    /*
-        Выбираем случайный угол
-        за пределами зоны успеха.
-    */
-
-    const successSize =
-        chance * 3.6;
-
-
-    let angle;
-
-
-    do{
-
-        angle =
-            Math.random() * 360;
-
-    }while(
-        angle <= successSize
-    );
-
-
-    return angle;
-
+    const size = chance * 3.6;
+    return size + 3 + Math.random() * Math.max(1, 357 - size);
 }
 
+function updateUpgradeVisuals(){
+    const strip = document.getElementById("upgradeSuccessStrip");
+    const label = document.getElementById("upgradeChanceLabel");
+    const wheel = document.getElementById("wheel");
 
-/* =========================================================
-   ROTATE ARROW
-========================================================= */
+    if(strip) strip.style.width = chance + "%";
+    if(label) label.textContent = chance + "%";
+    if(wheel) wheel.style.setProperty("--success-angle", chance * 3.6);
+
+    const cur = current();
+    const next = cur ? getBottleByLevel(currentBottle + 1) : null;
+    const put = document.getElementById("upgradePut");
+    const receive = document.getElementById("upgradeReceive");
+
+    if(put) put.textContent = cur ? formatNumber(cur.liter) + " Ð»" : "ÐÐµÑ Ð±ÑÑÑÐ»ÐºÐ¸";
+    if(receive) receive.textContent = next ? formatNumber(next.liter) + " Ð»" : "â";
+}
 
 function rotateArrow(){
+    return new Promise(resolve => {
+        const arrow = document.getElementById("arrow");
+        const success = Math.random() * 100 < chance;
 
-    return new Promise(
-        resolve => {
+        const finalAngle = success ? getSuccessAngle() : getFailAngle();
+        const match = (arrow.style.transform || "").match(/rotate\(([-\d.]+)deg\)/);
+        const currentAngle = match ? Number(match[1]) : 0;
+        const turns = 6 + Math.floor(Math.random() * 3);
+        const target = currentAngle + turns * 360 + finalAngle;
 
-            const arrow =
-                document.getElementById(
-                    "arrow"
-                );
+        arrow.style.transition =
+            "transform 4.2s cubic-bezier(.08,.72,.16,1)";
 
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                arrow.style.transform = "rotate(" + target + "deg)";
+            });
+        });
 
-            const wheel =
-                document.getElementById(
-                    "wheel"
-                );
-
-
-            /*
-                35% шанс:
-
-                либо выбираем точку
-                в синей зоне,
-
-                либо случайную точку
-                в красной/нейтральной зоне.
-            */
-
-            const success =
-                Math.random() * 100
-                <
-                chance;
-
-
-            let finalAngle;
-
-
-            if(success){
-
-                finalAngle =
-                    getSuccessAngle();
-
-            }else{
-
-                finalAngle =
-                    getFailAngle();
-
-            }
-
-
-            /*
-                От 5 до 8 полных
-                оборотов.
-
-                Плюс случайное
-                количество градусов.
-
-                Поэтому каждый запуск
-                визуально отличается.
-            */
-
-            const fullTurns =
-                5 +
-                Math.floor(
-                    Math.random() * 4
-                );
-
-
-            const extra =
-                fullTurns * 360;
-
-
-            /*
-                У стрелки 0 градусов
-                находится сверху.
-
-                Добавляем случайный
-                конечный угол.
-            */
-
-            const target =
-                extra +
-                finalAngle;
-
-
-            /*
-                Очень важный момент:
-
-                НЕ используем CSS animation.
-
-                Используем transition
-                с реальным случайным
-                target.
-
-                Поэтому она не будет
-                останавливаться всегда
-                в одной точке.
-            */
-
-            arrow.style.transition =
-                "transform 3.6s cubic-bezier(.08,.72,.16,1)";
-
-
-            requestAnimationFrame(
-                () => {
-
-                    arrow.style.transform =
-                        "rotate(" +
-                        target +
-                        "deg)";
-
-                }
-            );
-
-
-            setTimeout(
-                () => {
-
-                    resolve(
-                        success
-                    );
-
-                },
-                3700
-            );
-
-        }
-    );
-
+        setTimeout(() => resolve(success), 4350);
+    });
 }
 
-
-/* =========================================================
-   UPGRADE
-========================================================= */
-
 async function upgrade(){
+    if(upgrading) return;
 
-    if(
-        upgrading
-    ){
-
-        return;
-
-    }
-
-
-    /*
-        Нужна хотя бы одна бутылка.
-    */
-
-    if(
-        currentBottle <= 0
-    ){
-
-        showWarning(
-            "🧴 Сначала купи бутылку"
-        );
-
+    if(currentBottle <= 0){
+        showWarning("ð§´ Ð¡Ð½Ð°ÑÐ°Ð»Ð° ÐºÑÐ¿Ð¸ Ð±ÑÑÑÐ»ÐºÑ");
         openPage("shop");
-
         return;
-
     }
 
+    const nextLevel = currentBottle + 1;
+    const nextBottle = getBottleByLevel(nextLevel);
 
-    const cost =
-        getUpgradeCost();
-
-
-    /*
-        Проверяем воду.
-    */
-
-    if(
-        balance < cost
-    ){
-
-        showWarning(
-            "💧 Недостаточно воды для апгрейда"
-        );
-
+    if(!nextBottle){
+        showWarning("ð ÐÐ°ÐºÑÐ¸Ð¼Ð°Ð»ÑÐ½ÑÐ¹ ÑÑÐ¾Ð²ÐµÐ½Ñ");
         return;
-
     }
 
+    upgrading = true;
 
-    upgrading =
-        true;
+    const button = document.getElementById("upgradeButton");
+    const result = document.getElementById("upgradeResult");
 
+    button.disabled = true;
+    result.className = "result";
+    result.textContent = "â¡ ÐÐ Ð£Ð¢ÐÐ...";
 
-    const button =
-        document.getElementById(
-            "upgradeButton"
-        );
-
-
-    const result =
-        document.getElementById(
-            "upgradeResult"
-        );
-
-
-    /*
-        Сначала списываем
-        стоимость.
-    */
-
-    balance -=
-        cost;
-
-
-    save();
-
-    updateUI();
-
-
-    button.disabled =
-        true;
-
-
-    result.className =
-        "result";
-
-
-    result.textContent =
-        "⚡ СТРЕЛКА КРУТИТСЯ...";
-
-
-    /*
-        Запускаем реальное
-        случайное вращение.
-    */
-
-    const success =
-        await rotateArrow();
-
-
-    /*
-        После остановки
-        выдаём результат.
-    */
+    const success = await rotateArrow();
 
     if(success){
-
-        const nextLevel =
-            currentBottle + 1;
-
-
-        /*
-            Если следующая бутылка
-            ещё не куплена —
-            добавляем её
-            автоматически.
-        */
-
-        if(
-            !owned.includes(
-                nextLevel
-            )
-        ){
-
-            owned.push(
-                nextLevel
-            );
-
-        }
-
-
-        currentBottle =
-            nextLevel;
-
-
-        owned.sort(
-            (a,b) => a - b
-        );
-
-
+        if(!owned.includes(nextLevel)) owned.push(nextLevel);
+        currentBottle = nextLevel;
+        owned.sort((a,b) => a-b);
         save();
 
-
-        const bottle =
-            getBottleByLevel(
-                currentBottle
-            );
-
-
-        result.className =
-            "result success";
-
-
-        result.textContent =
-            "🎉 УСПЕХ! → " +
-            formatNumber(
-                bottle.liter
-            ) +
-            " л";
-
-
+        result.className = "result success";
+        result.textContent = "ÐÐ°ÑÐ¾Ð´!";
     }else{
-
-        result.className =
-            "result fail";
-
-
-        result.textContent =
-            "💥 НЕУДАЧА";
-
+        result.className = "result fail";
+        result.textContent = "ÐÐµÐ·Ð°ÑÐ¾Ð´, Ð¿Ð¾Ð¿ÑÐ¾Ð±ÑÐµÐ¼ ÑÐ½Ð¾Ð²Ð°?";
     }
 
-
-    upgrading =
-        false;
-
-
-    button.disabled =
-        false;
-
-
+    upgrading = false;
+    button.disabled = false;
     updateUI();
-
+    updateUpgradeVisuals();
 }
 
 
@@ -3461,7 +3153,7 @@ function updateUI(){
             formatNumber(
                 bottle.liter
             ) +
-            " л";
+            " Ð»";
 
 
         document.getElementById(
@@ -3470,7 +3162,7 @@ function updateUI(){
             formatNumber(
                 bottle.liter
             ) +
-            " л";
+            " Ð»";
 
 
         document.getElementById(
@@ -3479,7 +3171,7 @@ function updateUI(){
             formatNumber(
                 bottle.liter
             ) +
-            " л";
+            " Ð»";
 
 
         const next =
@@ -3494,48 +3186,32 @@ function updateUI(){
             formatNumber(
                 next.liter
             ) +
-            " л";
-
-
-        document.getElementById(
-            "upgradeCost"
-        ).textContent =
-            "Стоимость улучшения: " +
-            formatNumber(
-                getUpgradeCost()
-            ) +
-            " 💧";
+            " Ð»";
 
     }else{
 
         document.getElementById(
             "homeBottle"
         ).textContent =
-            "Нет";
+            "ÐÐµÑ";
 
 
         document.getElementById(
             "clickerBottle"
         ).textContent =
-            "Нет бутылки";
+            "ÐÐµÑ Ð±ÑÑÑÐ»ÐºÐ¸";
 
 
         document.getElementById(
             "upgradeCurrent"
         ).textContent =
-            "Нет бутылки";
+            "ÐÐµÑ Ð±ÑÑÑÐ»ÐºÐ¸";
 
 
         document.getElementById(
             "upgradeNext"
         ).textContent =
-            "1 л";
-
-
-        document.getElementById(
-            "upgradeCost"
-        ).textContent =
-            "Сначала купи бутылку";
+            "1 Ð»";
 
     }
 
@@ -3625,6 +3301,7 @@ function updateUI(){
     renderShop();
 
     renderInventory();
+    updateUpgradeVisuals();
 
 }
 
@@ -3753,7 +3430,7 @@ updateUI();
     auth.innerHTML = `
         <div id="waterup-auth-box">
             <div id="waterup-auth-title">waterUP</div>
-            <div id="waterup-auth-subtitle">Войди в аккаунт или зарегистрируйся</div>
+            <div id="waterup-auth-subtitle">ÐÐ¾Ð¹Ð´Ð¸ Ð² Ð°ÐºÐºÐ°ÑÐ½Ñ Ð¸Ð»Ð¸ Ð·Ð°ÑÐµÐ³Ð¸ÑÑÑÐ¸ÑÑÐ¹ÑÑ</div>
 
             <input id="waterup-username"
                    type="text"
@@ -3767,11 +3444,11 @@ updateUI();
 
             <input id="waterup-password"
                    type="password"
-                   placeholder="Пароль"
+                   placeholder="ÐÐ°ÑÐ¾Ð»Ñ"
                    autocomplete="current-password">
 
-            <button id="waterup-login">ВОЙТИ</button>
-            <button id="waterup-auth-register">РЕГИСТРАЦИЯ</button>
+            <button id="waterup-login">ÐÐÐÐ¢Ð</button>
+            <button id="waterup-auth-register">Ð ÐÐÐÐ¡Ð¢Ð ÐÐ¦ÐÐ¯</button>
 
             <div id="waterup-auth-status"></div>
         </div>
@@ -3784,7 +3461,7 @@ updateUI();
 
     userPanel.innerHTML = `
         <span id="waterup-user-name"></span>
-        <button id="waterup-logout">Выйти</button>
+        <button id="waterup-logout">ÐÑÐ¹ÑÐ¸</button>
     `;
 
     document.body.appendChild(userPanel);
@@ -3805,11 +3482,11 @@ updateUI();
         const password = passwordInput.value;
 
         if (!email || !password) {
-            setStatus("Введи email и пароль.");
+            setStatus("ÐÐ²ÐµÐ´Ð¸ email Ð¸ Ð¿Ð°ÑÐ¾Ð»Ñ.");
             return;
         }
 
-        setStatus("Выполняется вход...");
+        setStatus("ÐÑÐ¿Ð¾Ð»Ð½ÑÐµÑÑÑ Ð²ÑÐ¾Ð´...");
 
         const { error } = await supabaseClient.auth.signInWithPassword({
             email,
@@ -3830,21 +3507,21 @@ updateUI();
         const password = passwordInput.value;
 
         if (!username || !email || !password) {
-            setStatus("Заполни все поля.");
+            setStatus("ÐÐ°Ð¿Ð¾Ð»Ð½Ð¸ Ð²ÑÐµ Ð¿Ð¾Ð»Ñ.");
             return;
         }
 
         if (username.length < 3) {
-            setStatus("Username должен быть минимум 3 символа.");
+            setStatus("Username Ð´Ð¾Ð»Ð¶ÐµÐ½ Ð±ÑÑÑ Ð¼Ð¸Ð½Ð¸Ð¼ÑÐ¼ 3 ÑÐ¸Ð¼Ð²Ð¾Ð»Ð°.");
             return;
         }
 
         if (password.length < 6) {
-            setStatus("Пароль должен быть минимум 6 символов.");
+            setStatus("ÐÐ°ÑÐ¾Ð»Ñ Ð´Ð¾Ð»Ð¶ÐµÐ½ Ð±ÑÑÑ Ð¼Ð¸Ð½Ð¸Ð¼ÑÐ¼ 6 ÑÐ¸Ð¼Ð²Ð¾Ð»Ð¾Ð².");
             return;
         }
 
-        setStatus("Создаём аккаунт...");
+        setStatus("Ð¡Ð¾Ð·Ð´Ð°ÑÐ¼ Ð°ÐºÐºÐ°ÑÐ½Ñ...");
 
         const { data, error } = await supabaseClient.auth.signUp({
             email,
@@ -3862,9 +3539,9 @@ updateUI();
         }
 
         if (!data.session) {
-            setStatus("Аккаунт создан. Проверь почту для подтверждения.");
+            setStatus("ÐÐºÐºÐ°ÑÐ½Ñ ÑÐ¾Ð·Ð´Ð°Ð½. ÐÑÐ¾Ð²ÐµÑÑ Ð¿Ð¾ÑÑÑ Ð´Ð»Ñ Ð¿Ð¾Ð´ÑÐ²ÐµÑÐ¶Ð´ÐµÐ½Ð¸Ñ.");
         } else {
-            setStatus("Аккаунт создан!");
+            setStatus("ÐÐºÐºÐ°ÑÐ½Ñ ÑÐ¾Ð·Ð´Ð°Ð½!");
         }
     }
 
@@ -3878,7 +3555,7 @@ updateUI();
         const username =
             user.user_metadata?.username ||
             user.email?.split("@")[0] ||
-            "Игрок";
+            "ÐÐ³ÑÐ¾Ðº";
 
         document.getElementById("waterup-user-name").textContent =
             username;
