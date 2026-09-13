@@ -2024,6 +2024,8 @@ let bottleOverrides =
 
 
 let upgrading = false;
+let currentUser = null;
+let syncingServerBalance = false;
 
 
 /* =========================================================
@@ -2066,6 +2068,20 @@ function save(){
         "waterup_v2_bottle_overrides",
         JSON.stringify(bottleOverrides)
     );
+
+    // Синхронизируем баланс с профилем авторизованного игрока.
+    if(currentUser && !syncingServerBalance){
+        supabaseClient
+            .from("profiles")
+            .update({
+                water: balance,
+                updated_at: new Date().toISOString()
+            })
+            .eq("id", currentUser.id)
+            .then(({ error }) => {
+                if(error) console.error("Ошибка синхронизации воды:", error);
+            });
+    }
 
 }
 
@@ -3703,12 +3719,46 @@ updateUI();
         }
     }
 
+    async function loadServerProfile(user) {
+        syncingServerBalance = true;
+
+        const { data: profile, error } = await supabaseClient
+            .from("profiles")
+            .select("water,banned")
+            .eq("id", user.id)
+            .single();
+
+        if(error){
+            console.error("Не удалось загрузить профиль:", error);
+            syncingServerBalance = false;
+            return;
+        }
+
+        if(profile?.banned){
+            setStatus("Аккаунт заблокирован.");
+            await supabaseClient.auth.signOut();
+            syncingServerBalance = false;
+            return;
+        }
+
+        if(profile && Number.isFinite(Number(profile.water))){
+            balance = Number(profile.water);
+            localStorage.setItem("waterup_v2_balance", balance);
+            updateUI();
+        }
+
+        syncingServerBalance = false;
+    }
+
     async function updateUserUI(user) {
         if (!user) {
+            currentUser = null;
             auth.style.display = "flex";
             userPanel.style.display = "none";
             return;
         }
+
+        currentUser = user;
 
         const username =
             user.user_metadata?.username ||
@@ -3727,6 +3777,8 @@ updateUI();
                 last_seen_at: new Date().toISOString()
             })
             .eq("id", user.id);
+
+        await loadServerProfile(user);
     }
 
     loginButton.addEventListener("click", login);
