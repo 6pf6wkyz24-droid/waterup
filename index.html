@@ -2169,6 +2169,7 @@ const CASES = [
         icon:"💎",
         name:"AQUA DROP // PRIME",
         description:"Стартовый кейс: частые маленькие награды и редкие крупные дропы.",
+        price:5000,
         odds:[
             ["1 л",90],["3 л",5],["5 л",2],["10 л",2],["25 л",0.8],["50 л",0.2]
         ]
@@ -2189,6 +2190,7 @@ const CASES = [
         icon:"👑",
         name:"OCEAN SINGULARITY",
         description:"Элитный кейс с огромными объёмами воды.",
+        price:500000000,
         odds:[
             ["500 л",45],["1000 л",25],["2500 л",15],["5000 л",8],["10000 л",5],["25000 л",2]
         ]
@@ -2199,6 +2201,7 @@ const CASES = [
         name:"ALL IN // ZERO",
         description:"Ставка ва-банк: перед открытием сгорают все капли и все бутылки.",
         special:true,
+        allInPrice:true,
         odds:[
             ["0× — потеря всего",35],["0.5× — половина",20],["1.5×",20],["2×",15],["3×",8],["5× JACKPOT",2]
         ]
@@ -2228,20 +2231,55 @@ function renderCases(){
             ? `<div class="case-requirement">🖱️ Требуется: <b>${Number(c.minClicks).toLocaleString("ru-RU")}</b> кликов</div>`
             : "";
         const once = c.once ? `<div class="case-once">🔒 Только 1 открытие на аккаунт</div>` : "";
+        let price="";
+        if(c.allInPrice){
+            price=`<div class="case-price">☠️ Цена: ВСЕ КАПЛИ + ВСЕ БУТЫЛКИ</div>`;
+        }else if(c.minClicks){
+            price=`<div class="case-price">🖱️ Цена: 20 000 кликов</div>`;
+        }else if(Number.isFinite(c.price)){
+            price=`<div class="case-price">💧 Цена: ${formatNumber(c.price)}</div>`;
+        }
         const special=c.id==="all_in"
-            ? `<div class="case-odds"><strong>⚠️ Условия ALL IN:</strong><br>При открытии списываются <b>все капли</b> с баланса и уничтожаются <b>все бутылки</b> из инвентаря. Затем выпадает множитель: 0×, 0.5×, 1.5×, 2×, 3× или 5×.<br><b>0×</b> — теряешь всё. Остальные множители возвращают соответствующую долю/умножение твоих капель. Бутылки обратно не возвращаются.</div>`
+            ? `<div class="case-odds"><strong>⚠️ Условия ALL IN:</strong><br>При покупке списываются <b>все капли</b> с баланса и уничтожаются <b>все бутылки</b>. Эти ресурсы фиксируются за кейсом до открытия. При открытии выпадает множитель: 0×, 0.5×, 1.5×, 2×, 3× или 5×.<br><b>0×</b> — теряешь всё. При 0.5× получаешь половину вложенных капель, при остальных — соответствующий множитель. Бутылки обратно не возвращаются.</div>`
             : `<div class="case-odds"><strong>Шансы:</strong>${odds}</div>`;
+        const buyLabel = c.minClicks ? `🖱️ ЗА ${Number(c.minClicks).toLocaleString("ru-RU")} КЛИКОВ` : `💳 КУПИТЬ`;
         card.innerHTML=`
             <div class="case-icon">${c.icon}</div>
             <div class="case-name">${c.name}</div>
             <div class="case-description">${c.description}</div>
-            ${requirements}${once}
+            ${price}${requirements}${once}
             <div class="case-count">В инвентаре: ${count} шт.</div>
-            <button class="case-button" ${count<=0?"disabled":""} onclick="openCase('${c.id}')">${c.id==="all_in"?"☠️ ОТКРЫТЬ ALL IN":"🎁 ОТКРЫТЬ КЕЙС"}</button>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;position:relative">
+              <button class="case-button" onclick="buyCase('${c.id}')">${buyLabel}</button>
+              <button class="case-button" ${count<=0?"disabled":""} onclick="openCase('${c.id}')">${c.id==="all_in"?"☠️ ОТКРЫТЬ":"🎁 ОТКРЫТЬ"}</button>
+            </div>
             ${special}
         `;
         grid.appendChild(card);
     });
+}
+
+async function buyCase(caseId){
+    const c=getCaseDef(caseId);
+    if(!c) return;
+    if(!currentUser){ showWarning("Сначала войди в аккаунт"); return; }
+    try{
+        const {data:{session}}=await supabaseClient.auth.getSession();
+        if(!session) throw new Error("Сессия не найдена.");
+        const r=await fetch(SUPABASE_URL+"/functions/v1/admin-api",{
+            method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+session.access_token},
+            body:JSON.stringify({action:"buy_case",case_id:caseId})
+        });
+        const data=await r.json().catch(()=>({}));
+        if(!r.ok||!data.ok) throw new Error(data.error||"Не удалось купить кейс.");
+        await loadServerProfile(currentUser);
+        if(data.case_count!==undefined) setCaseCount(caseId,data.case_count);
+        save(); updateUI(); renderCases();
+        showWarning(data.message||"Кейс куплен!");
+    }catch(e){
+        console.error(e);
+        showWarning(e.message||"Ошибка покупки.");
+    }
 }
 
 function weightedCaseResult(c){
