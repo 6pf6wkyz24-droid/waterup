@@ -430,6 +430,41 @@ button{
     position:relative;
 }
 
+.shop-quantity{
+    width:100%;
+    box-sizing:border-box;
+    margin:8px 0;
+    padding:10px 12px;
+    border:1px solid #24486e;
+    border-radius:10px;
+    background:#061126;
+    color:#fff;
+    font-size:16px;
+    text-align:center;
+}
+
+.shop-buy-row{
+    display:flex;
+    gap:8px;
+    align-items:center;
+}
+
+.shop-buy-row .shop-quantity{
+    flex:0 0 82px;
+    margin:0;
+}
+
+.shop-buy-row .shop-button{
+    flex:1;
+}
+
+.shop-count{
+    margin:5px 0 8px;
+    font-size:14px;
+    color:#20c6ff;
+    font-weight:700;
+}
+
 .shop-card.owned{
     border-color:#209eff;
 
@@ -839,6 +874,7 @@ button{
 }
 
 .arrow-dot{
+    display:none;
     position:absolute;
 
     width:25px;
@@ -888,6 +924,63 @@ button{
     font-size:13px;
 }
 
+
+/* =========================================================
+   PROMO CODES
+========================================================= */
+
+.promo-card{
+    padding:22px 18px;
+    background:#09172a;
+    border:1px solid #1c3e67;
+    border-radius:23px;
+}
+
+.promo-description{
+    color:#7185a2;
+    font-size:14px;
+    line-height:1.5;
+    margin-bottom:18px;
+}
+
+.promo-input{
+    width:100%;
+    height:58px;
+    padding:0 16px;
+    border-radius:16px;
+    border:1px solid #24476f;
+    outline:none;
+    background:#071124;
+    color:#fff;
+    font-size:18px;
+    font-weight:800;
+    text-transform:uppercase;
+}
+
+.promo-input:focus{
+    border-color:#299aff;
+}
+
+.promo-input::placeholder{
+    color:#60738f;
+    text-transform:none;
+}
+
+.promo-button{
+    width:100%;
+    margin-top:12px;
+}
+
+.promo-result{
+    min-height:24px;
+    margin-top:15px;
+    text-align:center;
+    font-size:14px;
+    font-weight:900;
+}
+
+.promo-result.success{color:#28d7ff;}
+.promo-result.error{color:#ff5c80;}
 
 /* =========================================================
    PROFILE
@@ -1095,7 +1188,7 @@ button{
     display:grid;
 
     grid-template-columns:
-        repeat(5,1fr);
+        repeat(6,1fr);
 
     background:
         rgba(3,11,25,.98);
@@ -1256,6 +1349,30 @@ button{
     .inventory-select,.inventory-sell{padding:8px 7px;font-size:10px;}
 }
 
+
+/* =========================================================
+   CASES
+========================================================= */
+.cases-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:12px}
+.case-card{background:linear-gradient(160deg,#0a1930,#06101f);border:1px solid #24517f;border-radius:20px;padding:16px;box-shadow:0 0 24px rgba(31,153,255,.09);overflow:hidden;position:relative}
+.case-card:before{content:"";position:absolute;inset:-40%;background:radial-gradient(circle,rgba(38,174,255,.10),transparent 55%);pointer-events:none}
+.case-card.owned-case{border-color:#31aaff;box-shadow:0 0 28px rgba(31,170,255,.18)}
+.case-icon{font-size:58px;text-align:center;margin:4px 0 8px;filter:drop-shadow(0 0 12px rgba(43,188,255,.35))}
+.case-name{font-size:20px;font-weight:900;text-align:center;position:relative}
+.case-description{color:#8499b7;text-align:center;font-size:12px;margin:6px 0 12px;min-height:32px;position:relative}
+.case-price{font-weight:900;color:#2bbcff;text-align:center;margin:8px 0}
+.case-count{text-align:center;color:#9bb1ce;font-size:12px;margin:10px 0;position:relative}
+.case-requirement,.case-once{background:#0b2038;border:1px solid #21486f;border-radius:10px;padding:8px;margin-top:8px;text-align:center;color:#9bc7e8;font-size:11px;position:relative}
+.case-once{color:#ffd36b;border-color:#6a5120;background:#211b0b}
+.case-button{width:100%;border:0;border-radius:13px;padding:12px;background:linear-gradient(135deg,#168cff,#314bff);color:#fff;font-weight:900;position:relative}
+.case-button:disabled{opacity:.45;cursor:not-allowed}
+.case-odds{border-top:1px solid #1e3858;margin-top:12px;padding-top:10px;color:#9bb1ce;font-size:12px;line-height:1.8;position:relative}
+.case-odds strong{color:#fff}
+.case-inventory{background:#081327;border:1px solid #24517f;border-radius:18px;padding:14px;margin-bottom:14px}
+.case-open-result{text-align:center;min-height:26px;margin:10px 0;font-weight:900}
+.case-open-result.success{color:#43d9ff}.case-open-result.fail{color:#ff6687}
+.case-hint{color:#7187a5;font-size:12px;text-align:center;margin-top:8px}
+@media(max-width:650px){.cases-grid{grid-template-columns:1fr}.case-name{font-size:19px}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -1639,6 +1756,74 @@ const supabaseClient = window.supabase.createClient(
 
 
 <!-- =======================================================
+     PROMO CODES
+======================================================= -->
+
+<section
+    id="promo"
+    class="page"
+>
+
+    <div class="section-title">
+        🎁 Промокоды
+    </div>
+
+    <div class="promo-card">
+
+        <div class="promo-description">
+            Введи промокод, который выдал тебе администратор,
+            и получи награду на свой баланс.
+        </div>
+
+        <input
+            id="promoInput"
+            class="promo-input"
+            type="text"
+            maxlength="64"
+            autocomplete="off"
+            placeholder="Введите промокод"
+        >
+
+        <button
+            class="main-btn promo-button"
+            id="promoButton"
+            onclick="redeemPromo()"
+        >
+            🎁 АКТИВИРОВАТЬ
+        </button>
+
+        <div
+            class="promo-result"
+            id="promoResult"
+        ></div>
+
+    </div>
+
+</section>
+
+
+<!-- =======================================================
+     CASES
+======================================================= -->
+
+<section id="cases" class="page">
+    <div class="section-title">🎁 Кейсы</div>
+    <div class="case-inventory">
+        <div style="display:flex;justify-content:space-between;gap:12px;align-items:center">
+            <span class="case-hint" style="margin:0;text-align:left">🖱️ Твои клики</span>
+            <strong id="casesClicks">0</strong>
+        </div>
+    </div>
+    <div class="case-inventory">
+        <div class="case-name">Твои кейсы</div>
+        <div class="case-hint">Кейсы выдаются админом. Покупка кейса на витрине не добавляет его в инвентарь.</div>
+    </div>
+    <div class="cases-grid" id="casesGrid"></div>
+    <div class="case-open-result" id="caseOpenResult"></div>
+</section>
+
+
+<!-- =======================================================
      PROFILE
 ======================================================= -->
 
@@ -1809,6 +1994,31 @@ const supabaseClient = window.supabase.createClient(
 
     <button
         class="nav-btn"
+        data-page="cases"
+        onclick="openPage('cases')"
+    >
+        <span class="nav-icon">🎁</span>
+        Кейсы
+    </button>
+
+
+    <button
+        class="nav-btn"
+        data-page="promo"
+        onclick="openPage('promo')"
+    >
+
+        <span class="nav-icon">
+            🎁
+        </span>
+
+        Промо
+
+    </button>
+
+
+    <button
+        class="nav-btn"
         data-page="profile"
         onclick="openPage('profile')"
     >
@@ -1951,6 +2161,137 @@ const bottles = [
 
 
 /* =========================================================
+   CASE SYSTEM
+========================================================= */
+const CASES = [
+    {
+        id:"dropbox",
+        icon:"💎",
+        name:"AQUA DROP // PRIME",
+        description:"Стартовый кейс: частые маленькие награды и редкие крупные дропы.",
+        odds:[
+            ["1 л",90],["3 л",5],["5 л",2],["10 л",2],["25 л",0.8],["50 л",0.2]
+        ]
+    },
+    {
+        id:"hydro_titan",
+        icon:"⚡",
+        name:"HYDRO TITAN // 20K",
+        description:"Легендарный одноразовый кейс. Для открытия нужны 20 000 кликов.",
+        minClicks:20000,
+        once:true,
+        odds:[
+            ["30 л",50],["50 л",20],["80 л",12],["120 л",5],["200 л",1],["300 л",4],["500 л",3],["1000 л",3],["2500 л",2]
+        ]
+    },
+    {
+        id:"aqua_imperium",
+        icon:"👑",
+        name:"OCEAN SINGULARITY",
+        description:"Элитный кейс с огромными объёмами воды.",
+        odds:[
+            ["500 л",45],["1000 л",25],["2500 л",15],["5000 л",8],["10000 л",5],["25000 л",2]
+        ]
+    },
+    {
+        id:"all_in",
+        icon:"☠️",
+        name:"ALL IN // ZERO",
+        description:"Ставка ва-банк: перед открытием сгорают все капли и все бутылки.",
+        special:true,
+        odds:[
+            ["0× — потеря всего",35],["0.5× — половина",20],["1.5×",20],["2×",15],["3×",8],["5× JACKPOT",2]
+        ]
+    }
+]
+
+function getCaseDef(id){ return CASES.find(c => c.id === id) || null; }
+function getCaseCount(id){ return Math.max(0, Math.floor(Number(caseCounts[id] || 0))); }
+function setCaseCount(id,count){
+    count=Math.max(0,Math.floor(Number(count)||0));
+    if(count===0) delete caseCounts[id]; else caseCounts[id]=count;
+}
+
+/* =========================================================
+   CASES RENDER / OPEN
+========================================================= */
+function renderCases(){
+    const grid=document.getElementById("casesGrid");
+    if(!grid) return;
+    grid.innerHTML="";
+    CASES.forEach(c=>{
+        const count=getCaseCount(c.id);
+        const card=document.createElement("div");
+        card.className="case-card"+(count>0?" owned-case":"");
+        const odds=c.odds.map(([reward,percent])=>`<div><strong>${reward}</strong> — ${percent}%</div>`).join("");
+        const requirements = c.minClicks
+            ? `<div class="case-requirement">🖱️ Требуется: <b>${Number(c.minClicks).toLocaleString("ru-RU")}</b> кликов</div>`
+            : "";
+        const once = c.once ? `<div class="case-once">🔒 Только 1 открытие на аккаунт</div>` : "";
+        const special=c.id==="all_in"
+            ? `<div class="case-odds"><strong>⚠️ Условия ALL IN:</strong><br>При открытии списываются <b>все капли</b> с баланса и уничтожаются <b>все бутылки</b> из инвентаря. Затем выпадает множитель: 0×, 0.5×, 1.5×, 2×, 3× или 5×.<br><b>0×</b> — теряешь всё. Остальные множители возвращают соответствующую долю/умножение твоих капель. Бутылки обратно не возвращаются.</div>`
+            : `<div class="case-odds"><strong>Шансы:</strong>${odds}</div>`;
+        card.innerHTML=`
+            <div class="case-icon">${c.icon}</div>
+            <div class="case-name">${c.name}</div>
+            <div class="case-description">${c.description}</div>
+            ${requirements}${once}
+            <div class="case-count">В инвентаре: ${count} шт.</div>
+            <button class="case-button" ${count<=0?"disabled":""} onclick="openCase('${c.id}')">${c.id==="all_in"?"☠️ ОТКРЫТЬ ALL IN":"🎁 ОТКРЫТЬ КЕЙС"}</button>
+            ${special}
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function weightedCaseResult(c){
+    let roll=Math.random()*100;
+    let sum=0;
+    for(const [reward,percent] of c.odds){
+        sum+=Number(percent);
+        if(roll<sum) return reward;
+    }
+    return c.odds[c.odds.length-1][0];
+}
+
+async function openCase(caseId){
+    const c=getCaseDef(caseId);
+    const result=document.getElementById("caseOpenResult");
+    if(!c) return;
+    if(getCaseCount(caseId)<=0){ showWarning("🎁 У тебя нет такого кейса"); return; }
+    if(!currentUser){ showWarning("Сначала войди в аккаунт"); return; }
+    const button=document.querySelector(`button[onclick="openCase('${caseId}')"]`);
+    if(button) button.disabled=true;
+    if(result){result.className="case-open-result";result.textContent="🎁 Открываем кейс...";}
+    try{
+        const {data:{session}}=await supabaseClient.auth.getSession();
+        if(!session) throw new Error("Сессия не найдена.");
+        const r=await fetch(SUPABASE_URL+"/functions/v1/admin-api",{
+            method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+session.access_token},
+            body:JSON.stringify({action:"open_case",case_id:caseId})
+        });
+        const data=await r.json().catch(()=>({}));
+        if(!r.ok||!data.ok) throw new Error(data.error||"Не удалось открыть кейс.");
+        await loadServerProfile(currentUser);
+        if(data.case_count!==undefined) setCaseCount(caseId,data.case_count);
+        if(data.taps!==undefined){taps=Number(data.taps);localStorage.setItem("waterup_v2_taps",taps);}
+        if(data.bottles) {
+            owned=[]; bottleCounts={}; bottleOverrides={}; currentBottle=0;
+            (data.bottles||[]).forEach(x=>{ const lvl=Number(x.bottle_level), qty=Number(x.quantity||1); if(lvl>0){owned.push(lvl);bottleCounts[String(lvl)]=qty;} });
+        }
+        save(); updateUI();
+        if(result){result.className="case-open-result success";result.textContent=data.message||"🎉 Кейс открыт!";}
+    }catch(e){
+        console.error(e);
+        if(result){result.className="case-open-result fail";result.textContent=e.message||"Ошибка открытия.";}
+    }finally{
+        renderCases();
+    }
+}
+
+
+
+/* =========================================================
    STATE
 ========================================================= */
 
@@ -1977,6 +2318,8 @@ let taps =
         ) || 0
     );
 
+let caseCounts = JSON.parse(localStorage.getItem("waterup_v2_case_counts") || "{}");
+
 
 let earned =
     Number(
@@ -1993,6 +2336,21 @@ let owned =
         ) || "[]"
     );
 
+// Количество одинаковых бутылок каждого уровня.
+// Старый инвентарь автоматически получает по 1 шт.
+let bottleCounts =
+    JSON.parse(
+        localStorage.getItem(
+            "waterup_v2_bottle_counts"
+        ) || "{}"
+    );
+
+owned = Array.from(new Set(owned.map(Number).filter(level => level > 0)));
+owned.forEach(level => {
+    const key = String(level);
+    const count = Number(bottleCounts[key]);
+    bottleCounts[key] = Number.isInteger(count) && count > 0 ? count : 1;
+});
 
 let currentBottle =
     Number(
@@ -2044,6 +2402,8 @@ function save(){
         taps
     );
 
+    localStorage.setItem("waterup_v2_case_counts", JSON.stringify(caseCounts));
+
     localStorage.setItem(
         "waterup_v2_earned",
         earned
@@ -2052,6 +2412,11 @@ function save(){
     localStorage.setItem(
         "waterup_v2_owned",
         JSON.stringify(owned)
+    );
+
+    localStorage.setItem(
+        "waterup_v2_bottle_counts",
+        JSON.stringify(bottleCounts)
     );
 
     localStorage.setItem(
@@ -2075,6 +2440,7 @@ function save(){
             .from("profiles")
             .update({
                 water: balance,
+                clicks: taps,
                 updated_at: new Date().toISOString()
             })
             .eq("id", currentUser.id)
@@ -2663,91 +3029,71 @@ function tap(event){
    SHOP
 ========================================================= */
 
-function buyBottle(level){
+function getBottleCount(level){
+    return Number(bottleCounts[String(level)] || 0);
+}
 
-    const bottle =
-        getBottleByLevel(
-            level
-        );
+function setBottleCount(level, count){
+    level = Number(level);
+    count = Math.max(0, Math.floor(Number(count) || 0));
 
+    if(count <= 0){
+        delete bottleCounts[String(level)];
+        owned = owned.filter(item => Number(item) !== level);
+    }else{
+        bottleCounts[String(level)] = count;
+        if(!owned.includes(level)) owned.push(level);
+    }
+}
 
-    /*
-        Уже куплена?
-    */
+function buyBottle(level, quantity = 1){
 
-    if(
-        owned.includes(level)
-    ){
+    level = Number(level);
+    quantity = Math.max(1, Math.floor(Number(quantity) || 1));
 
-        showWarning(
-            "🧴 Эта бутылка уже куплена"
-        );
+    const bottle = getBottleByLevel(level);
 
+    if(!bottle){
+        showWarning("🧴 Бутылка не найдена");
         return;
-
     }
 
-
-    /*
-        Проверяем баланс.
-    */
-
+    // Бутылка после апгрейда имеет индивидуальный объём.
+    // Не смешиваем её с обычными купленными бутылками того же уровня.
     if(
-        balance < bottle.price
+        getBottleCount(level) > 0 &&
+        Object.prototype.hasOwnProperty.call(bottleOverrides, String(level))
     ){
-
-        showWarning(
-            "💧 Недостаточно воды"
-        );
-
+        showWarning("🧴 Сначала используй или продай улучшенную бутылку этого уровня");
         return;
-
     }
 
+    const totalPrice = Number(bottle.price) * quantity;
 
-    /*
-        Покупаем.
-    */
-
-    balance -=
-        bottle.price;
-
-
-    owned.push(
-        level
-    );
-
-
-    /*
-        Первая купленная бутылка
-        автоматически становится
-        текущей.
-    */
-
-    if(
-        currentBottle === 0
-    ){
-
-        currentBottle =
-            level;
-
+    if(balance < totalPrice){
+        showWarning(
+            "💧 Нужно " + formatNumber(totalPrice) + " воды"
+        );
+        return;
     }
 
+    balance -= totalPrice;
 
-    owned.sort(
-        (a,b) => a - b
-    );
+    const newCount = getBottleCount(level) + quantity;
+    setBottleCount(level, newCount);
 
+    if(currentBottle === 0){
+        currentBottle = level;
+    }
+
+    owned.sort((a,b) => a - b);
 
     save();
-
     updateUI();
 
-
     showWarning(
-        "🎉 Бутылка куплена!"
+        "🎉 Куплено: " + quantity + " шт. · " + formatNumber(totalPrice) + " 💧"
     );
-
 }
 
 
@@ -2772,43 +3118,53 @@ function getUpgradeLiter(currentLiter, selectedChance){
 
 function getSellPrice(bottle){
 
-    /* 100 капель за каждый литр. */
-    return Math.max(0.1, Math.round(Number(bottle.liter) * 100 * 10) / 10);
+    /*
+        Продажа = 50% от цены покупки.
+        Так экономика не выглядит как продажа почти за бесценок.
+        Например: 60 000 000 -> 30 000 000 💧.
+    */
+    return Math.max(0.1, Math.round(Number(bottle.price) * 0.5 * 10) / 10);
 }
 
-function sellBottle(level){
+function sellBottle(level, quantity = 1){
 
     level = Number(level);
+    quantity = Math.max(1, Math.floor(Number(quantity) || 1));
 
-    const index = owned.indexOf(level);
+    const count = getBottleCount(level);
 
-    if(index === -1){
+    if(count <= 0){
         showWarning("🧴 Этой бутылки нет в инвентаре");
         return;
     }
 
     const bottle = getBottleByLevel(level);
-    const reward = getSellPrice(bottle);
+    const sellOne = getSellPrice(bottle);
+    const sold = Math.min(quantity, count);
+    const reward = sellOne * sold;
 
-    owned.splice(index, 1);
+    setBottleCount(level, count - sold);
 
-    /* Если продали текущую — выбираем самую большую оставшуюся. */
-    if(currentBottle === level){
-        if(owned.length){
-            currentBottle = Math.max(...owned);
-        }else{
-            currentBottle = 0;
+    if(getBottleCount(level) <= 0){
+        if(currentBottle === level){
+            if(owned.length){
+                currentBottle = Math.max(...owned);
+            }else{
+                currentBottle = 0;
+            }
         }
-    }
 
-    /* Удаляем индивидуальный объём проданной бутылки. */
-    delete bottleOverrides[String(level)];
+        delete bottleOverrides[String(level)];
+    }
 
     balance += reward;
     save();
     updateUI();
 
-    showWarning("💧 +" + formatNumber(reward) + " капель за продажу");
+    showWarning(
+        "💧 +" + formatNumber(reward) + " капель за продажу" +
+        (sold > 1 ? " · " + sold + " шт." : "")
+    );
 }
 
 
@@ -2819,7 +3175,7 @@ function sellBottle(level){
 function selectBottle(level){
 
     if(
-        !owned.includes(level)
+        getBottleCount(level) <= 0
     ){
 
         return;
@@ -2854,22 +3210,13 @@ function renderShop(){
             "shopGrid"
         );
 
-
     grid.innerHTML = "";
-
-
-    /*
-        Показываем первые 16 уровней
-        + следующие несколько
-        относительно текущего прогресса.
-    */
 
     const maxLevel =
         Math.max(
             16,
             currentBottle + 4
         );
-
 
     for(
         let level = 1;
@@ -2878,96 +3225,59 @@ function renderShop(){
     ){
 
         const bottle =
-            getBottleByLevel(
-                level
-            );
+            getBottleByLevel(level);
 
-
-        const isOwned =
-            owned.includes(level);
-
-
-        const card =
-            document.createElement(
-                "div"
-            );
-
-
-        card.className =
-            "shop-card" +
-            (
-                isOwned
-                ? " owned"
-                : ""
-            );
-
-
-        card.innerHTML = `
-
-            <div class="shop-bottle">
-                🧴
-            </div>
-
-            <div class="shop-liter">
-                ${formatNumber(
-                    bottle.liter
-                )} л
-            </div>
-
-            <div class="shop-level">
-                Уровень ${level}
-            </div>
-
-            <div class="shop-price">
-                💧 ${formatNumber(
-                    bottle.price
-                )}
-            </div>
-
-            ${
-                isOwned
-
-                ?
-
-                `
-                <button
-                    class="shop-button"
-                    onclick="
-                        selectBottle(${level})
-                    "
-                >
-                    ✓ КУПЛЕНО
-                </button>
-                `
-
-                :
-
-                `
-                <button
-                    class="shop-button"
-                    ${
-                        balance < bottle.price
-                        ? "disabled"
-                        : ""
-                    }
-                    onclick="
-                        buyBottle(${level})
-                    "
-                >
-                    КУПИТЬ
-                </button>
-                `
-            }
-
-        `;
-
-
-        grid.appendChild(
-            card
+        const count = getBottleCount(level);
+        const isOwned = count > 0;
+        const hasOverride = Object.prototype.hasOwnProperty.call(
+            bottleOverrides,
+            String(level)
         );
 
-    }
+        const card = document.createElement("div");
+        card.className = "shop-card" + (isOwned ? " owned" : "");
 
+        const canBuyMore = !hasOverride;
+
+        card.innerHTML = `
+            <div class="shop-bottle">🧴</div>
+            <div class="shop-liter">${formatNumber(bottle.liter)} л</div>
+            <div class="shop-level">Уровень ${level}</div>
+            <div class="shop-price">💧 ${formatNumber(bottle.price)} / шт.</div>
+            ${isOwned ? `<div class="shop-count">В инвентаре: ${count} шт.</div>` : ""}
+            ${
+                canBuyMore
+                ? `
+                <div class="shop-buy-row">
+                    <input
+                        class="shop-quantity"
+                        id="buyQty_${level}"
+                        type="number"
+                        min="1"
+                        max="9999"
+                        value="1"
+                        inputmode="numeric"
+                    >
+                    <button
+                        class="shop-button"
+                        ${balance < bottle.price ? "disabled" : ""}
+                        onclick="buyBottle(${level}, Number(document.getElementById('buyQty_${level}').value || 1))"
+                    >
+                        ${isOwned ? "КУПИТЬ ЕЩЁ" : "КУПИТЬ"}
+                    </button>
+                </div>
+                `
+                : `<div class="shop-count">⚡ Улучшенная бутылка</div>`
+            }
+            ${
+                isOwned
+                ? `<button class="shop-button" onclick="selectBottle(${level})">${level === currentBottle ? "✓ ВЫБРАНА" : "ВЫБРАТЬ"}</button>`
+                : ""
+            }
+        `;
+
+        grid.appendChild(card);
+    }
 }
 
 
@@ -2977,85 +3287,61 @@ function renderShop(){
 
 function renderInventory(){
 
-    const list =
-        document.getElementById(
-            "inventoryList"
-        );
-
-    const home =
-        document.getElementById(
-            "homeBottles"
-        );
+    const list = document.getElementById("inventoryList");
+    const home = document.getElementById("homeBottles");
 
     list.innerHTML = "";
     home.innerHTML = "";
 
     if(owned.length === 0){
-
         const emptyHTML = `
             <div class="empty">
                 <div class="empty-icon">🧴</div>
                 У тебя пока нет бутылок.
                 <br><br>
-                Заработай воду и
-                купи первую бутылку
-                в магазине.
+                Заработай воду и купи первую бутылку в магазине.
             </div>
         `;
-
         list.innerHTML = emptyHTML;
         home.innerHTML = emptyHTML;
         return;
     }
 
     owned.forEach(level => {
+        const count = getBottleCount(level);
+        if(count <= 0) return;
 
         const bottle = getBottleByLevel(level);
         const isCurrent = level === currentBottle;
         const sellPrice = getSellPrice(bottle);
 
         const item = document.createElement("div");
-
-        item.className =
-            "inventory-item" +
-            (isCurrent ? " current" : "");
+        item.className = "inventory-item" + (isCurrent ? " current" : "");
 
         item.innerHTML = `
             <div class="inventory-icon">🧴</div>
-
             <div>
                 <div class="inventory-name">
-                    ${formatNumber(bottle.liter)} л
+                    ${formatNumber(bottle.liter)} л · ${count} шт.
                 </div>
-
                 <div class="inventory-info">
-                    Уровень ${level} · Продажа: +${formatNumber(sellPrice)} 💧
+                    Уровень ${level} · За 1 шт.: +${formatNumber(sellPrice)} 💧
                 </div>
             </div>
-
             <div class="inventory-actions">
                 ${
                     isCurrent
                     ? `<div class="inventory-select">ТЕКУЩАЯ</div>`
                     : `<button class="inventory-select" onclick="selectBottle(${level})">ВЫБРАТЬ</button>`
                 }
-
-                <button
-                    class="inventory-sell"
-                    onclick="sellBottle(${level})"
-                >
-                    ПРОДАТЬ
-                </button>
+                <button class="inventory-sell" onclick="sellBottle(${level}, 1)">ПРОДАТЬ 1</button>
+                ${count > 1 ? `<button class="inventory-sell" onclick="sellBottle(${level}, ${count})">ПРОДАТЬ ВСЕ</button>` : ""}
             </div>
         `;
 
         list.appendChild(item);
-
-        /* Копия для главной страницы. */
-        const homeItem = item.cloneNode(true);
-        home.appendChild(homeItem);
+        home.appendChild(item.cloneNode(true));
     });
-
 }
 
 
@@ -3236,21 +3522,21 @@ async function upgrade(){
         Текущая бутылка НЕ остаётся в инвентаре навсегда.
         Апгрейд использует именно эту бутылку.
     */
-    const oldIndex = owned.indexOf(oldLevel);
+    const oldCount = getBottleCount(oldLevel);
 
     if(success){
 
         const nextLevel = oldLevel + 1;
 
-        /* Сначала удаляем бутылку, которую поставили. */
-        if(oldIndex !== -1){
-            owned.splice(oldIndex, 1);
+        /* Сначала удаляем одну бутылку, которую поставили. */
+        setBottleCount(oldLevel, oldCount - 1);
+
+        if(getBottleCount(oldLevel) <= 0){
+            delete bottleOverrides[String(oldLevel)];
         }
 
-        delete bottleOverrides[String(oldLevel)];
-
         /* Полученная бутылка полностью заменяет старую. */
-        owned.push(nextLevel);
+        setBottleCount(nextLevel, getBottleCount(nextLevel) + 1);
         bottleOverrides[String(nextLevel)] = resultLiter;
         currentBottle = nextLevel;
 
@@ -3265,15 +3551,15 @@ async function upgrade(){
 
     }else{
 
-        /* Незаход = поставленная бутылка уничтожена. */
-        if(oldIndex !== -1){
-            owned.splice(oldIndex, 1);
+        /* Незаход = одна поставленная бутылка уничтожена. */
+        setBottleCount(oldLevel, oldCount - 1);
+
+        if(getBottleCount(oldLevel) <= 0){
+            delete bottleOverrides[String(oldLevel)];
+            currentBottle = owned.length ? Math.max(...owned) : 0;
+        }else{
+            currentBottle = oldLevel;
         }
-
-        delete bottleOverrides[String(oldLevel)];
-
-        /* Текущей бутылки больше нет. */
-        currentBottle = 0;
 
         save();
 
@@ -3291,6 +3577,79 @@ async function upgrade(){
     updateUpgradeVisuals();
 }
 
+
+/* =========================================================
+   PROMO CODES
+========================================================= */
+
+async function redeemPromo(){
+
+    const input = document.getElementById("promoInput");
+    const result = document.getElementById("promoResult");
+    const button = document.getElementById("promoButton");
+
+    if(!currentUser){
+        result.className = "promo-result error";
+        result.textContent = "Сначала войди в аккаунт.";
+        return;
+    }
+
+    const code = input.value.trim().toUpperCase();
+
+    if(!code){
+        result.className = "promo-result error";
+        result.textContent = "Введи промокод.";
+        return;
+    }
+
+    button.disabled = true;
+    result.className = "promo-result";
+    result.textContent = "Проверяем промокод...";
+
+    try{
+        const { data: sessionData } = await supabaseClient.auth.getSession();
+        const token = sessionData?.session?.access_token;
+
+        if(!token){
+            throw new Error("Сессия не найдена. Войди в аккаунт заново.");
+        }
+
+        const response = await fetch(
+            SUPABASE_URL + "/functions/v1/admin-api",
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json",
+                    "Authorization":"Bearer " + token
+                },
+                body:JSON.stringify({
+                    action:"redeem_promo",
+                    code:code
+                })
+            }
+        );
+
+        const data = await response.json().catch(() => ({}));
+
+        if(!response.ok || !data.ok){
+            throw new Error(data.error || "Не удалось активировать промокод.");
+        }
+
+        result.className = "promo-result success";
+        result.textContent = "Промокод активирован: +" + formatNumber(data.reward) + " 💧";
+        input.value = "";
+
+        await loadServerProfile(currentUser);
+        updateUI();
+
+    }catch(error){
+        console.error("Ошибка промокода:", error);
+        result.className = "promo-result error";
+        result.textContent = error.message || "Ошибка активации.";
+    }finally{
+        button.disabled = false;
+    }
+}
 
 /* =========================================================
    UI
@@ -3407,6 +3766,9 @@ function updateUI(){
             taps
         );
 
+    const casesClicks = document.getElementById("casesClicks");
+    if(casesClicks) casesClicks.textContent = formatNumber(taps);
+
 
     /*
         PROFILE
@@ -3445,7 +3807,7 @@ function updateUI(){
     document.getElementById(
         "profileOwned"
     ).textContent =
-        owned.length;
+        owned.reduce((sum, level) => sum + getBottleCount(level), 0);
 
 
     /*
@@ -3473,6 +3835,7 @@ function updateUI(){
     */
 
     renderShop();
+    renderCases();
 
     renderInventory();
     updateUpgradeVisuals();
@@ -3724,7 +4087,7 @@ updateUI();
 
         const { data: profile, error } = await supabaseClient
             .from("profiles")
-            .select("water,banned")
+            .select("water,banned,clicks")
             .eq("id", user.id)
             .single();
 
@@ -3744,8 +4107,18 @@ updateUI();
         if(profile && Number.isFinite(Number(profile.water))){
             balance = Number(profile.water);
             localStorage.setItem("waterup_v2_balance", balance);
-            updateUI();
         }
+        if(profile && Number.isFinite(Number(profile.clicks))){
+            taps = Number(profile.clicks);
+            localStorage.setItem("waterup_v2_taps", taps);
+        }
+        try{
+            const {data: caseRows}=await supabaseClient.from("user_cases").select("case_id,quantity").eq("user_id",user.id);
+            caseCounts={};
+            (caseRows||[]).forEach(r=>{caseCounts[r.case_id]=Number(r.quantity||0);});
+            localStorage.setItem("waterup_v2_case_counts",JSON.stringify(caseCounts));
+        }catch(e){console.warn("Не удалось загрузить кейсы:",e)}
+        updateUI();
 
         syncingServerBalance = false;
     }
