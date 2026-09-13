@@ -3589,5 +3589,668 @@ updateUI();
     })();
 })();
 </script>
+<!-- =========================================================
+     waterUP UPGRADE PATCH
+========================================================= -->
+<style>
+/* Убираем старую стоимость */
+.upgrade-cost{
+    display:none !important;
+}
+
+/* Предпросмотр бутылок */
+.upgrade-preview{
+    display:grid;
+    grid-template-columns:1fr 42px 1fr;
+    align-items:center;
+    gap:8px;
+    width:100%;
+    margin:4px 0 12px;
+}
+
+.upgrade-preview-card{
+    min-height:58px;
+    padding:9px 6px;
+    border:1px solid #24486e;
+    border-radius:15px;
+    background:#071326;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    overflow:hidden;
+}
+
+.upgrade-preview-card span{
+    color:#7187a5;
+    font-size:11px;
+    font-weight:800;
+}
+
+.upgrade-preview-card strong{
+    margin-top:3px;
+    color:#fff;
+    font-size:17px;
+    font-weight:900;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.upgrade-preview-card.next strong{
+    color:#25c7ff;
+}
+
+.upgrade-preview-arrow{
+    color:#25c7ff;
+    font-size:26px;
+    font-weight:900;
+}
+
+/* Полоса шанса */
+.upgrade-wheel-legend{
+    width:min(300px,100%);
+    margin:4px auto 12px;
+}
+
+.upgrade-wheel-strip{
+    position:relative;
+    height:14px;
+    overflow:hidden;
+    border-radius:99px;
+    background:#17243a;
+    border:1px solid #294a70;
+}
+
+.upgrade-wheel-strip-success{
+    position:absolute;
+    left:0;
+    top:0;
+    bottom:0;
+    width:35%;
+    background:#19c6ff;
+    box-shadow:0 0 15px rgba(25,198,255,.5);
+    transition:width .25s ease;
+    z-index:2;
+}
+
+.upgrade-wheel-strip-fail{
+    position:absolute;
+    right:0;
+    top:0;
+    bottom:0;
+    width:65%;
+    background:#ff3d6c;
+    opacity:.75;
+    z-index:1;
+}
+
+.upgrade-wheel-caption{
+    display:flex;
+    justify-content:space-between;
+    margin-top:5px;
+    color:#7187a5;
+    font-size:11px;
+    font-weight:800;
+}
+
+/* Колесо */
+#wheel{
+    background:
+        conic-gradient(
+            #19c6ff 0deg calc(var(--success-angle,126) * 1deg),
+            #ff3d6c calc(var(--success-angle,126) * 1deg) 360deg
+        ) !important;
+}
+
+/* Стрелка */
+#arrow{
+    transition:none;
+    will-change:transform;
+}
+
+/* Результат не налезает на кнопку */
+#upgradeResult{
+    min-height:42px;
+    margin:8px 0 12px;
+    padding:4px 8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    line-height:1.25;
+    font-weight:900;
+}
+
+/* Logout выше и не залезает на баланс */
+#waterup-user-panel{
+    top:92px !important;
+    right:12px !important;
+    z-index:250 !important;
+    max-width:calc(100vw - 24px);
+}
+</style>
+
+<script>
+(function(){
+
+    /* ==========================================
+       ПЕРВАЯ БУТЫЛКА = 100.1
+    ========================================== */
+
+    if(typeof bottles !== "undefined" && bottles.length){
+        bottles[0].price = 100.1;
+    }
+
+
+    /* ==========================================
+       СОЗДАЁМ НОВЫЙ БЛОК ПЕРЕД РЕЗУЛЬТАТОМ
+    ========================================== */
+
+    function createUpgradeUI(){
+
+        const wheelWrap = document.querySelector(".wheel-wrap");
+        const result = document.getElementById("upgradeResult");
+
+        if(!wheelWrap || !result) return;
+
+        /* Предпросмотр */
+        if(!document.getElementById("upgradePreview")){
+
+            const preview = document.createElement("div");
+
+            preview.className = "upgrade-preview";
+            preview.id = "upgradePreview";
+
+            preview.innerHTML = `
+                <div class="upgrade-preview-card">
+                    <span>Ставим</span>
+                    <strong id="upgradePut">—</strong>
+                </div>
+
+                <div class="upgrade-preview-arrow">→</div>
+
+                <div class="upgrade-preview-card next">
+                    <span>Получим</span>
+                    <strong id="upgradeReceive">—</strong>
+                </div>
+            `;
+
+            result.parentNode.insertBefore(preview,result);
+        }
+
+
+        /* Полоса шанса */
+        if(!document.getElementById("upgradeWheelLegend")){
+
+            const legend = document.createElement("div");
+
+            legend.className = "upgrade-wheel-legend";
+            legend.id = "upgradeWheelLegend";
+
+            legend.innerHTML = `
+                <div class="upgrade-wheel-strip">
+
+                    <div
+                        class="upgrade-wheel-strip-fail"
+                        id="upgradeFailStrip">
+                    </div>
+
+                    <div
+                        class="upgrade-wheel-strip-success"
+                        id="upgradeSuccessStrip">
+                    </div>
+
+                </div>
+
+                <div class="upgrade-wheel-caption">
+
+                    <span>Заход</span>
+
+                    <span id="upgradeChanceLabel">
+                        35%
+                    </span>
+
+                </div>
+            `;
+
+            wheelWrap.parentNode.insertBefore(legend,wheelWrap);
+        }
+    }
+
+
+    /* ==========================================
+       ВИЗУАЛЫ
+    ========================================== */
+
+    window.updateUpgradeVisuals = function(){
+
+        createUpgradeUI();
+
+        const strip =
+            document.getElementById("upgradeSuccessStrip");
+
+        const failStrip =
+            document.getElementById("upgradeFailStrip");
+
+        const label =
+            document.getElementById("upgradeChanceLabel");
+
+        const wheel =
+            document.getElementById("wheel");
+
+
+        const c =
+            Number(
+                typeof chance !== "undefined"
+                    ? chance
+                    : 35
+            );
+
+
+        if(strip){
+            strip.style.width = c + "%";
+        }
+
+
+        if(failStrip){
+            failStrip.style.width = (100-c) + "%";
+        }
+
+
+        if(label){
+            label.textContent = c + "%";
+        }
+
+
+        if(wheel){
+            wheel.style.setProperty(
+                "--success-angle",
+                c * 3.6
+            );
+        }
+
+
+        /* Бутылка */
+        if(
+            typeof currentBottle !== "undefined" &&
+            typeof getBottleByLevel === "function"
+        ){
+
+            const cur =
+                typeof current === "function"
+                    ? current()
+                    : null;
+
+            const next =
+                getBottleByLevel(
+                    currentBottle + 1
+                );
+
+
+            const put =
+                document.getElementById(
+                    "upgradePut"
+                );
+
+            const receive =
+                document.getElementById(
+                    "upgradeReceive"
+                );
+
+
+            if(put){
+
+                put.textContent =
+                    cur
+                        ? formatNumber(cur.liter) + " л"
+                        : "Нет бутылки";
+
+            }
+
+
+            if(receive){
+
+                receive.textContent =
+                    next
+                        ? formatNumber(next.liter) + " л"
+                        : "—";
+
+            }
+
+        }
+    };
+
+
+    /* ==========================================
+       НОВОЕ ВРАЩЕНИЕ СТРЕЛКИ
+    ========================================== */
+
+    window.rotateArrow = function(){
+
+        return new Promise(function(resolve){
+
+            const arrow =
+                document.getElementById("arrow");
+
+            if(!arrow){
+                resolve(false);
+                return;
+            }
+
+
+            const c =
+                Number(
+                    typeof chance !== "undefined"
+                        ? chance
+                        : 35
+                );
+
+
+            /* Решаем заранее */
+            const success =
+                Math.random() * 100 < c;
+
+
+            /*
+               Успех находится внутри голубой зоны.
+               Провал — в красной.
+            */
+
+            const successSize =
+                c * 3.6;
+
+
+            let finalAngle;
+
+
+            if(success){
+
+                const margin =
+                    Math.min(
+                        4,
+                        successSize / 5
+                    );
+
+
+                finalAngle =
+                    margin +
+                    Math.random() *
+                    Math.max(
+                        0.1,
+                        successSize -
+                        margin * 2
+                    );
+
+            }else{
+
+                finalAngle =
+                    successSize +
+                    8 +
+                    Math.random() *
+                    Math.max(
+                        1,
+                        352 - successSize
+                    );
+
+            }
+
+
+            /* Текущий угол */
+            const match =
+                (
+                    arrow.style.transform || ""
+                ).match(
+                    /rotate\(([-\d.]+)deg\)/
+                );
+
+
+            const currentAngle =
+                match
+                    ? Number(match[1])
+                    : 0;
+
+
+            /* 6–8 полных оборотов */
+            const turns =
+                6 +
+                Math.floor(
+                    Math.random() * 3
+                );
+
+
+            const target =
+                currentAngle +
+                turns * 360 +
+                finalAngle;
+
+
+            arrow.style.transition =
+                "transform 4.2s cubic-bezier(.08,.72,.16,1)";
+
+
+            requestAnimationFrame(function(){
+
+                requestAnimationFrame(function(){
+
+                    arrow.style.transform =
+                        "rotate(" +
+                        target +
+                        "deg)";
+
+                });
+
+            });
+
+
+            setTimeout(function(){
+
+                resolve(success);
+
+            },4350);
+
+        });
+
+    };
+
+
+    /* ==========================================
+       БЕСПЛАТНЫЙ UPGRADE
+    ========================================== */
+
+    window.upgrade = async function(){
+
+        if(
+            typeof upgrading !== "undefined" &&
+            upgrading
+        ){
+            return;
+        }
+
+
+        if(
+            typeof currentBottle === "undefined" ||
+            currentBottle <= 0
+        ){
+
+            if(typeof showWarning === "function"){
+                showWarning(
+                    "🧴 Сначала купи бутылку"
+                );
+            }
+
+            if(typeof openPage === "function"){
+                openPage("shop");
+            }
+
+            return;
+        }
+
+
+        const nextLevel =
+            currentBottle + 1;
+
+
+        const nextBottle =
+            typeof getBottleByLevel === "function"
+                ? getBottleByLevel(nextLevel)
+                : null;
+
+
+        if(!nextBottle){
+
+            if(typeof showWarning === "function"){
+                showWarning(
+                    "🏆 Максимальный уровень"
+                );
+            }
+
+            return;
+        }
+
+
+        upgrading = true;
+
+
+        const button =
+            document.getElementById(
+                "upgradeButton"
+            );
+
+
+        const result =
+            document.getElementById(
+                "upgradeResult"
+            );
+
+
+        if(button){
+            button.disabled = true;
+        }
+
+
+        if(result){
+
+            result.className = "result";
+
+            result.textContent =
+                "⚡ КРУТИМ...";
+
+        }
+
+
+        /*
+           ВАЖНО:
+           НИКАКОЙ ОПЛАТЫ ЗА UPGRADE НЕТ.
+           balance НЕ УМЕНЬШАЕМ.
+        */
+
+
+        const success =
+            await window.rotateArrow();
+
+
+        if(success){
+
+            if(
+                typeof owned !== "undefined" &&
+                !owned.includes(nextLevel)
+            ){
+
+                owned.push(nextLevel);
+
+            }
+
+
+            currentBottle =
+                nextLevel;
+
+
+            if(typeof owned !== "undefined"){
+
+                owned.sort(
+                    function(a,b){
+                        return a-b;
+                    }
+                );
+
+            }
+
+
+            if(typeof save === "function"){
+                save();
+            }
+
+
+            if(result){
+
+                result.className =
+                    "result success";
+
+                result.textContent =
+                    "Заход!";
+
+            }
+
+        }else{
+
+            if(result){
+
+                result.className =
+                    "result fail";
+
+                result.textContent =
+                    "Незаход, попробуем снова?";
+
+            }
+
+        }
+
+
+        upgrading = false;
+
+
+        if(button){
+            button.disabled = false;
+        }
+
+
+        if(typeof updateUI === "function"){
+            updateUI();
+        }
+
+
+        window.updateUpgradeVisuals();
+
+    };
+
+
+    /* ==========================================
+       ИНИЦИАЛИЗАЦИЯ
+    ========================================== */
+
+    function initUpgradePatch(){
+
+        createUpgradeUI();
+
+        window.updateUpgradeVisuals();
+
+    }
+
+
+    if(document.readyState === "loading"){
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            initUpgradePatch
+        );
+
+    }else{
+
+        initUpgradePatch();
+
+    }
+
+})();
+</script>
 </body>
 </html>
